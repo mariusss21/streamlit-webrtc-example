@@ -64,14 +64,14 @@ st.set_page_config(
 )
 
 def read_barcodes(frame):
-    try:
+#     try:
         barcodes = decode(frame)
         for barcode in barcodes:
             x, y , w, h = barcode.rect        #1
             barcode_info = barcode.data.decode('utf-8')             
             return barcode_info
-    except:
-        return None
+#     except:
+#         return None
 
 # Configurando o acesso ao mongodb
 myclient = pymongo.MongoClient("mongodb://192.168.81.128:27017/")
