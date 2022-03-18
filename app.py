@@ -137,11 +137,12 @@ def qr_code_detector():
             if valor != None:
                 st.write(valor)
                 st.image(img_rgb)
+                break
                 
-        else:
-            st.write('deu merda 0')
-            #logger.warning("AudioReciver is not set. Abort.")
-            break
+#         else:
+#             st.write('deu merda 0')
+#             #logger.warning("AudioReciver is not set. Abort.")
+#             break
 		
 #     if webrtc_ctx.video_processor:
 #         image_qr = webrtc_ctx.video_processor._imagem
