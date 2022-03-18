@@ -9,7 +9,7 @@
 ######################################################################################################
 
 import streamlit as st
-from streamlit import caching
+# from streamlit import caching
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
