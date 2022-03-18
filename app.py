@@ -126,7 +126,8 @@ def qr_code_detector():
                 break
 		
             img_rgb = video_frame.to_ndarray(format="rgb24")
-            gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+            image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             blur = cv2.medianBlur(gray, 5)
             valor = read_barcodes(blur)
 #             file_bytes = io.BytesIO(img_rgb.getvalue())
