@@ -200,25 +200,21 @@ if tela == 'Visualizar inventarios':
 
     image_place = st.empty()
 
-    while True:
-        if webrtc_ctx.video_receiver:
-            try:
-                video_frame = webrtc_ctx.video_receiver.get_frame(timeout=2)
-            except queue.Empty:
-                break
-            img_rgb = video_frame.to_ndarray(format="rgb24")
-            image_place.image(img_rgb)
-        else:
-            break
+    # while True:
+    #     if webrtc_ctx.video_receiver:
+    #         try:
+    #             video_frame = webrtc_ctx.video_receiver.get_frame(timeout=2)
+    #         except queue.Empty:
+    #             break
+    #         img_rgb = video_frame.to_ndarray(format="rgb24")
+    #         image_place.image(img_rgb)
+    #     else:
+    #         break
 
     
 
-#         if video_frame is not None:
-#             file_bytes = io.BytesIO(video_frame.getvalue())
-#             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-#             # qrCodeDetector = cv2.QRCodeDetector()
-#             # decodedText, points, _ = qrCodeDetector.detectAndDecode(image)
-#             # qr_data = decodedText.split(',')
-#             # st.write(qr_data[0])
-#             valor = read_barcodes(image)
-#             st.write(valor)
+        if video_frame is not None:
+            file_bytes = io.BytesIO(video_frame.getvalue())
+            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            valor = read_barcodes(image)
+            st.write(valor)
