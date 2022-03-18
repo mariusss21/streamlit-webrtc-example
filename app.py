@@ -138,7 +138,7 @@ tela = st.sidebar.radio('Menu', telas)
 def sign_language_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
-        pass
+        
 	
 #         def __init__(self) -> None:
 #             self.imagem_qrcode = ""
@@ -147,8 +147,8 @@ def sign_language_detector():
 #             img = frame.to_ndarray(format="bgr24")
 #             self.imagem_qrcode = img
         @property
-        def imagem(self, frame: av.VideoFrame) -> av.VideoFrame:
-            self.img = frame.to_ndarray(format="bgr24")
+        def _imagem(self, frame: av.VideoFrame) -> av.VideoFrame:
+            return frame.to_ndarray(format="bgr24")
     
     webrtc_ctx = webrtc_streamer(
         key="opencv-filter",
@@ -160,7 +160,7 @@ def sign_language_detector():
     )
     	
     if webrtc_ctx.video_processor:
-        image_qr = webrtc_ctx.video_processor.imagem.img
+        image_qr = webrtc_ctx.video_processor.imagem
         st.write(image_qr)
 #         valor = read_barcodes(image_qr)
 #         st.write(valor)
