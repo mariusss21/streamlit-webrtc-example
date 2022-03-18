@@ -9,7 +9,7 @@
 ######################################################################################################
 
 import streamlit as st
-# from streamlit import caching
+from streamlit import caching
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
@@ -192,7 +192,7 @@ if tela == 'Visualizar inventarios':
 
     # OpenCVVideoProcessor().recv
     webrtc_ctx = webrtc_streamer(
-        key="loopback",
+        key="video-sendonly",
         mode=WebRtcMode.SENDONLY,
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True},
@@ -213,12 +213,12 @@ if tela == 'Visualizar inventarios':
 
     
 
-#         if video_frame is not None:
-#             file_bytes = io.BytesIO(video_frame.getvalue())
-#             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-#             # qrCodeDetector = cv2.QRCodeDetector()
-#             # decodedText, points, _ = qrCodeDetector.detectAndDecode(image)
-#             # qr_data = decodedText.split(',')
-#             # st.write(qr_data[0])
-#             valor = read_barcodes(image)
-#             st.write(valor)
+        if video_frame is not None:
+            file_bytes = io.BytesIO(video_frame.getvalue())
+            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            # qrCodeDetector = cv2.QRCodeDetector()
+            # decodedText, points, _ = qrCodeDetector.detectAndDecode(image)
+            # qr_data = decodedText.split(',')
+            # st.write(qr_data[0])
+            valor = read_barcodes(image)
+            st.write(valor)
