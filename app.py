@@ -153,7 +153,7 @@ def sign_language_detector():
 
     )
 
-    st.write(OpenCVVideoProcessor().imagem)
+    #st.write(OpenCVVideoProcessor().imagem)
 
 
 
