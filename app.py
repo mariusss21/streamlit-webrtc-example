@@ -136,6 +136,9 @@ def sign_language_detector():
     class OpenCVVideoProcessor(VideoProcessorBase):
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
+	    #image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            valor = read_barcodes(img)
+            st.write(valor)
 
     
     webrtc_ctx = webrtc_streamer(
