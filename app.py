@@ -184,15 +184,15 @@ if tela == 'Inserir item no inventario':
        
 
 if tela == 'Visualizar inventarios':
-    #im2 = st.camera_input('Selecione a foto do equipamento')
+    video_frame = st.camera_input('Selecione a foto do equipamento')
     RTC_CONFIGURATION = RTCConfiguration(
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
 
-    qr_code_detector()
+    #qr_code_detector()
 
-    # if video_frame is not None:
-    #     file_bytes = io.BytesIO(video_frame.getvalue())
-    #     image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-    #     valor = read_barcodes(image)
-    #     st.write(valor)
+    if video_frame is not None:
+        file_bytes = io.BytesIO(video_frame.getvalue())
+        image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+        valor = read_barcodes(image)
+        st.write(valor)
