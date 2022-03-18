@@ -66,7 +66,6 @@ st.set_page_config(
 def read_barcodes(frame):
     try:
         barcodes = decode(frame)
-	
         for barcode in barcodes:
             x, y , w, h = barcode.rect        #1
             barcode_info = barcode.data.decode('utf-8')             
@@ -126,8 +125,11 @@ def qr_code_detector():
                 st.write('deu merda 1')
                 break
 		
-            img_rgb = video_frame.to_ndarray(format="rgb24")
-            valor = read_barcodes(img_rgb)
+            #img_rgb = video_frame.to_ndarray(format="rgb24")
+            #valor = read_barcodes(img_rgb)
+            file_bytes = io.BytesIO(video_frame.getvalue())
+            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            valor = read_barcodes(image)
             if valor != None:
                 st.write(valor)
                 st.image(img_rgb)
