@@ -44,7 +44,7 @@ try:
 except ImportError:
     from typing_extensions import Literal  # type: ignore
 
-# import av
+import av
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -125,9 +125,26 @@ images = mydb.images
 telas = ['Inserir item no inventario', 'Atualizar item no inventario', 'Visualizar inventarios']
 tela = st.sidebar.radio('Menu', telas)
 
+
+
 ######################################################################################################
                                #Funaoes
 ######################################################################################################
+
+def sign_language_detector():
+
+    class OpenCVVideoProcessor(VideoProcessorBase):
+        def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+            img = frame.to_ndarray(format="bgr24")
+
+    
+    webrtc_ctx = webrtc_streamer(
+        key="opencv-filter",
+        mode=WebRtcMode.SENDRECV,
+        rtc_configuration=RTC_CONFIGURATION,
+        video_processor_factory=OpenCVVideoProcessor,
+        async_processing=True,
+    )
 
 
 st.title('Inventario Ambev - LM :memo:')
@@ -172,6 +189,10 @@ if tela == 'Visualizar inventarios':
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
 
+    sign_language_detector()
+
+
+
     # class OpenCVVideoProcessor(VideoProcessorBase):
 
     #     def __init__(self) -> None:
@@ -191,14 +212,14 @@ if tela == 'Visualizar inventarios':
     # async_processing=True)
 
     # OpenCVVideoProcessor().recv
-    webrtc_ctx = webrtc_streamer(
-        key="video-sendonly",
-        mode=WebRtcMode.SENDONLY,
-        rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True},
-    )
+    # webrtc_ctx = webrtc_streamer(
+    #     key="video-sendonly",
+    #     mode=WebRtcMode.SENDONLY,
+    #     rtc_configuration=RTC_CONFIGURATION,
+    #     media_stream_constraints={"video": True},
+    # )
 
-    image_place = st.empty()
+    # image_place = st.empty()
 
     # while True:
     #     if webrtc_ctx.video_receiver:
@@ -211,10 +232,11 @@ if tela == 'Visualizar inventarios':
     #     else:
     #         break
 
-    
 
-#         if video_frame is not None:
-#             file_bytes = io.BytesIO(video_frame.getvalue())
-#             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-#             valor = read_barcodes(image)
-#             st.write(valor)
+
+    # if video_frame is not None:
+    #     file_bytes = io.BytesIO(video_frame.getvalue())
+    #     image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+    #     valor = read_barcodes(image)
+    #     st.write(valor)
+
