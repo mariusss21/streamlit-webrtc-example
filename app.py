@@ -162,7 +162,7 @@ def sign_language_detector():
     )
     	
     if webrtc_ctx.video_processor:
-        image_qr = webrtc_ctx.video_processor.imagem
+        image_qr = webrtc_ctx.video_processor._imagem
         st.write(image_qr)
 #         valor = read_barcodes(image_qr)
 #         st.write(valor)
