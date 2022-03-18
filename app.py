@@ -90,7 +90,7 @@ tela = st.sidebar.radio('Menu', telas)
                                #Funaoes
 ######################################################################################################
 
-def sign_language_detector():
+def qr_code_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
      	
@@ -109,17 +109,10 @@ def sign_language_detector():
   
     if webrtc_ctx.state.playing:
         labels_placeholder = st.empty()
-        # NOTE: The video transformation with object detection and
-        # this loop displaying the result labels are running
-        # in different threads asynchronously.
-        # Then the rendered video frames and the labels displayed here
-        # are not strictly synchronized.
         while True:
             if webrtc_ctx.video_processor:
                 try:
-                    result = webrtc_ctx.video_processor.result_queue.get(
-                        timeout=1.0
-                    )
+                    result = webrtc_ctx.video_processor.imagem_qrcode
                 except queue.Empty:
                     result = None
                 labels_placeholder.table(result)
@@ -176,50 +169,7 @@ if tela == 'Visualizar inventarios':
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
 
-    sign_language_detector()
-
-
-
-    # class OpenCVVideoProcessor(VideoProcessorBase):
-
-    #     def __init__(self) -> None:
-    #         self.type = "noop"
-
-    #     def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-    #         img = frame.to_ndarray(format="bgr24")
-
-    #         return av.VideoFrame.from_ndarray(img, format="bgr24")
-
-    # webrtc_ctx = webrtc_streamer(
-    # key="opencv-filter",
-    # mode=WebRtcMode.SENDRECV,
-    # rtc_configuration=RTC_CONFIGURATION,
-    # video_processor_factory=OpenCVVideoProcessor,
-    # media_stream_constraints={"video": True, "audio": False},
-    # async_processing=True)
-
-    # OpenCVVideoProcessor().recv
-    # webrtc_ctx = webrtc_streamer(
-    #     key="video-sendonly",
-    #     mode=WebRtcMode.SENDONLY,
-    #     rtc_configuration=RTC_CONFIGURATION,
-    #     media_stream_constraints={"video": True},
-    # )
-
-    # image_place = st.empty()
-
-    # while True:
-    #     if webrtc_ctx.video_receiver:
-    #         try:
-    #             video_frame = webrtc_ctx.video_receiver.get_frame(timeout=2)
-    #         except queue.Empty:
-    #             break
-    #         img_rgb = video_frame.to_ndarray(format="rgb24")
-    #         image_place.image(img_rgb)
-    #     else:
-    #         break
-
-
+    qr_code_detector()
 
     # if video_frame is not None:
     #     file_bytes = io.BytesIO(video_frame.getvalue())
