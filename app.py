@@ -191,14 +191,12 @@ if tela == 'Visualizar inventarios':
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
 
-#     qr_code_detector()
+    qr_code_detector()
 
     if video_frame is not None:
         file_bytes = io.BytesIO(video_frame.getvalue())
         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray, 5)
-#         file_bytes = io.BytesIO(blur.getvalue())
-#         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         valor = read_barcodes(blur)
         st.write(valor)
