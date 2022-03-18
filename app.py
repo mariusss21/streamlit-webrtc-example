@@ -143,9 +143,9 @@ def sign_language_detector():
 #         def __init__(self) -> None:
 #             self.imagem_qrcode = ""
 	
-        def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-            img = frame.to_ndarray(format="bgr24")
-            self.imagem_qrcode = img
+#         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+#             img = frame.to_ndarray(format="bgr24")
+#             self.imagem_qrcode = img
     
     webrtc_ctx = webrtc_streamer(
         key="opencv-filter",
@@ -156,9 +156,9 @@ def sign_language_detector():
         media_stream_constraints={"video": True, "audio": False},
     )
     	
-    if webrtc_ctx.video_processor:
-        image_qr = webrtc_ctx.video_processor.recv.imagem_qrcode
-        st.write(image_qr)
+#     if webrtc_ctx.video_processor:
+#         image_qr = webrtc_ctx.video_processor.recv.imagem_qrcode
+#         st.write(image_qr)
 #         valor = read_barcodes(image_qr)
 #         st.write(valor)
 
