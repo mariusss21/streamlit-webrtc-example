@@ -131,7 +131,7 @@ def qr_code_detector():
             if valor != None:
                 st.write(valor)
                 st.image(img_rgb)
-		break
+                break
         else:
             st.write('deu merda 0')
             #logger.warning("AudioReciver is not set. Abort.")
