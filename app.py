@@ -91,10 +91,10 @@ tela = st.sidebar.radio('Menu', telas)
 
 def qr_code_detector():
 
-    class OpenCVVideoProcessor(VideoProcessorBase):
+#     class OpenCVVideoProcessor(VideoProcessorBase):
 
-        def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-            img = frame.to_ndarray(format="bgr24")
+#         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+#             img = frame.to_ndarray(format="bgr24")
 		    
 #     webrtc_ctx = webrtc_streamer(
 #         key="opencv-filter",
@@ -191,17 +191,17 @@ if tela == 'Inserir item no inventario':
        
 
 if tela == 'Visualizar inventarios':
-    video_frame = st.file_uploader('Selecione a foto do equipamento')
+#     video_frame = st.file_uploader('Selecione a foto do equipamento')
     RTC_CONFIGURATION = RTCConfiguration(
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
 
     qr_code_detector()
 
-    if video_frame is not None:
-        file_bytes = io.BytesIO(video_frame.getvalue())
-        image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        blur = cv2.medianBlur(gray, 5)
-        valor = read_barcodes(blur)
-        st.write(valor)
+#     if video_frame is not None:
+#         file_bytes = io.BytesIO(video_frame.getvalue())
+#         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+#         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#         blur = cv2.medianBlur(gray, 5)
+#         valor = read_barcodes(blur)
+#         st.write(valor)
