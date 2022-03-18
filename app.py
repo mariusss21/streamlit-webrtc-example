@@ -125,9 +125,13 @@ def qr_code_detector():
                 #logger.warning("Queue is empty. Abort.")
                 st.write('deu merda 1')
                 break
-
+		
             img_rgb = video_frame.to_ndarray(format="rgb24")
-            st.image(img_rgb)
+            valor = read_barcodes(img_rgb)
+            if valor != None:
+                st.write(valor)
+                st.image(img_rgb)
+		break
         else:
             st.write('deu merda 0')
             #logger.warning("AudioReciver is not set. Abort.")
