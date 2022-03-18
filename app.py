@@ -107,17 +107,19 @@ def qr_code_detector():
         media_stream_constraints={"video": True, "audio": False},
     )
   
-    if webrtc_ctx.state.playing:
-        labels_placeholder = st.empty()
-        while True:
-            if webrtc_ctx.video_processor:
-                try:
-                    result = webrtc_ctx.video_receiver.get_frame(timeout=1)
-                except queue.Empty:
-                    result = None
-                labels_placeholder.table(result)
-            else:
+    while True:
+        if webrtc_ctx.video_receiver:
+            try:
+                video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
+            except queue.Empty:
+                #logger.warning("Queue is empty. Abort.")
                 break
+
+            img_rgb = video_frame.to_ndarray(format="rgb24")
+            image_place.image(img_rgb)
+        else:
+            #logger.warning("AudioReciver is not set. Abort.")
+            break
 		
 #     if webrtc_ctx.video_processor:
 #         image_qr = webrtc_ctx.video_processor._imagem
