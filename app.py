@@ -4,7 +4,6 @@ from PIL import Image
 import numpy as np
 import cv2
 
-DEMO_IMAGE = 'pavan-kunchala-QR.png'
 
 #title of the web-app
 st.title('QR Code Decoding with OpenCV')
@@ -56,11 +55,6 @@ img_file_buffer = st.file_uploader("Upload an image which you want to Decode", t
 
 if img_file_buffer is not None:
     image = np.array(Image.open(img_file_buffer))
-
-else:
-    demo_image = DEMO_IMAGE
-    image = np.array(Image.open(demo_image))
-
 
 st.subheader('Orginal Image')
 
