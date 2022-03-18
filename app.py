@@ -189,7 +189,7 @@ if tela == 'Visualizar inventarios':
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
 
-    #qr_code_detector()
+    qr_code_detector()
 
 #     if video_frame is not None:
 #         file_bytes = io.BytesIO(video_frame.getvalue())
