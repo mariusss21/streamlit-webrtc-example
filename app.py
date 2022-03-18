@@ -116,7 +116,7 @@ def qr_code_detector():
                 break
 
             img_rgb = video_frame.to_ndarray(format="rgb24")
-            image_place.image(img_rgb)
+            st.image(img_rgb)
         else:
             #logger.warning("AudioReciver is not set. Abort.")
             break
