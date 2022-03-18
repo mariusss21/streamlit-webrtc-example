@@ -213,12 +213,12 @@ if tela == 'Visualizar inventarios':
 
     
 
-        if video_frame is not None:
-            file_bytes = io.BytesIO(video_frame.getvalue())
-            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-            # qrCodeDetector = cv2.QRCodeDetector()
-            # decodedText, points, _ = qrCodeDetector.detectAndDecode(image)
-            # qr_data = decodedText.split(',')
-            # st.write(qr_data[0])
-            valor = read_barcodes(image)
-            st.write(valor)
+#         if video_frame is not None:
+#             file_bytes = io.BytesIO(video_frame.getvalue())
+#             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+#             # qrCodeDetector = cv2.QRCodeDetector()
+#             # decodedText, points, _ = qrCodeDetector.detectAndDecode(image)
+#             # qr_data = decodedText.split(',')
+#             # st.write(qr_data[0])
+#             valor = read_barcodes(image)
+#             st.write(valor)
