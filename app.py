@@ -116,6 +116,7 @@ def qr_code_detector():
 
 
     if webrtc_ctx.video_receiver:
+        st.write('estou aqui')
         while True:
     
             if webrtc_ctx.video_receiver:
