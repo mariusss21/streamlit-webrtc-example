@@ -194,9 +194,11 @@ if tela == 'Visualizar inventarios':
 #     qr_code_detector()
 
     if video_frame is not None:
-        gray = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
-        blur = cv2.medianBlur(gray, 5)
-        file_bytes = io.BytesIO(blur.getvalue())
+        file_bytes = io.BytesIO(video_frame.getvalue())
         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-        valor = read_barcodes(image)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        blur = cv2.medianBlur(gray, 5)
+#         file_bytes = io.BytesIO(blur.getvalue())
+#         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+        valor = read_barcodes(blur)
         st.write(valor)
