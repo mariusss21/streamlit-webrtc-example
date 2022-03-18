@@ -135,9 +135,6 @@ def sign_language_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
 
-        def __init__(self) -> None:
-            self.imagem = ''
-
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             self.imagem = frame.to_ndarray(format="bgr24")
             img = frame.to_ndarray(format="bgr24")
