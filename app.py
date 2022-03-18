@@ -59,20 +59,9 @@ from streamlit_webrtc import (
     WebRtcMode,
     webrtc_streamer,
 )
-
-######################################################################################################
-				#Configuraaaes da pagina
-######################################################################################################
-
 st.set_page_config(
      page_title="Inventario",
-     #layout="wide",
 )
-
-######################################################################################################
-				#Configurando acesso ao mongodb
-######################################################################################################
-
 
 def read_barcodes(frame):
     try:
@@ -80,19 +69,10 @@ def read_barcodes(frame):
 	
         for barcode in barcodes:
             x, y , w, h = barcode.rect        #1
-            barcode_info = barcode.data.decode('utf-8')
-            # cv2.rectangle(frame, (x, y),(x+w, y+h), (0, 255, 0), 2)
-            
-            # #2
-            # font = cv2.FONT_HERSHEY_DUPLEX
-            # cv2.putText(frame, barcode_info, (x + 6, y - 6), font, 2.0, (255, 255, 255), 1)        #3
-            # with open("barcode_result.txt", mode ='w') as file:
-            #     file.write("Recognized Barcode:" + barcode_info)    
-                
+            barcode_info = barcode.data.decode('utf-8')             
             return barcode_info
     except:
         return None
-
 
 # Configurando o acesso ao mongodb
 myclient = pymongo.MongoClient("mongodb://192.168.81.128:27017/")
@@ -100,31 +80,6 @@ mydb = myclient["mydatabase"]
 
 # upload de imagem para mongodb
 images = mydb.images
-# im2 = st.file_uploader('Selecione a imagem para upload')
-
-# if im2 != None:
-#     image = {
-#         '_id': 'imagem1',
-#         'data': im2.getvalue()
-#     }
-#     myquery = {'_id': 'imagem1'}
-#     newvalues = {"$set":{'data': im2.getvalue()}}
-
-#     images.update_one(myquery, newvalues)
-
-# # busca de imagem no mongodb
-# query = {'_id': 'imagem1'}
-# image = images.find(query)
-
-# for doc in image:
-#     st.image(io.BytesIO(doc['data']))
-
-# st.image(io.BytesIO(im2.getvalue()))
-
-
-##### Sidebar #####
-
-# st.sidebar.image('latas minas.png')
 
 telas = ['Inserir item no inventario', 'Atualizar item no inventario', 'Visualizar inventarios']
 tela = st.sidebar.radio('Menu', telas)
@@ -138,17 +93,13 @@ tela = st.sidebar.radio('Menu', telas)
 def sign_language_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
-        
-	
-#         def __init__(self) -> None:
-#             self.imagem_qrcode = ""
-	
+     	
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
             self.imagem_qrcode = img
 		
         @property
-        def _imagem(self, frame: av.VideoFrame) -> av.VideoFrame:
+        def _imagem(self) -> av.VideoFrame:
             frame = self.imagem_qrcode
             return frame.to_ndarray(format="bgr24")
     
