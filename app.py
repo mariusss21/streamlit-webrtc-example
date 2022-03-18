@@ -91,10 +91,10 @@ tela = st.sidebar.radio('Menu', telas)
 
 def qr_code_detector():
 
-#     class OpenCVVideoProcessor(VideoProcessorBase):
+    class OpenCVVideoProcessor(VideoProcessorBase):
 
-#         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-#             img = frame.to_ndarray(format="bgr24")
+        def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+            img = frame.to_ndarray(format="bgr24")
 		    
 #     webrtc_ctx = webrtc_streamer(
 #         key="opencv-filter",
@@ -108,44 +108,44 @@ def qr_code_detector():
     webrtc_ctx = webrtc_streamer(
         key="video-sendonly",
         mode=WebRtcMode.SENDRECV,
-#         video_processor_factory=OpenCVVideoProcessor,
+        video_processor_factory=OpenCVVideoProcessor,
         async_processing=True,
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True},
     )
 
 
-#     if webrtc_ctx.video_receiver:
-#         while True:
+    if webrtc_ctx.video_receiver:
+        while True:
     
-#             if webrtc_ctx.video_receiver:
-#                 #st.write('deu bom 1')
-#                 try:
-#                     video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
-#                     #st.write('deu bom 2')
-#                 except queue.Empty:
-#                     #logger.warning("Queue is empty. Abort.")
-#                     st.write('deu merda 1')
-#                     break
+            if webrtc_ctx.video_receiver:
+                #st.write('deu bom 1')
+                try:
+                    video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
+                    #st.write('deu bom 2')
+                except queue.Empty:
+                    #logger.warning("Queue is empty. Abort.")
+                    st.write('deu merda 1')
+                    break
     		
-#                 img_rgb = video_frame.to_ndarray(format="rgb24")
-#                 #image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
-#                 gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-#                 blur = cv2.medianBlur(gray, 5)
-#                 valor = read_barcodes(blur)
-#                 st.write(valor)
-#     #             file_bytes = io.BytesIO(img_rgb.getvalue())
-#     #             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-#     #             valor = read_barcodes(image)
-#                 if valor != None:
-#                     st.write(valor)
-#                     st.image(img_rgb)
-#                     break
+                img_rgb = video_frame.to_ndarray(format="rgb24")
+                #image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
+                gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+                blur = cv2.medianBlur(gray, 5)
+                valor = read_barcodes(blur)
+                st.write(valor)
+    #             file_bytes = io.BytesIO(img_rgb.getvalue())
+    #             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+    #             valor = read_barcodes(image)
+                if valor != None:
+                    st.write(valor)
+                    st.image(img_rgb)
+                    break
                     
-#             else:
-#                 st.write('deu merda 0')
-#                 #logger.warning("AudioReciver is not set. Abort.")
-#                 break
+            else:
+                st.write('deu merda 0')
+                #logger.warning("AudioReciver is not set. Abort.")
+                break
 		
 #     if webrtc_ctx.video_processor:
 #         image_qr = webrtc_ctx.video_processor._imagem
