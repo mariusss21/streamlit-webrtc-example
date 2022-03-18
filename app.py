@@ -140,8 +140,8 @@ def sign_language_detector():
     class OpenCVVideoProcessor(VideoProcessorBase):
 
 	
-        def __init__(self) -> None:
-            self.imagem_qrcode = ""
+#         def __init__(self) -> None:
+#             self.imagem_qrcode = ""
 	
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
@@ -155,7 +155,7 @@ def sign_language_detector():
 #         async_processing=True,
         media_stream_constraints={"video": True, "audio": False},
     )
-	
+    	
     if webrtc_ctx.video_processor:
         image_qr = webrtc_ctx.video_processor.imagem_qrcode
         st.write(image_qr)
