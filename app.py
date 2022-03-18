@@ -134,12 +134,14 @@ tela = st.sidebar.radio('Menu', telas)
 def sign_language_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
+
+	
+        def __init__(self) -> None:
+            self.imagem_qrcode = ""
+	
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
-	    #image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-            valor = read_barcodes(img)
-            st.write(valor)
-
+            self.imagem_qrcode = img
     
     webrtc_ctx = webrtc_streamer(
         key="opencv-filter",
@@ -148,8 +150,13 @@ def sign_language_detector():
         video_processor_factory=OpenCVVideoProcessor,
 #         async_processing=True,
         media_stream_constraints={"video": True, "audio": False},
-
     )
+	
+    if webrtc_ctx.video_processor:
+	image_qr = webrtc_ctx.video_processor.imagem_qrcode
+        valor = read_barcodes(image_qr)
+        st.write(valor)
+
 
 
 st.title('Inventario Ambev - LM :memo:')
