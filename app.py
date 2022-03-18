@@ -144,6 +144,8 @@ def sign_language_detector():
         rtc_configuration=RTC_CONFIGURATION,
         video_processor_factory=OpenCVVideoProcessor,
         async_processing=True,
+        media_stream_constraints={"video": True, "audio": False},
+
     )
 
 
