@@ -108,7 +108,7 @@ def qr_code_detector():
     webrtc_ctx = webrtc_streamer(
         key="video-sendonly",
         mode=WebRtcMode.SENDRECV,
-        video_processor_factory=OpenCVVideoProcessor,
+#         video_processor_factory=OpenCVVideoProcessor,
 #         async_processing=True,
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True},
