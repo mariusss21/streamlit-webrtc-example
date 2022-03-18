@@ -92,19 +92,26 @@ tela = st.sidebar.radio('Menu', telas)
 
 def qr_code_detector():
 
-    class OpenCVVideoProcessor(VideoProcessorBase):
+#     class OpenCVVideoProcessor(VideoProcessorBase):
 
-        def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-            img = frame.to_ndarray(format="bgr24")
-            self.imagem_qrcode = img
+#         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+#             img = frame.to_ndarray(format="bgr24")
+#             self.imagem_qrcode = img
 		    
+#     webrtc_ctx = webrtc_streamer(
+#         key="opencv-filter",
+#         mode=WebRtcMode.SENDRECV,
+#         rtc_configuration=RTC_CONFIGURATION,
+#         video_processor_factory=OpenCVVideoProcessor,
+#         async_processing=True,
+#         media_stream_constraints={"video": True, "audio": False},
+#     )
+
     webrtc_ctx = webrtc_streamer(
-        key="opencv-filter",
-        mode=WebRtcMode.SENDRECV,
+        key="video-sendonly",
+        mode=WebRtcMode.SENDONLY,
         rtc_configuration=RTC_CONFIGURATION,
-        video_processor_factory=OpenCVVideoProcessor,
-        async_processing=True,
-        media_stream_constraints={"video": True, "audio": False},
+        media_stream_constraints={"video": True},
     )
   
     while True:
