@@ -118,14 +118,14 @@ def qr_code_detector():
     if teste:
         try:
             video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)       
-            img_rgb = video_frame.to_ndarray(format="rgb24")
-            gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-            blur = cv2.medianBlur(gray, 5)
-            valor = read_barcodes(blur)
-            st.write(valor)
-            if valor != None:
-                st.write(valor)
-                st.image(img_rgb)
+#             img_rgb = video_frame.to_ndarray(format="rgb24")
+#             gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+#             blur = cv2.medianBlur(gray, 5)
+#             valor = read_barcodes(blur)
+#             st.write(valor)
+#             if valor != None:
+#                 st.write(valor)
+#                 st.image(img_rgb)
         except:
             st.write('error')
 	
