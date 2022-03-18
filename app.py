@@ -108,16 +108,21 @@ def qr_code_detector():
     )
   
     while True:
+
         if webrtc_ctx.video_receiver:
+            st.write('deu bom 1')
             try:
                 video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
+                st.write('deu bom 2')
             except queue.Empty:
                 #logger.warning("Queue is empty. Abort.")
+                st.write('deu merda 1')
                 break
 
             img_rgb = video_frame.to_ndarray(format="rgb24")
             st.image(img_rgb)
         else:
+            st.write('deu merda 0')
             #logger.warning("AudioReciver is not set. Abort.")
             break
 		
