@@ -111,41 +111,54 @@ def qr_code_detector():
 #         video_processor_factory=OpenCVVideoProcessor,
 #         async_processing=True,
         rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True},
+        media_stream_constraints={"video": True, "audio": False},
     )
 
     teste = st.button('teste')
     if teste:
-        while True:
-
-            if webrtc_ctx.video_receiver:
-                st.write('deu bom 1')
-                try:
-                    video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
-                    st.write('deu bom 2')
-                except queue.Empty:
-                    #logger.warning("Queue is empty. Abort.")
-                    st.write('deu merda 1')
-                    break
-
-                img_rgb = video_frame.to_ndarray(format="rgb24")
-                #image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
-                gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-                blur = cv2.medianBlur(gray, 5)
-                valor = read_barcodes(blur)
+        try:
+            video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)       
+            img_rgb = video_frame.to_ndarray(format="rgb24")
+            gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+            blur = cv2.medianBlur(gray, 5)
+            valor = read_barcodes(blur)
+            st.write(valor)
+            if valor != None:
                 st.write(valor)
-    #             file_bytes = io.BytesIO(img_rgb.getvalue())
-    #             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-    #             valor = read_barcodes(image)
-                if valor != None:
-                    st.write(valor)
-                    st.image(img_rgb)
-                    break
+                st.image(img_rgb)
+        except:
+            st.write('error')
+	
+#         while True:
 
-            else:
-                st.write('deu merda 0')
-                #logger.warning("AudioReciver is not set. Abort.")
-                break
+#             if webrtc_ctx.video_receiver:
+#                 st.write('deu bom 1')
+#                 try:
+#                     video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
+#                     st.write('deu bom 2')
+#                 except queue.Empty:
+#                     #logger.warning("Queue is empty. Abort.")
+#                     st.write('deu merda 1')
+#                     break
+
+#                 img_rgb = video_frame.to_ndarray(format="rgb24")
+#                 #image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
+#                 gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+#                 blur = cv2.medianBlur(gray, 5)
+#                 valor = read_barcodes(blur)
+#                 st.write(valor)
+#     #             file_bytes = io.BytesIO(img_rgb.getvalue())
+#     #             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+#     #             valor = read_barcodes(image)
+#                 if valor != None:
+#                     st.write(valor)
+#                     st.image(img_rgb)
+#                     break
+
+#             else:
+#                 st.write('deu merda 0')
+#                 #logger.warning("AudioReciver is not set. Abort.")
+#                 break
 		
 #     if webrtc_ctx.video_processor:
 #         image_qr = webrtc_ctx.video_processor._imagem
