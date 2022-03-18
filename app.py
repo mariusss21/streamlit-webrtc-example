@@ -126,17 +126,18 @@ def qr_code_detector():
                 break
 		
             img_rgb = video_frame.to_ndarray(format="rgb24")
-            image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            #image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
+            gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
             blur = cv2.medianBlur(gray, 5)
             valor = read_barcodes(blur)
+            st.write(valor)
 #             file_bytes = io.BytesIO(img_rgb.getvalue())
 #             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
 #             valor = read_barcodes(image)
             if valor != None:
                 st.write(valor)
                 st.image(img_rgb)
-                break
+                
         else:
             st.write('deu merda 0')
             #logger.warning("AudioReciver is not set. Abort.")
