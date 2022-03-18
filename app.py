@@ -97,24 +97,38 @@ def sign_language_detector():
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
             self.imagem_qrcode = img
-		
-        @property
-        def _imagem(self) -> av.VideoFrame:
-            frame = self.imagem_qrcode
-            return frame.to_ndarray(format="bgr24")
-    
+		    
     webrtc_ctx = webrtc_streamer(
         key="opencv-filter",
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
         video_processor_factory=OpenCVVideoProcessor,
-#         async_processing=True,
+        async_processing=True,
         media_stream_constraints={"video": True, "audio": False},
     )
-    	
-    if webrtc_ctx.video_processor:
-        image_qr = webrtc_ctx.video_processor._imagem
-        st.write(image_qr)
+  
+    if webrtc_ctx.state.playing:
+        labels_placeholder = st.empty()
+        # NOTE: The video transformation with object detection and
+        # this loop displaying the result labels are running
+        # in different threads asynchronously.
+        # Then the rendered video frames and the labels displayed here
+        # are not strictly synchronized.
+        while True:
+            if webrtc_ctx.video_processor:
+                try:
+                    result = webrtc_ctx.video_processor.result_queue.get(
+                        timeout=1.0
+                    )
+                except queue.Empty:
+                    result = None
+                labels_placeholder.table(result)
+            else:
+                break
+		
+#     if webrtc_ctx.video_processor:
+#         image_qr = webrtc_ctx.video_processor._imagem
+#         st.write(image_qr)
 #         valor = read_barcodes(image_qr)
 #         st.write(valor)
 
