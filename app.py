@@ -1,84 +1,224 @@
+######################################################################################################
+                                           #Introduaao
+######################################################################################################
+
+
+
+######################################################################################################
+                                 # importar bibliotecas
+######################################################################################################
+
 import streamlit as st
-
-from PIL import Image
+from streamlit import caching
+import plotly.express as px
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+import pandas as pd
 import numpy as np
+#import json
+#import smtplib
+from datetime import  datetime, time
+import pytz
+#import base64
+from io import StringIO
+import pymongo
+from st_aggrid import AgGrid
+# from pylogix import PLC
+from PIL import Image
+import io
+import matplotlib.pyplot as plt
 import cv2
+from pyzbar.pyzbar import decode
 
 
-#title of the web-app
-st.title('QR Code Decoding with OpenCV')
+import asyncio
+import logging
+import queue
+import threading
+import urllib.request
+from pathlib import Path
+from typing import List, NamedTuple
 
-@st.cache
-def show_qr_detection(img,pts):
-    
-    pts = np.int32(pts).reshape(-1, 2)
-    
-    for j in range(pts.shape[0]):
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # type: ignore
+
+import av
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+import pydub
+import streamlit as st
+from aiortc.contrib.media import MediaPlayer
+
+from streamlit_webrtc import (
+    AudioProcessorBase,
+    RTCConfiguration,
+    VideoProcessorBase,
+    WebRtcMode,
+    webrtc_streamer,
+)
+
+######################################################################################################
+				#Configuraaaes da pagina
+######################################################################################################
+
+st.set_page_config(
+     page_title="Inventario",
+     #layout="wide",
+)
+
+######################################################################################################
+				#Configurando acesso ao mongodb
+######################################################################################################
+
+
+def read_barcodes(frame):
+    barcodes = decode(frame)
+    for barcode in barcodes:
+        x, y , w, h = barcode.rect        #1
+        barcode_info = barcode.data.decode('utf-8')
+        # cv2.rectangle(frame, (x, y),(x+w, y+h), (0, 255, 0), 2)
         
-        cv2.line(img, tuple(pts[j]), tuple(pts[(j + 1) % pts.shape[0]]), (255, 0, 0), 5)
-        
-    for j in range(pts.shape[0]):
-        cv2.circle(img, tuple(pts[j]), 10, (255, 0, 255), -1)
+        # #2
+        # font = cv2.FONT_HERSHEY_DUPLEX
+        # cv2.putText(frame, barcode_info, (x + 6, y - 6), font, 2.0, (255, 255, 255), 1)        #3
+        # with open("barcode_result.txt", mode ='w') as file:
+        #     file.write("Recognized Barcode:" + barcode_info)    
+            
+        return barcode_info
 
 
-@st.cache
-def qr_code_dec(image):
+# Configurando o acesso ao mongodb
+myclient = pymongo.MongoClient("mongodb://192.168.81.128:27017/")
+mydb = myclient["mydatabase"]
+
+# upload de imagem para mongodb
+images = mydb.images
+# im2 = st.file_uploader('Selecione a imagem para upload')
+
+# if im2 != None:
+#     image = {
+#         '_id': 'imagem1',
+#         'data': im2.getvalue()
+#     }
+#     myquery = {'_id': 'imagem1'}
+#     newvalues = {"$set":{'data': im2.getvalue()}}
+
+#     images.update_one(myquery, newvalues)
+
+# # busca de imagem no mongodb
+# query = {'_id': 'imagem1'}
+# image = images.find(query)
+
+# for doc in image:
+#     st.image(io.BytesIO(doc['data']))
+
+# st.image(io.BytesIO(im2.getvalue()))
+
+
+##### Sidebar #####
+
+# st.sidebar.image('latas minas.png')
+
+telas = ['Inserir item no inventario', 'Atualizar item no inventario', 'Visualizar inventarios']
+tela = st.sidebar.radio('Menu', telas)
+
+######################################################################################################
+                               #Funaoes
+######################################################################################################
+
+
+st.title('Inventario Ambev - LM :memo:')
+if tela == 'Inserir item no inventario':
+    st.subheader('Formulario')
+
+    with st.form(key='myform'):
+        st.text_input('data do inventario') # data
+        st.text_input('empresa')
+        st.text_input('Unidade') #latas minas 
+        st.text_input('Numero do bem')
+        st.text_input('situacao') #opcoes:
+        st.text_input('Descricao do ativo')
+        st.text_input('loca/departamento')
+        st.text_input('Responsavel pela localizacao')
+        st.text_input('Numero TAG/Paleta')
+        st.text_input('Turnos para uso do bem') #opcoes a,b,c,todos a e b, a e c, b e c
+        st.text_input('data da aquisicao') #data
+        st.text_input('Marca')
+        st.text_input('Modelo')
+        st.text_input('Numero de serie')
+        st.text_input('Quantidade')
+
+        submit_button = st.form_submit_button(label='Submit')
+
+    st.write('TAG do equipamento')
+    im1 = st.file_uploader('Selecione a foto da TAG')
+    if im1 != None:
+        st.image(io.BytesIO(im1.getvalue()))
+        st.button('Confirma envio da foto da TAG?')
+
+    st.write('Foto do equipamento')
+    im2 = st.file_uploader('Selecione a foto do equipamento')
+    if im2 != None:
+        st.image(io.BytesIO(im2.getvalue()))
+        st.button('Confirma envio da foto do equipamento?')
+       
+
+if tela == 'Visualizar inventarios':
+    #im2 = st.camera_input('Selecione a foto do equipamento')
+    RTC_CONFIGURATION = RTCConfiguration(
+        {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+    )
+
+    # class OpenCVVideoProcessor(VideoProcessorBase):
+
+    #     def __init__(self) -> None:
+    #         self.type = "noop"
+
+    #     def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+    #         img = frame.to_ndarray(format="bgr24")
+
+    #         return av.VideoFrame.from_ndarray(img, format="bgr24")
+
+    # webrtc_ctx = webrtc_streamer(
+    # key="opencv-filter",
+    # mode=WebRtcMode.SENDRECV,
+    # rtc_configuration=RTC_CONFIGURATION,
+    # video_processor_factory=OpenCVVideoProcessor,
+    # media_stream_constraints={"video": True, "audio": False},
+    # async_processing=True)
+
+    # OpenCVVideoProcessor().recv
+    webrtc_ctx = webrtc_streamer(
+        key="video-sendonly",
+        mode=WebRtcMode.SENDONLY,
+        rtc_configuration=RTC_CONFIGURATION,
+        media_stream_constraints={"video": True},
+    )
+
+    image_place = st.empty()
+
+    while True:
+        if webrtc_ctx.video_receiver:
+            try:
+                video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
+            except queue.Empty:
+                break
+            img_rgb = video_frame.to_ndarray(format="rgb24")
+            image_place.image(img_rgb)
+        else:
+            break
+
     
-    decoder = cv2.QRCodeDetector()
-    
-    data, vertices, rectified_qr_code = decoder.detectAndDecode(image)
-    
-    if len(data) > 0:
-        print("Decoded Data: '{}'".format(data))
 
-    # Show the detection in the image:
-        show_qr_detection(image, vertices)
-        
-        rectified_image = np.uint8(rectified_qr_code)
-        
-        decoded_data = 'Decoded data: '+ data
-        
-        rectified_image = cv2.putText(rectified_image,decoded_data,(50,350),fontFace=cv2.FONT_HERSHEY_COMPLEX, fontScale = 2,
-            color = (250,225,100),thickness =  3, lineType=cv2.LINE_AA)
-        
-        
-    return decoded_data
-
-
-    
-    
-st.markdown("**Warning** Only add QR-code Images, other images will give out an error")
-
-
-#uploading the imges
-img_file_buffer = st.camera_input("Upload an image which you want to Decode")
-
-if img_file_buffer is not None:
-    image = np.array(Image.open(img_file_buffer))
-
-    st.subheader('Orginal Image')
-
-    #display the image
-    st.image(
-        image, caption=f"Original Image", use_column_width=True
-    ) 
-
-
-
-    st.subheader('Decoded data')
-
-    decoded_data = qr_code_dec(image)
-    st.markdown(decoded_data)
-
-    st.markdown('''
-              # Author \n 
-                 Hey this is ** Pavan Kunchala ** I hope you like the application \n
-                I am looking for ** Collabration ** or ** Freelancing ** in the field of ** Deep Learning ** and 
-                ** Computer Vision ** \n
-                If you're interested in collabrating you can mail me at ** pavankunchalapk@gmail.com ** \n
-                You can check out my ** Linkedin ** Profile from [here](https://www.linkedin.com/in/pavan-kumar-reddy-kunchala/) \n
-                You can check out my ** Github ** Profile from [here](https://github.com/Pavankunchala) \n
-                You can also check my technicals blogs in ** Medium ** from [here](https://pavankunchalapk.medium.com/) \n
-                If you are feeling generous you can buy me a cup of ** coffee ** from [here](https://www.buymeacoffee.com/pavankunchala)
-
-                ''')
+        if video_frame is not None:
+            file_bytes = io.BytesIO(im2.getvalue())
+            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            # qrCodeDetector = cv2.QRCodeDetector()
+            # decodedText, points, _ = qrCodeDetector.detectAndDecode(image)
+            # qr_data = decodedText.split(',')
+            # st.write(qr_data[0])
+            valor = read_barcodes(image)
+            st.write(valor)
