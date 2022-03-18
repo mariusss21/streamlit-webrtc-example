@@ -6,7 +6,6 @@ import urllib.request
 from pathlib import Path
 from typing import List, NamedTuple
 
-st.write('teste 1')
 try:
     from typing import Literal
 except ImportError:
@@ -27,6 +26,9 @@ from streamlit_webrtc import (
     WebRtcMode,
     webrtc_streamer,
 )
+
+st.write('teste 1')
+
 
 HERE = Path(__file__).parent
 
