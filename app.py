@@ -93,6 +93,9 @@ tela = st.sidebar.radio('Menu', telas)
 def qr_code_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
+
+        def __init__(self) -> None:
+            self.imagem = 
      	
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
@@ -112,7 +115,7 @@ def qr_code_detector():
         while True:
             if webrtc_ctx.video_processor:
                 try:
-                    result = webrtc_ctx.video_processor.imagem_qrcode
+                    result = webrtc_ctx.video_receiver.get_frame(timeout=1)
                 except queue.Empty:
                     result = None
                 labels_placeholder.table(result)
