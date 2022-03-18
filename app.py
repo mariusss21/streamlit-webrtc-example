@@ -203,7 +203,7 @@ if tela == 'Visualizar inventarios':
     while True:
         if webrtc_ctx.video_receiver:
             try:
-                video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
+                video_frame = webrtc_ctx.video_receiver.get_frame(timeout=2)
             except queue.Empty:
                 break
             img_rgb = video_frame.to_ndarray(format="rgb24")
