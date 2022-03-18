@@ -29,7 +29,7 @@ import io
 import matplotlib.pyplot as plt
 import cv2
 from pyzbar.pyzbar import decode
-
+import time
 
 # import asyncio
 # import logging
@@ -113,8 +113,8 @@ def qr_code_detector():
         media_stream_constraints={"video": True},
     )
 
-    
-    while webrtc_ctx.video_receiver:
+    time.sleep(1)
+    while True:
 
         if webrtc_ctx.video_receiver:
             #st.write('deu bom 1')
@@ -140,10 +140,10 @@ def qr_code_detector():
                 st.image(img_rgb)
                 break
                 
-#         else:
-#             st.write('deu merda 0')
-#             #logger.warning("AudioReciver is not set. Abort.")
-#             break
+        else:
+            st.write('deu merda 0')
+            #logger.warning("AudioReciver is not set. Abort.")
+            break
 		
 #     if webrtc_ctx.video_processor:
 #         image_qr = webrtc_ctx.video_processor._imagem
