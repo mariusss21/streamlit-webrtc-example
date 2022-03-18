@@ -125,9 +125,9 @@ def qr_code_detector():
                 st.write('deu merda 1')
                 break
 		
-            #img_rgb = video_frame.to_ndarray(format="rgb24")
+            img_rgb = video_frame.to_ndarray(format="rgb24")
             #valor = read_barcodes(img_rgb)
-            file_bytes = io.BytesIO(video_frame.getvalue())
+            file_bytes = io.BytesIO(img_rgb.getvalue())
             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
             valor = read_barcodes(image)
             if valor != None:
