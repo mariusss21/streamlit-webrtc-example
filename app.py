@@ -146,7 +146,6 @@ def sign_language_detector():
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
             self.imagem_qrcode = img
-            return img
     
     webrtc_ctx = webrtc_streamer(
         key="opencv-filter",
