@@ -31,11 +31,11 @@ import cv2
 from pyzbar.pyzbar import decode
 
 
-import asyncio
-import logging
+# import asyncio
+# import logging
 import queue
-import threading
-import urllib.request
+# import threading
+# import urllib.request
 from pathlib import Path
 from typing import List, NamedTuple
 
@@ -44,7 +44,7 @@ try:
 except ImportError:
     from typing_extensions import Literal  # type: ignore
 
-import av
+# import av
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -192,7 +192,7 @@ if tela == 'Visualizar inventarios':
 
     # OpenCVVideoProcessor().recv
     webrtc_ctx = webrtc_streamer(
-        key="video-sendonly",
+        key="loopback",
         mode=WebRtcMode.SENDONLY,
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True},
@@ -214,7 +214,7 @@ if tela == 'Visualizar inventarios':
     
 
         if video_frame is not None:
-            file_bytes = io.BytesIO(im2.getvalue())
+            file_bytes = io.BytesIO(video_frame.getvalue())
             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
             # qrCodeDetector = cv2.QRCodeDetector()
             # decodedText, points, _ = qrCodeDetector.detectAndDecode(image)
