@@ -114,7 +114,7 @@ def qr_code_detector():
         media_stream_constraints={"video": True},
     )
 
-
+    st.button('teste')
     if webrtc_ctx.video_receiver:
         st.write('estou aqui')
         while True:
