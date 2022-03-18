@@ -112,8 +112,9 @@ def qr_code_detector():
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True},
     )
-  
-    while True:
+
+    
+    while webrtc_ctx.video_receiver:
 
         if webrtc_ctx.video_receiver:
             #st.write('deu bom 1')
