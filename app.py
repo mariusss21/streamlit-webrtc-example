@@ -56,29 +56,29 @@ img_file_buffer = st.file_uploader("Upload an image which you want to Decode", t
 if img_file_buffer is not None:
     image = np.array(Image.open(img_file_buffer))
 
-st.subheader('Orginal Image')
+    st.subheader('Orginal Image')
 
-#display the image
-st.image(
-    image, caption=f"Original Image", use_column_width=True
-) 
+    #display the image
+    st.image(
+        image, caption=f"Original Image", use_column_width=True
+    ) 
 
 
 
-st.subheader('Decoded data')
+    st.subheader('Decoded data')
 
-decoded_data = qr_code_dec(image)
-st.markdown(decoded_data)
+    decoded_data = qr_code_dec(image)
+    st.markdown(decoded_data)
 
-st.markdown('''
-          # Author \n 
-             Hey this is ** Pavan Kunchala ** I hope you like the application \n
-            I am looking for ** Collabration ** or ** Freelancing ** in the field of ** Deep Learning ** and 
-            ** Computer Vision ** \n
-            If you're interested in collabrating you can mail me at ** pavankunchalapk@gmail.com ** \n
-            You can check out my ** Linkedin ** Profile from [here](https://www.linkedin.com/in/pavan-kumar-reddy-kunchala/) \n
-            You can check out my ** Github ** Profile from [here](https://github.com/Pavankunchala) \n
-            You can also check my technicals blogs in ** Medium ** from [here](https://pavankunchalapk.medium.com/) \n
-            If you are feeling generous you can buy me a cup of ** coffee ** from [here](https://www.buymeacoffee.com/pavankunchala)
-             
-            ''')
+    st.markdown('''
+              # Author \n 
+                 Hey this is ** Pavan Kunchala ** I hope you like the application \n
+                I am looking for ** Collabration ** or ** Freelancing ** in the field of ** Deep Learning ** and 
+                ** Computer Vision ** \n
+                If you're interested in collabrating you can mail me at ** pavankunchalapk@gmail.com ** \n
+                You can check out my ** Linkedin ** Profile from [here](https://www.linkedin.com/in/pavan-kumar-reddy-kunchala/) \n
+                You can check out my ** Github ** Profile from [here](https://github.com/Pavankunchala) \n
+                You can also check my technicals blogs in ** Medium ** from [here](https://pavankunchalapk.medium.com/) \n
+                If you are feeling generous you can buy me a cup of ** coffee ** from [here](https://www.buymeacoffee.com/pavankunchala)
+
+                ''')
