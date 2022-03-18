@@ -6,6 +6,7 @@ import urllib.request
 from pathlib import Path
 from typing import List, NamedTuple
 
+st.write('teste 1')
 try:
     from typing import Literal
 except ImportError:
