@@ -94,9 +94,6 @@ def qr_code_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
 
-        def __init__(self) -> None:
-            self.imagem = 
-     	
         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24")
             self.imagem_qrcode = img
