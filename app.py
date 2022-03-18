@@ -51,7 +51,7 @@ st.markdown("**Warning** Only add QR-code Images, other images will give out an 
 
 
 #uploading the imges
-img_file_buffer = st.camera_input("Upload an image which you want to Decode", type=[ "jpg", "jpeg",'png'])
+img_file_buffer = st.camera_input("Upload an image which you want to Decode")
 
 if img_file_buffer is not None:
     image = np.array(Image.open(img_file_buffer))
