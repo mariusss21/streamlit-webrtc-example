@@ -116,7 +116,7 @@ def qr_code_detector():
 
     teste = st.button('teste')
     if teste:
-        try:
+#         try:
             video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)       
 #             img_rgb = video_frame.to_ndarray(format="rgb24")
 #             gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
@@ -126,8 +126,8 @@ def qr_code_detector():
 #             if valor != None:
 #                 st.write(valor)
 #                 st.image(img_rgb)
-        except:
-            st.write('error')
+#         except:
+#             st.write('error')
 	
 #         while True:
 
