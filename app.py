@@ -138,7 +138,7 @@ tela = st.sidebar.radio('Menu', telas)
 def sign_language_detector():
 
     class OpenCVVideoProcessor(VideoProcessorBase):
-
+        pass
 	
 #         def __init__(self) -> None:
 #             self.imagem_qrcode = ""
