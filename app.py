@@ -184,7 +184,7 @@ if tela == 'Inserir item no inventario':
        
 
 if tela == 'Visualizar inventarios':
-    video_frame = st.upload_file('Selecione a foto do equipamento')
+    video_frame = st.file_uploader('Selecione a foto do equipamento')
     RTC_CONFIGURATION = RTCConfiguration(
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
