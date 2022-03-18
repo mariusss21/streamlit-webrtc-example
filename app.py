@@ -143,11 +143,13 @@ def sign_language_detector():
 #         def __init__(self) -> None:
 #             self.imagem_qrcode = ""
 	
-#         def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-#             img = frame.to_ndarray(format="bgr24")
-#             self.imagem_qrcode = img
+        def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+            img = frame.to_ndarray(format="bgr24")
+            self.imagem_qrcode = img
+		
         @property
         def _imagem(self, frame: av.VideoFrame) -> av.VideoFrame:
+            frame = self.imagem_qrcode
             return frame.to_ndarray(format="bgr24")
     
     webrtc_ctx = webrtc_streamer(
