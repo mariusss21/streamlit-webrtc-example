@@ -1,10 +1,4 @@
 ######################################################################################################
-                                           #Introduaao
-######################################################################################################
-
-
-
-######################################################################################################
                                  # importar bibliotecas
 ######################################################################################################
 
@@ -30,192 +24,163 @@ import matplotlib.pyplot as plt
 import cv2
 from pyzbar.pyzbar import decode
 import time
+import qrcode
+from PIL import Image
 
-# import asyncio
-# import logging
-import queue
-# import threading
-# import urllib.request
-from pathlib import Path
-from typing import List, NamedTuple
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal  # type: ignore
+# # Configurando o acesso ao mongodb
+# myclient = pymongo.MongoClient("mongodb://192.168.81.128:27017/")
+# mydb = myclient["mydatabase"]
 
-import av
-import cv2
-import matplotlib.pyplot as plt
-import numpy as np
-import pydub
-import streamlit as st
-from aiortc.contrib.media import MediaPlayer
+# # upload de imagem para mongodb
+# images = mydb.images
 
-from streamlit_webrtc import (
-    AudioProcessorBase,
-    RTCConfiguration,
-    VideoProcessorBase,
-    WebRtcMode,
-    webrtc_streamer,
-)
+
+######################################################################################################
+                               #Funções
+######################################################################################################
+
 st.set_page_config(
-     page_title="Inventario",
+     page_title="Inventário Logístico",
 )
+
+m = st.markdown("""
+<style>
+div.stButton > button:first-child{
+    width: 100%;
+    font-size: 18px;
+}
+
+label.css-qrbaxs{
+    font-size: 18px;
+}
+
+p{
+    font-size: 18px;
+}
+
+h1{
+    text-align: center;
+}
+
+div.block-container{
+    padding-top: 1rem;
+}
+
+div.streamlit-expanderHeader{
+    width: 100%;
+    font-size: 18px;
+    background-color: rgb(240,242,246);
+    color: black;
+}
+</style>""", unsafe_allow_html=True) #    font-weight: bold;
+
 
 def read_barcodes(frame):
-#     try:
-        barcodes = decode(frame)
-        for barcode in barcodes:
-            x, y , w, h = barcode.rect        #1
-            barcode_info = barcode.data.decode('utf-8')             
-            return barcode_info
-#     except:
-#         return None
 
-# Configurando o acesso ao mongodb
-myclient = pymongo.MongoClient("mongodb://192.168.81.128:27017/")
-mydb = myclient["mydatabase"]
-
-# upload de imagem para mongodb
-images = mydb.images
-
-telas = ['Inserir item no inventario', 'Atualizar item no inventario', 'Visualizar inventarios']
-tela = st.sidebar.radio('Menu', telas)
+    barcodes = decode(frame)
+    for barcode in barcodes:
+        x, y , w, h = barcode.rect        #1
+        barcode_info = barcode.data.decode('utf-8')             
+        return barcode_info
 
 
-
-######################################################################################################
-                               #Funaoes
-######################################################################################################
-
-def qr_code_detector():
-
-    class OpenCVVideoProcessor(VideoProcessorBase):
-
-        def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-            img = frame.to_ndarray(format="bgr24")
-		    
-#     webrtc_ctx = webrtc_streamer(
-#         key="opencv-filter",
-#         mode=WebRtcMode.SENDRECV,
-#         rtc_configuration=RTC_CONFIGURATION,
-#         video_processor_factory=OpenCVVideoProcessor,
-#         async_processing=True,
-#         media_stream_constraints={"video": True, "audio": False},
-#     )
-    #st.camera_input('')
-    webrtc_ctx = webrtc_streamer(
-        key="video-sendonly",
-        mode=WebRtcMode.SENDRECV,
-        video_processor_factory=OpenCVVideoProcessor,
-#         async_processing=True,
-        rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True, "audio": False},
-    )
-
-    teste = st.button('teste')
-    if teste:
-#         try:
-            video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)       
-#             img_rgb = video_frame.to_ndarray(format="rgb24")
-#             gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-#             blur = cv2.medianBlur(gray, 5)
-#             valor = read_barcodes(blur)
-#             st.write(valor)
-#             if valor != None:
-#                 st.write(valor)
-#                 st.image(img_rgb)
-#         except:
-#             st.write('error')
-	
-#         while True:
-
-#             if webrtc_ctx.video_receiver:
-#                 st.write('deu bom 1')
-#                 try:
-#                     video_frame = webrtc_ctx.video_receiver.get_frame(timeout=1)
-#                     st.write('deu bom 2')
-#                 except queue.Empty:
-#                     #logger.warning("Queue is empty. Abort.")
-#                     st.write('deu merda 1')
-#                     break
-
-#                 img_rgb = video_frame.to_ndarray(format="rgb24")
-#                 #image = cv2.imdecode(np.frombuffer(img_rgb, np.uint8), cv2.IMREAD_COLOR)
-#                 gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-#                 blur = cv2.medianBlur(gray, 5)
-#                 valor = read_barcodes(blur)
-#                 st.write(valor)
-#     #             file_bytes = io.BytesIO(img_rgb.getvalue())
-#     #             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-#     #             valor = read_barcodes(image)
-#                 if valor != None:
-#                     st.write(valor)
-#                     st.image(img_rgb)
-#                     break
-
-#             else:
-#                 st.write('deu merda 0')
-#                 #logger.warning("AudioReciver is not set. Abort.")
-#                 break
-		
-#     if webrtc_ctx.video_processor:
-#         image_qr = webrtc_ctx.video_processor._imagem
-#         st.write(image_qr)
-#         valor = read_barcodes(image_qr)
-#         st.write(valor)
-
-
-
-st.title('Inventario Ambev - LM :memo:')
-if tela == 'Inserir item no inventario':
-    st.subheader('Formulario')
+def entrada_bobinas() -> None:
+    st.subheader('Inserir bobina')
+    status_bobina = st.selectbox('Status da bobina', ['Liberado', 'Não conforme']) # data
 
     with st.form(key='myform'):
-        st.text_input('data do inventario') # data
-        st.text_input('empresa')
-        st.text_input('Unidade') #latas minas 
-        st.text_input('Numero do bem')
-        st.text_input('situacao') #opcoes:
-        st.text_input('Descricao do ativo')
-        st.text_input('loca/departamento')
-        st.text_input('Responsavel pela localizacao')
-        st.text_input('Numero TAG/Paleta')
-        st.text_input('Turnos para uso do bem') #opcoes a,b,c,todos a e b, a e c, b e c
-        st.text_input('data da aquisicao') #data
-        st.text_input('Marca')
-        st.text_input('Modelo')
-        st.text_input('Numero de serie')
-        st.text_input('Quantidade')
+        texto_qrcode = ''
 
-        submit_button = st.form_submit_button(label='Submit')
+        if status_bobina == 'Não conforme':
+            produto_bobina = st.text_input('Produto:')
+            quantidade_bobina = st.number_input('Quantidade:', format='%i', step=1, value=9000)
+            lote_bobina = st.text_input('Lote:')
+            fornecedor_bobina = st.text_input('Fornecedor:')
+            data_bobina = st.date_input('Data entrada:')
 
-    st.write('TAG do equipamento')
-    im1 = st.file_uploader('Selecione a foto da TAG')
-    if im1 != None:
-        st.image(io.BytesIO(im1.getvalue()))
-        st.button('Confirma envio da foto da TAG?')
+            texto_qrcode = ''.join(('Produto: ',
+                produto_bobina,
+                '; Quantidade: ',
+                str(quantidade_bobina),
+                '; Lote: ',
+                lote_bobina,
+                '; Fornecedor: ',
+                fornecedor_bobina,
+                '; Data entrada: ',
+                str(data_bobina))                    
+            )
 
-    st.write('Foto do equipamento')
-    im2 = st.file_uploader('Selecione a foto do equipamento')
-    if im2 != None:
-        st.image(io.BytesIO(im2.getvalue()))
-        st.button('Confirma envio da foto do equipamento?')
+        if status_bobina == 'Liberado':
+            sap_bobina = st.text_input('Código SAP:')
+            descricao_bobina = st.text_input('Descrição:')
+            conferente_bobina = st.text_input('Conferente:')
+            quantidade_bobina = st.number_input('Quantidade:', format='%i', step=1, value=9000)
+            lote_bobina = st.text_input('Lote SAP:')
+            tipo_bobina = st.text_input('Tipo:')
+            data_bobina = st.date_input('Data entrada:')
+
+            texto_qrcode = ''.join(('Código SAP: ',
+                sap_bobina,
+                '; Descrição: ',
+                descricao_bobina,
+                '; Conferente:',
+                conferente_bobina,
+                '; Quantidade: ',
+                str(quantidade_bobina),
+                '; Lote: ',
+                lote_bobina,
+                '; Tipo:',
+                tipo_bobina,
+                '; Data entrada: ',
+                str(data_bobina))                    
+            )
+
+        submit_button = st.form_submit_button(label='Salvar bobina')
+
+        if submit_button:
+
+            st.subheader('Informação do qrcode')
+            st.write(texto_qrcode)
+
+            imagem_bobina_qr = qrcode.make(texto_qrcode)
+            image_bytearray = io.BytesIO()
+            imagem_bobina_qr.save(image_bytearray, format='PNG')
+
+            st.subheader('Inmagem do qrcode')
+            st.image(image_bytearray.getvalue())
        
 
-if tela == 'Visualizar inventarios':
-#     video_frame = st.file_uploader('Selecione a foto do equipamento')
-    RTC_CONFIGURATION = RTCConfiguration(
-        {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
-    )
+def inventario_bobinas() -> None:
+    st.subheader('Inventário de bobinas')
+    nome_inventario = st.text_input('Nome do inventário')
+    data_inventario = st.date_input('Data do inventário')
 
-    qr_code_detector()
+    video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
-#     if video_frame is not None:
-#         file_bytes = io.BytesIO(video_frame.getvalue())
-#         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-#         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-#         blur = cv2.medianBlur(gray, 5)
-#         valor = read_barcodes(blur)
-#         st.write(valor)
+    if video_frame is not None:
+        file_bytes = io.BytesIO(video_frame.getvalue())
+        image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        blur = cv2.medianBlur(gray, 5)
+        valor = read_barcodes(blur)
+        st.write(valor)
+
+        if valor is not None:
+            st.button('Inventariar bobina')
+
+
+if __name__ == "__main__":
+
+    c1,c2 = st.sidebar.columns([1,1])
+    c1.image('logo2.png', width=150)
+
+    st.sidebar.subheader('Bobinas')
+    telas_bobinas = ['Entrada de bobinas', 'Inventário']
+    tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
+
+    if tela_bobina == 'Entrada de bobinas':
+        entrada_bobinas()
+
+    if tela_bobina == 'Inventário':
+        inventario_bobinas()
