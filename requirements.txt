@@ -11,3 +11,5 @@ pyzbar
 pandas
 plotly
 streamlit-aggrid
+qrcode
+PIL
