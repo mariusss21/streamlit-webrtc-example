@@ -112,34 +112,42 @@ def entrada_bobinas() -> None:
             )
 
         if status_bobina == 'Liberado':
-            sap_bobina = st.text_input('Código SAP:')
             descricao_bobina = st.text_input('Descrição:')
             conferente_bobina = st.text_input('Conferente:')
             quantidade_bobina = st.number_input('Quantidade:', format='%i', step=1, value=9000)
             lote_bobina = st.text_input('Lote SAP:')
-            # tipo_bobina = st.text_input('Tipo:')
-            tipo_bobina = st.selectbox('Tipo', ['Lata prata', 'Tampa dourada'])
+
+            dict_tipo_bobinas = {
+            'BOBINA ALUMINIO LATA 16 OZ COIL 00098': 50761710,
+            'BOBINA ALUMINIO LATA 12 OZ COIL 00098': 50679811,
+            'BOBINA ALUMINIO LATA 12 OZ COIL 98 SCRAP': 40011008,
+            'BOBINA ALUMINIO LACRE PRETO': 50552903,
+            'BOBINA ALUMINIO LACRE AZUL': 50527602,
+            'BOBINA ALUMINIO LATA 16 OZ': 50490762,
+            'BOBINA ALUMINIO LATA 12 OZ': 50490761,
+            'BOBINA ALUMINIO TAMPA PRATA REFRIG.': 50490760,
+            'BOBINA ALUMINIO TAMPA DOURADO CERVEJA': 50490599,
+            'BOBINA ALUMINIO LACRE PRATA': 50490598,
+            'BOBINA ALUMINIO LATA 12 OZ SCRAP': 40010824,
+            'BOBINA ALUMINIO TAMPA BRANCA': 50527252,
+            'BOBINA ALUMINIO LACRE DOURADO': 50771048}
+
+            tipo_bobina = st.selectbox('Tipo', dict_tipo_bobinas.keys)
             data_bobina = st.date_input('Data entrada:')
 
-            texto_qrcode = ''.join(('Código SAP: ',
-                sap_bobina,
-                '; Descrição: ',
-                descricao_bobina,
-                '; Conferente:',
-                conferente_bobina,
-                '; Quantidade: ',
-                str(quantidade_bobina),
-                '; Lote: ',
-                lote_bobina,
-                '; Tipo:',
-                tipo_bobina,
-                '; Data entrada: ',
-                str(data_bobina))                    
+            texto_qrcode = ''.join(('Código SAP: ',sap_bobina,
+                '; Descrição: ',descricao_bobina,
+                '; Conferente:',conferente_bobina,
+                '; Quantidade: ',str(quantidade_bobina),
+                '; Lote: ',lote_bobina,
+                '; Tipo:',tipo_bobina,
+                '; Data entrada: ',str(data_bobina))                    
             )
 
         submit_button = st.form_submit_button(label='Salvar bobina')
 
         if submit_button:
+            sap_bobina = dict_tipo_bobinas[tipo_bobina]
 
             st.subheader('Informação do qrcode')
             st.write(texto_qrcode)
