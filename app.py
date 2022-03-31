@@ -169,7 +169,7 @@ def inventario_bobinas() -> None:
 
     
 def login_session_state() -> None:
-    senha = json.loads(st.secrets['pass'])
+    senha = st.secrets['pass']
     senha_input = st.text_input('Senha:', type='password')
 
     botao_logar = st.button('Logar')
