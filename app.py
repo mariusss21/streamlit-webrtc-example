@@ -117,7 +117,8 @@ def entrada_bobinas() -> None:
             conferente_bobina = st.text_input('Conferente:')
             quantidade_bobina = st.number_input('Quantidade:', format='%i', step=1, value=9000)
             lote_bobina = st.text_input('Lote SAP:')
-            tipo_bobina = st.text_input('Tipo:')
+            # tipo_bobina = st.text_input('Tipo:')
+            tipo_bobina = st.selectbox('Tipo', ['Lata prata', 'Tampa dourada'])
             data_bobina = st.date_input('Data entrada:')
 
             texto_qrcode = ''.join(('Código SAP: ',
