@@ -177,6 +177,7 @@ def login_session_state() -> None:
     if botao_logar:
         if senha_input == senha:
             st.session_state['logado'] = True
+            st.experimental_rerun()
         else:
             st.error('Senha incorreta')
 
@@ -200,7 +201,8 @@ if __name__ == "__main__":
 
         if botao_sair:
             st.session_state['logado'] = False
-
+            st.experimental_rerun()
+            
         if tela_bobina == 'Entrada de bobinas':
             entrada_bobinas()
 
