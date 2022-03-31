@@ -111,7 +111,7 @@ def entrada_bobinas() -> None:
         conferente_bobina = st.text_input('Conferente:')
         quantidade_bobina = st.number_input('Quantidade:', format='%i', step=1, value=9000)
         lote_bobina = st.text_input('Lote SAP:')
-        tipo_bobina = st.selectbox('Tipo', list(dict_tipo_bobinas.keys))
+        tipo_bobina = st.selectbox('Tipo', list(dict_tipo_bobinas.keys()))
         data_bobina = st.date_input('Data entrada:')
 
         submit_button = st.form_submit_button(label='Salvar bobina')
