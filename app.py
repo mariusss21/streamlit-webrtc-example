@@ -217,7 +217,7 @@ if __name__ == "__main__":
     c1.image('logo2.png', width=150)
 
     st.sidebar.subheader('Bobinas')
-    telas_bobinas = ['Entrada de bobinas', 'Inventário']
+    telas_bobinas = ['Entrada de bobinas', 'Etiquetas' 'Inventário']
     tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
     if st.session_state['logado'] == True:
@@ -232,3 +232,17 @@ if __name__ == "__main__":
 
         if tela_bobina == 'Inventário':
             inventario_bobinas()
+
+        if tela_bobina == 'Etiquetas':
+            doc_ref = db.collection('bobinas').document('bobinas')
+            doc = doc_ref.get()
+
+            if doc.exists:
+                dicionario = doc.to_dict()
+                csv = dicionario['dataframe']
+
+                csv_string = StringIO(csv)
+                df_bobinas = pd.read_csv(csv_string, sep=',')       
+
+            st.subheader('Etiquetas')
+            st.write(df_bobinas)    
