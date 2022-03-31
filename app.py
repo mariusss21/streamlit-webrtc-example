@@ -109,25 +109,25 @@ def entrada_bobinas() -> None:
         'BOBINA ALUMINIO TAMPA BRANCA': 50527252,
         'BOBINA ALUMINIO LACRE DOURADO': 50771048}
 
-        dict_data['status_bobina'] = st.selectbox('Status da bobina', ['Liberado', 'Não conforme']) # data
-        dict_data['descricao_bobina'] = st.text_input('Descrição:')
-        dict_data['conferente_bobina'] = st.text_input('Conferente:')
-        dict_data['quantidade_bobina'] = st.number_input('Quantidade:', format='%i', step=1, value=9000)
-        dict_data['lote_bobina'] = st.text_input('Lote SAP:')
-        dict_data['tipo_bobina'] = st.selectbox('Tipo', list(dict_tipo_bobinas.keys()))
-        dict_data['data_bobina'] = st.date_input('Data entrada:')
+        dict_data['status'] = st.selectbox('Status da bobina', ['Liberado', 'Não conforme']) # data
+        dict_data['descricao'] = st.text_input('Descrição:')
+        dict_data['conferente'] = st.text_input('Conferente:')
+        dict_data['quantidade'] = st.number_input('Quantidade:', format='%i', step=1, value=9000)
+        dict_data['lote'] = st.text_input('Lote SAP:')
+        dict_data['tipo'] = st.selectbox('Tipo', list(dict_tipo_bobinas.keys()))
+        dict_data['data'] = st.date_input('Data entrada:')
 
         submit_button = st.form_submit_button(label='Salvar bobina')
 
         if submit_button:
             
-            if dict_data['status_bobina'] == 'Não conforme':
+            if dict_data['status'] == 'Não conforme':
                 dict_data['tipo_de_etiqueta'] = 'BLOQUEADO'
 
-            if dict_data['status_bobina'] == 'Liberado':
+            if dict_data['status'] == 'Liberado':
                 dict_data['tipo_de_etiqueta'] = 'LIBERADO'
 
-            dict_data['sap_bobina'] = dict_tipo_bobinas[dict_data['tipo_bobina']]
+            dict_data['sap'] = dict_tipo_bobinas[dict_data['tipo']]
             
             # dict_data['texto_qrcode'] = ''.join(('tipo de etiqueta: ', dict_data['tipo_de_etiqueta'],
             #     '; Código SAP: ', dict_data['sap_bobina'],
