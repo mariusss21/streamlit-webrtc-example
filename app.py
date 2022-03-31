@@ -89,6 +89,8 @@ def read_barcodes(frame):
 def entrada_bobinas() -> None:
     st.subheader('Inserir bobina')
 
+    dict_data = {}
+
     with st.form(key='myform'):
         texto_qrcode = ''
 
@@ -107,46 +109,68 @@ def entrada_bobinas() -> None:
         'BOBINA ALUMINIO TAMPA BRANCA': 50527252,
         'BOBINA ALUMINIO LACRE DOURADO': 50771048}
 
-        status_bobina = st.selectbox('Status da bobina', ['Liberado', 'Não conforme']) # data
-        descricao_bobina = st.text_input('Descrição:')
-        conferente_bobina = st.text_input('Conferente:')
-        quantidade_bobina = st.number_input('Quantidade:', format='%i', step=1, value=9000)
-        lote_bobina = st.text_input('Lote SAP:')
-        tipo_bobina = st.selectbox('Tipo', list(dict_tipo_bobinas.keys()))
-        data_bobina = st.date_input('Data entrada:')
+        dict_data['status_bobina'] = st.selectbox('Status da bobina', ['Liberado', 'Não conforme']) # data
+        dict_data['descricao_bobina'] = st.text_input('Descrição:')
+        dict_data['conferente_bobina'] = st.text_input('Conferente:')
+        dict_data['quantidade_bobina'] = st.number_input('Quantidade:', format='%i', step=1, value=9000)
+        dict_data['lote_bobina'] = st.text_input('Lote SAP:')
+        dict_data['tipo_bobina'] = st.selectbox('Tipo', list(dict_tipo_bobinas.keys()))
+        dict_data['data_bobina'] = st.date_input('Data entrada:')
 
         submit_button = st.form_submit_button(label='Salvar bobina')
 
         if submit_button:
-            tipo_de_etiqueta = ''
             
-            if status_bobina == 'Não conforme':
-                tipo_de_etiqueta = 'BLOQUEADO'
+            if dict_data['status_bobina'] == 'Não conforme':
+                dict_data['tipo_de_etiqueta'] = 'BLOQUEADO'
 
-            if status_bobina == 'Liberado':
-                tipo_de_etiqueta = 'LIBERADO'
+            if dict_data['status_bobina'] == 'Liberado':
+                dict_data['tipo_de_etiqueta'] = 'LIBERADO'
 
-            sap_bobina = dict_tipo_bobinas[tipo_bobina]
+            dict_data['sap_bobina'] = dict_tipo_bobinas[dict_data['tipo_bobina']]
             
-            texto_qrcode = ''.join(('tipo de etiqueta: ', tipo_de_etiqueta,
-                ';Código SAP: ', sap_bobina,
-                '; Descrição: ', descricao_bobina,
-                '; Conferente:', conferente_bobina,
-                '; Quantidade: ', str(quantidade_bobina),
-                '; Lote: ', lote_bobina,
-                '; Tipo:', tipo_bobina,
-                '; Data entrada: ',str(data_bobina))                    
+            dict_data['texto_qrcode'] = ''.join(('tipo de etiqueta: ', dict_data['tipo_de_etiqueta'],
+                ';Código SAP: ', dict_data['sap_bobina'],
+                '; Descrição: ', dict_data['descricao_bobina'],
+                '; Conferente:', dict_data['conferente_bobina'],
+                '; Quantidade: ', str(dict_data['quantidade_bobina']),
+                '; Lote: ', dict_data['lote_bobina'],
+                '; Tipo:', dict_data['tipo_bobina'],
+                '; Data entrada: ',str(dict_data['data_bobina']))                    
             )
 
-            st.subheader('Informação do qrcode')
-            st.write(texto_qrcode)
+            doc_ref = db.collection('bobinas').document('bobinas')
+            doc = doc_ref.get()
 
-            imagem_bobina_qr = qrcode.make(texto_qrcode)
-            image_bytearray = io.BytesIO()
-            imagem_bobina_qr.save(image_bytearray, format='PNG')
+            if doc.exists:
+                dicionario = doc.to_dict()
+                csv = dicionario['dataframe']
 
-            st.subheader('Inmagem do qrcode')
-            st.image(image_bytearray.getvalue())
+                csv_string = StringIO(csv)
+                df_bobinas = pd.read_csv(csv_string, sep=',')
+
+                df_bobinas = df_bobinas.append(dict_data, ignore_index=True)
+
+                dados = {}
+                dados['dataframe'] = df_bobinas.to_csv(index=False)
+
+                doc_ref.set(dados)
+            else:
+                df_bobinas = pd.DataFrame(dict_data, index=[0])
+                dados = {}
+                dados['dataframe'] = df_bobinas.to_csv(index=False)
+
+                doc_ref.set(dados)
+
+            # st.subheader('Informação do qrcode')
+            # st.write(texto_qrcode)
+
+            # imagem_bobina_qr = qrcode.make(texto_qrcode)
+            # image_bytearray = io.BytesIO()
+            # imagem_bobina_qr.save(image_bytearray, format='PNG')
+
+            # st.subheader('Inmagem do qrcode')
+            # st.image(image_bytearray.getvalue())
        
 
 def inventario_bobinas() -> None:
@@ -202,7 +226,7 @@ if __name__ == "__main__":
         if botao_sair:
             st.session_state['logado'] = False
             st.experimental_rerun()
-            
+
         if tela_bobina == 'Entrada de bobinas':
             entrada_bobinas()
 
