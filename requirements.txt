@@ -12,3 +12,6 @@ pandas
 plotly
 streamlit-aggrid
 qrcode
+openpyxl
+xlsxwriter
+google-cloud-firestore

@@ -15,7 +15,7 @@ from datetime import  datetime, time
 import pytz
 #import base64
 from io import StringIO
-import pymongo
+# import pymongo
 from st_aggrid import AgGrid
 # from pylogix import PLC
 from PIL import Image
@@ -26,14 +26,15 @@ from pyzbar.pyzbar import decode
 import time
 import qrcode
 from PIL import Image
+import json
 
+from google.cloud import firestore
+from google.oauth2 import service_account
 
-# # Configurando o acesso ao mongodb
-# myclient = pymongo.MongoClient("mongodb://192.168.81.128:27017/")
-# mydb = myclient["mydatabase"]
+key_dict = json.loads(st.secrets['textkey'])
+creds = service_account.Credentials.from_service_account_info(key_dict)
+db = firestore.Client(credentials=creds, project='logistica-invent')
 
-# # upload de imagem para mongodb
-# images = mydb.images
 
 
 ######################################################################################################
@@ -167,9 +168,8 @@ def inventario_bobinas() -> None:
             st.button('Inventariar bobina')
 
     
-
 def login_session_state() -> None:
-    senha = '123'
+    senha = json.loads(st.secrets['pass'])
     senha_input = st.text_input('Senha:', type='password')
 
     botao_logar = st.button('Logar')
