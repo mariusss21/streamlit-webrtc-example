@@ -166,8 +166,27 @@ def inventario_bobinas() -> None:
         if valor is not None:
             st.button('Inventariar bobina')
 
+    
+
+def login_session_state() -> None:
+    senha = '123'
+    senha_input = st.text_input('Senha:', type='password')
+
+    botao_logar = st.button('Logar')
+
+    if botao_logar:
+        if senha_input == senha:
+            st.session_state['logado'] = True
+        else:
+            st.error('Senha incorreta')
+
 
 if __name__ == "__main__":
+    if 'logado' not in st.session_state:
+        st.session_state['logado'] = False
+
+    if st.session_state['logado'] == False:
+        login_session_state()
 
     c1,c2 = st.sidebar.columns([1,1])
     c1.image('logo2.png', width=150)
@@ -176,8 +195,14 @@ if __name__ == "__main__":
     telas_bobinas = ['Entrada de bobinas', 'Inventário']
     tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
-    if tela_bobina == 'Entrada de bobinas':
-        entrada_bobinas()
+    if st.session_state['logado'] == True:
+        botao_sair = st.sidebar.button('Sair')
 
-    if tela_bobina == 'Inventário':
-        inventario_bobinas()
+        if botao_sair:
+            st.session_state['logado'] = False
+
+        if tela_bobina == 'Entrada de bobinas':
+            entrada_bobinas()
+
+        if tela_bobina == 'Inventário':
+            inventario_bobinas()
