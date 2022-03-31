@@ -217,7 +217,7 @@ if __name__ == "__main__":
     c1.image('logo2.png', width=150)
 
     st.sidebar.subheader('Bobinas')
-    telas_bobinas = ['Entrada de bobinas', 'Etiquetas' 'Inventário']
+    telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
     tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
     if st.session_state['logado'] == True:
