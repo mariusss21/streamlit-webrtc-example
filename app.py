@@ -129,15 +129,15 @@ def entrada_bobinas() -> None:
 
             dict_data['sap_bobina'] = dict_tipo_bobinas[dict_data['tipo_bobina']]
             
-            dict_data['texto_qrcode'] = ''.join(('tipo de etiqueta: ', dict_data['tipo_de_etiqueta'],
-                ';Código SAP: ', dict_data['sap_bobina'],
-                '; Descrição: ', dict_data['descricao_bobina'],
-                '; Conferente:', dict_data['conferente_bobina'],
-                '; Quantidade: ', str(dict_data['quantidade_bobina']),
-                '; Lote: ', dict_data['lote_bobina'],
-                '; Tipo:', dict_data['tipo_bobina'],
-                '; Data entrada: ',str(dict_data['data_bobina']))                    
-            )
+            # dict_data['texto_qrcode'] = ''.join(('tipo de etiqueta: ', dict_data['tipo_de_etiqueta'],
+            #     '; Código SAP: ', dict_data['sap_bobina'],
+            #     '; Descrição: ', dict_data['descricao_bobina'],
+            #     '; Conferente:', dict_data['conferente_bobina'],
+            #     '; Quantidade: ', str(dict_data['quantidade_bobina']),
+            #     '; Lote: ', dict_data['lote_bobina'],
+            #     '; Tipo:', dict_data['tipo_bobina'],
+            #     '; Data entrada: ',str(dict_data['data_bobina']))                    
+            # )
 
             doc_ref = db.collection('bobinas').document('bobinas')
             doc = doc_ref.get()
