@@ -200,7 +200,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     st.subheader('Inmagem do qrcode')
     st.image(image_bytearray.getvalue())
 
-    st.write(dados_bobina)
+    st.write(dados_bobina.astype(str))
 
 
 def etiquetas_bobinas() -> None:
