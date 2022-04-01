@@ -221,7 +221,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
 
         st.write(ws['A9'].value)
 
-    wb.save('Etiqueta.xlsx')
+    wb.save('Etiqueta_download.xlsx')
     stream = BytesIO()
     wb.save(stream)
     towrite = stream.getvalue()
