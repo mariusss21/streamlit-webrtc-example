@@ -207,7 +207,7 @@ def etiquetas_bobinas() -> None:
 
         data_etiqueta = st.date_input('Data da etiqueta')
 
-
+        df_bobinas['data'] = pd.to_datetime(df_bobinas['data'])
         df_etiqueta_dia = df_bobinas.loc[df_bobinas['data'] == data_etiqueta]
 
         st.dataframe(df_etiqueta_dia)
