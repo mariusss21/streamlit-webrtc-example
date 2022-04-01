@@ -198,6 +198,9 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG')
 
+    st.write(type(image_bytearray))
+    st.write(type(imagem_bobina_qr))
+
     wb = load_workbook('Etiqueta.xlsx')
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
