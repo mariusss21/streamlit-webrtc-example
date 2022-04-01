@@ -209,10 +209,11 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
 
         st.write(ws['A9'].value)
         
-        img = Image.open(image_bytearray.getvalue())
-        #Image_openpyxl(image_bytearray.getvalue())
-        # imagem_salva = imagem_bobina_qr.make_image()
-        # imagem_salva.save('imagem.png')
+        #img = Image.open(image_bytearray)
+        #img = Image.open(image_bytearray.getvalue())
+
+        img = Image.open(imagem_bobina_qr)
+ 
 
         ws.add_image(img,'A23')
 
