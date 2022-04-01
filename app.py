@@ -212,7 +212,7 @@ def etiquetas_bobinas() -> None:
 
         st.dataframe(df_etiqueta_dia)
         st.dataframe(df_bobinas)
-        st.dataframe(data_etiqueta)
+        st.write(data_etiqueta)
 
     
 def login_session_state() -> None:
