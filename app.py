@@ -222,7 +222,7 @@ def etiquetas_bobinas() -> None:
             lista_etiquetas = list(df_etiqueta_dia.index)
 
             df_etiqueta_dia.data = df_etiqueta_dia.data.astype(str)
-            df_etiqueta_dia.data = df_etiqueta_dia.data.str.split('-')[2] + '/' + df_etiqueta_dia.data.str.split('-')[1] + '/'  + df_etiqueta_dia.data.str.split('-')[0][2:]
+            df_etiqueta_dia.data = df_etiqueta_dia.data.str.split('-')[2] + '/' + df_etiqueta_dia.data.str.split('-')[1] + '/'  + df_etiqueta_dia.data.str.split('-')[0]
 
             for bobina in lista_etiquetas:
                 texto_expander = ''.join(('Lote: ', str(df_etiqueta_dia.loc[bobina]['lote']), ' Quantidade: ', str(df_etiqueta_dia.loc[bobina]['quantidade'])))
