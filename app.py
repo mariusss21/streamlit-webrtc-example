@@ -207,9 +207,12 @@ def etiquetas_bobinas() -> None:
 
         data_etiqueta = st.date_input('Data da etiqueta')
 
-        df_etiqueta_dia = df_bobinas[df_bobinas['data'] == data_etiqueta]
+
+        df_etiqueta_dia = df_bobinas.loc[df_bobinas['data'] == data_etiqueta]
 
         st.dataframe(df_etiqueta_dia)
+        st.dataframe(df_bobinas)
+        st.dataframe(data_etiqueta)
 
     
 def login_session_state() -> None:
