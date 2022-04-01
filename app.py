@@ -233,7 +233,7 @@ def etiquetas_bobinas() -> None:
                     botao_download_etiqueta = st.button('Download etiqueta')
                     if botao_download_etiqueta:
                         st.write(bobina)
-                        st.write(df_etiqueta_dia.iloc[bobina,:])
+                        st.write(df_bobinas.iloc[bobina,:])
                         download_etiqueta(texto_qrcode, df_etiqueta_dia.loc[bobina])
 
     
