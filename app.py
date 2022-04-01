@@ -217,7 +217,10 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         #img = Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG'))
  
 
-        img = Image_openpyxl(imagem_bobina_qr)
+        #img = Image_openpyxl(imagem_bobina_qr)
+        img = Image_openpyxl(image_bytearray)
+        #img = Image_openpyxl(image_bytearray.getvalue())
+
         ws.add_image(img,'A23')
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
