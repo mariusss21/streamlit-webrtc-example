@@ -192,6 +192,11 @@ def inventario_bobinas() -> None:
             st.button('Inventariar bobina')
 
 
+def download_etiqueta(qrcode: str, dados_bobina: pd.DataFrame) -> None:
+    st.write(qrcode)
+    st.write(dados_bobina)
+
+
 def etiquetas_bobinas() -> None:
     st.subheader('Etiquetas de bobinas')
 
@@ -223,6 +228,10 @@ def etiquetas_bobinas() -> None:
                     for colunas in df_bobinas.columns:
                         texto_qrcode = ''.join((texto_qrcode, str(df_bobinas.loc[bobina, colunas]), ','))
                         st.write(f'**{colunas}:** {df_bobinas.loc[bobina, colunas]}')
+
+                    botao_download_etiqueta = st.button('Download etiqueta')
+                    if botao_download_etiqueta:
+                        download_etiqueta(texto_qrcode, df_bobinas.loc[bobina,:])
 
             st.write(lista_etiquetas)
             st.dataframe(df_etiqueta_dia)
