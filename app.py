@@ -28,6 +28,7 @@ import qrcode
 from PIL import Image
 import json
 from openpyxl import load_workbook
+from openpyxl.drawing.image import Image as Image_openpyxl
 
 from google.cloud import firestore
 from google.oauth2 import service_account
@@ -208,10 +209,11 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
 
         st.write(ws['A9'].value)
         
+        img = Image_openpyxl(imagem_bobina_qr)
         # imagem_salva = imagem_bobina_qr.make_image()
         # imagem_salva.save('imagem.png')
 
-        ws.add_image(imagem_bobina_qr,'A23')
+        ws.add_image(img,'A23')
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
         ws = wb['BLOQUEADO']
