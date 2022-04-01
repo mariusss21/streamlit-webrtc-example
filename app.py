@@ -192,9 +192,15 @@ def inventario_bobinas() -> None:
             st.button('Inventariar bobina')
 
 
-def download_etiqueta(qrcode: str, dados_bobina: pd.DataFrame) -> None:
-    st.write(qrcode)
-    #st.dataframe(dados_bobina)
+def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
+    imagem_bobina_qr = qrcode.make(texto_qrcode)
+    image_bytearray = io.BytesIO()
+    imagem_bobina_qr.save(image_bytearray, format='PNG')
+
+    st.subheader('Inmagem do qrcode')
+    st.image(image_bytearray.getvalue())
+
+    st.write(dados_bobina)
 
 
 def etiquetas_bobinas() -> None:
@@ -221,9 +227,6 @@ def etiquetas_bobinas() -> None:
         else:
             lista_etiquetas = list(df_etiqueta_dia.index)
 
-            df_etiqueta_dia.data = df_etiqueta_dia.data.astype(str)
-            df_etiqueta_dia.data = df_etiqueta_dia.data.str.split('-')[2] + '/' + df_etiqueta_dia.data.str.split('-')[1] + '/'  + df_etiqueta_dia.data.str.split('-')[0]
-
             for bobina in lista_etiquetas:
                 texto_expander = ''.join(('Lote: ', str(df_etiqueta_dia.loc[bobina]['lote']), ' Quantidade: ', str(df_etiqueta_dia.loc[bobina]['quantidade'])))
                 with st.expander(texto_expander):
@@ -235,10 +238,7 @@ def etiquetas_bobinas() -> None:
 
                     botao_download_etiqueta = st.button('Download etiqueta')
                     if botao_download_etiqueta:
-                        st.write(bobina)
-                        st.write(df_bobinas)
-                        st.write(df_bobinas.iloc[bobina].astype(str))
-                        download_etiqueta(texto_qrcode, df_etiqueta_dia.loc[bobina])
+                        download_etiqueta(texto_qrcode, df_bobinas.iloc[bobina])
 
     
 def login_session_state() -> None:
