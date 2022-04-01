@@ -196,7 +196,8 @@ def inventario_bobinas() -> None:
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     qr = qrcode.QRCode(version=1, box_size=5, border=1)
-    imagem_bobina_qr = qr.make(texto_qrcode)
+    qr = qr.add_data(texto_qrcode)
+    imagem_bobina_qr = qr.make(fit=True)
     image_bytearray = io.BytesIO()
     #imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
