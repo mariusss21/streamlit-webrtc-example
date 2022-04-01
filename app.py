@@ -221,7 +221,7 @@ def etiquetas_bobinas() -> None:
         else:
             lista_etiquetas = list(df_etiqueta_dia.index)
 
-            df_etiqueta_dia['data'] = pd.to_datetime(df_etiqueta_dia['data']).dt.strptime('%d/%m/%Y')
+            #df_etiqueta_dia['data'] = pd.to_datetime(df_etiqueta_dia['data']).dt.strptime('%d/%m/%Y')
 
             for bobina in lista_etiquetas:
                 texto_expander = ''.join(('Lote: ', str(df_etiqueta_dia.loc[bobina]['lote']), ' Quantidade: ', str(df_etiqueta_dia.loc[bobina]['quantidade'])))
