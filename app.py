@@ -212,7 +212,10 @@ def etiquetas_bobinas() -> None:
         df_etiqueta_dia = df_bobinas.loc[(df_bobinas['data'] == data_etiqueta) & (df_bobinas['status'] == status_etiqueta)]
 
         if df_etiqueta_dia.empty:
-            st.warning('Não há bobinas')
+            st.warning('Não há bobinas para a data e tipo de etiqueta informado')
+        else:
+            lista_etiquetas = list(df_etiqueta_dia.index)
+            st.write(lista_etiquetas)
             st.dataframe(df_etiqueta_dia)
 
 
