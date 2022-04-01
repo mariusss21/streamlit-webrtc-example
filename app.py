@@ -191,6 +191,26 @@ def inventario_bobinas() -> None:
         if valor is not None:
             st.button('Inventariar bobina')
 
+
+def etiquetas_bobinas() -> None:
+    st.subheader('Etiquetas de bobinas')
+
+    doc_ref = db.collection('bobinas').document('bobinas')
+    doc = doc_ref.get()
+
+    if doc.exists:
+        dicionario = doc.to_dict()
+        csv = dicionario['dataframe']
+
+        csv_string = StringIO(csv)
+        df_bobinas = pd.read_csv(csv_string, sep=',')
+
+        data_etiqueta = st.date_input('Data da etiqueta')
+
+        df_etiqueta_dia = df_bobinas[df_bobinas['data'] == data_etiqueta]
+
+        st.dataframe(df_etiqueta_dia)
+
     
 def login_session_state() -> None:
     senha = st.secrets['pass']
@@ -234,15 +254,4 @@ if __name__ == "__main__":
             inventario_bobinas()
 
         if tela_bobina == 'Etiquetas':
-            doc_ref = db.collection('bobinas').document('bobinas')
-            doc = doc_ref.get()
-
-            if doc.exists:
-                dicionario = doc.to_dict()
-                csv = dicionario['dataframe']
-
-                csv_string = StringIO(csv)
-                df_bobinas = pd.read_csv(csv_string, sep=',')       
-
-            st.subheader('Etiquetas')
-            st.write(df_bobinas)    
+            etiquetas_bobinas()
