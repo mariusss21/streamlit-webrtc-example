@@ -194,7 +194,7 @@ def inventario_bobinas() -> None:
 
 def download_etiqueta(qrcode: str, dados_bobina: pd.DataFrame) -> None:
     st.write(qrcode)
-    st.dataframe(dados_bobina)
+    #st.dataframe(dados_bobina)
 
 
 def etiquetas_bobinas() -> None:
@@ -234,6 +234,7 @@ def etiquetas_bobinas() -> None:
 
                     botao_download_etiqueta = st.button('Download etiqueta')
                     if botao_download_etiqueta:
+                        st.write(df_bobinas.loc[bobina])
                         download_etiqueta(texto_qrcode, df_bobinas.loc[bobina])
 
     
