@@ -202,9 +202,9 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         wb = load_workbook('Etiqueta.xlsx')
 
         # seleciona a planilha
-        ws = wb['LIBERADO'].active
+        ws = wb['LIBERADO']
 
-        st.write(ws['A9', 'F12'].value)
+        st.write(ws['A9'].value)
 
     # st.subheader('Imagem do qrcode')
     # st.image(image_bytearray.getvalue())
