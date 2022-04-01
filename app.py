@@ -27,6 +27,7 @@ import time
 import qrcode
 from PIL import Image
 import json
+from openpyxl import load_workbook
 
 from google.cloud import firestore
 from google.oauth2 import service_account
@@ -197,8 +198,16 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG')
 
-    st.subheader('Inmagem do qrcode')
-    st.image(image_bytearray.getvalue())
+    if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
+        wb = load_workbook('Etiqueta.xlsx')
+
+        # seleciona a planilha
+        ws = wb['LIBERADO'].active
+
+        st.write(ws['A9', 'F12'].value)
+
+    # st.subheader('Imagem do qrcode')
+    # st.image(image_bytearray.getvalue())
 
     st.write(dados_bobina.astype(str))
 
