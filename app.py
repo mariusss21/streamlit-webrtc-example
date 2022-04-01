@@ -206,14 +206,17 @@ def etiquetas_bobinas() -> None:
         df_bobinas = pd.read_csv(csv_string, sep=',')
 
         data_etiqueta = st.date_input('Data da etiqueta')
+        tipo_etiqueta = st.selectbox('Tipo de etiqueta', ['Liberado', 'Não conforme'])
 
         df_bobinas['data'] = pd.to_datetime(df_bobinas['data']).dt.date
-        df_etiqueta_dia = df_bobinas.loc[df_bobinas['data'] == data_etiqueta]
+        df_etiqueta_dia = df_bobinas.loc[(df_bobinas['data'] == data_etiqueta) & (df_bobinas['tipo_de_etiqueta'] == tipo_etiqueta)]
+
+        if df_etiqueta_dia.empty:
+            st.write('Não há bobinas')
 
         st.dataframe(df_etiqueta_dia)
-        st.dataframe(df_bobinas)
-        st.write(type(data_etiqueta))
-        st.write(df_bobinas['data'].dtype)
+
+
 
     
 def login_session_state() -> None:
