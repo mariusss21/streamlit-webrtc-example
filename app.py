@@ -221,15 +221,16 @@ def etiquetas_bobinas() -> None:
         else:
             lista_etiquetas = list(df_etiqueta_dia.index)
 
-            df_etiqueta_dia['data'] = pd.to_datetime(df_etiqueta_dia['data']).dt.strftime('%d/%m/%Y')
+            df_etiqueta_dia['data'] = pd.to_datetime(df_etiqueta_dia['data']).dt.strptime('%d/%m/%Y')
 
             for bobina in lista_etiquetas:
                 texto_expander = ''.join(('Lote: ', str(df_etiqueta_dia.loc[bobina]['lote']), ' Quantidade: ', str(df_etiqueta_dia.loc[bobina]['quantidade'])))
                 with st.expander(texto_expander):
                     texto_qrcode = ''
                     for colunas in df_bobinas.columns:
-                        texto_qrcode = ''.join((texto_qrcode, str(df_bobinas.loc[bobina, colunas]), ','))
-                        st.write(f'**{colunas}:** {df_bobinas.loc[bobina, colunas]}')
+                        if colunas != 'tipo_de_etiqueta':
+                            texto_qrcode = ''.join((texto_qrcode, str(df_bobinas.loc[bobina, colunas]), ','))
+                            st.write(f'**{colunas}:** {df_bobinas.loc[bobina, colunas]}')
 
                     botao_download_etiqueta = st.button('Download etiqueta')
                     if botao_download_etiqueta:
