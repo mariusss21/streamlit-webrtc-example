@@ -13,8 +13,8 @@ import numpy as np
 #import smtplib
 from datetime import  datetime, time
 import pytz
-#import base64
-from io import StringIO
+import base64
+from io import StringIO, BytesIO
 # import pymongo
 from st_aggrid import AgGrid
 # from pylogix import PLC
@@ -198,13 +198,29 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG')
 
-    if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
-        wb = load_workbook('Etiqueta.xlsx')
+    wb = load_workbook('Etiqueta.xlsx')
 
-        # seleciona a planilha
+    if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
         ws = wb['LIBERADO']
 
         st.write(ws['A9'].value)
+        ws['A23'] = imagem_bobina_qr
+
+
+    if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
+        ws = wb['BLOQUEADO']
+
+        st.write(ws['A9'].value)
+
+    wb.save('Etiqueta.xlsx')
+    stream = BytesIO()
+    wb.save(stream)
+    towrite = stream.getvalue()
+    b64 = base64.b64encode(towrite).decode()  # some strings
+
+    # link para download e nome do arquivo
+    linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a>'
+    st.markdown(linko, unsafe_allow_html=True)
 
     # st.subheader('Imagem do qrcode')
     # st.image(image_bytearray.getvalue())
