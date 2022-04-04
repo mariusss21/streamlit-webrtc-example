@@ -93,7 +93,7 @@ def entrada_bobinas() -> None:
 
     dict_data = {}
 
-    with st.form(key='myform'):
+    with st.form(key='myform', clear_on_submit=True):
         texto_qrcode = ''
 
         dict_tipo_bobinas = {
