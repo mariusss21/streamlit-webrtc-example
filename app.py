@@ -273,14 +273,14 @@ def etiquetas_bobinas() -> None:
 
             for bobina in lista_etiquetas:
                 texto_expander = ''.join(('Lote: ', str(df_etiqueta_dia.loc[bobina]['lote']), ' Quantidade: ', str(df_etiqueta_dia.loc[bobina]['quantidade'])))
-                with st.expander(texto_expander, key=str(bobina)):
+                with st.expander(texto_expander):
                     texto_qrcode = ''
                     for colunas in df_etiqueta_dia.columns:
                         if colunas != 'tipo_de_etiqueta':
                             texto_qrcode = ''.join((texto_qrcode, str(df_etiqueta_dia.loc[bobina, colunas]), ','))
                             st.write(f'**{colunas}:** {df_etiqueta_dia.loc[bobina, colunas]}')
 
-                    botao_download_etiqueta = st.button('Download etiqueta')
+                    botao_download_etiqueta = st.button('Download etiqueta', key=str(bobina))
                     if botao_download_etiqueta:
                         download_etiqueta(texto_qrcode, df_bobinas.iloc[bobina])
 
