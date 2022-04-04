@@ -123,7 +123,7 @@ def entrada_bobinas() -> None:
 
         if submit_button:
 
-            if (dict_data['conferente'] == '') or dict_data['lote'] == ''):
+            if (dict_data['conferente'] == '') or (dict_data['lote'] == ''):
                 st.error('Preencha todos os campos')
             else:
                     
