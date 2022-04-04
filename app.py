@@ -238,6 +238,11 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         img = Image_openpyxl(image_bytearray)
         ws.add_image(img,'A23')
 
+        ws['A2'] = dados_bobina.loc['sap'].item() #codigo do produto
+        ws['A5'] = dados_bobina.loc['quantidade'].item() #quantidade do produto
+        ws['A9'] = dados_bobina.loc['lote'].item() #lote do produto
+        ws['A13'] = dados_bobina.loc['data'].item() #data de entrada do produto
+
     wb.save('Etiqueta_download.xlsx')
     stream = BytesIO()
     wb.save(stream)
@@ -327,12 +332,6 @@ if __name__ == "__main__":
         telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
         tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
-        botao_sair = st.sidebar.button('Sair')
-
-        if botao_sair:
-            st.session_state['logado'] = False
-            st.experimental_rerun()
-
         if tela_bobina == 'Entrada de bobinas':
             entrada_bobinas()
 
@@ -344,3 +343,9 @@ if __name__ == "__main__":
 
         if tela_bobina == 'Etiquetas':
             etiquetas_bobinas()
+
+        botao_sair = st.sidebar.button('Sair')
+
+        if botao_sair:
+            st.session_state['logado'] = False
+            st.experimental_rerun()
