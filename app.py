@@ -302,6 +302,7 @@ def login_session_state() -> None:
 
 
 if __name__ == "__main__":
+
     if 'logado' not in st.session_state:
         st.session_state['logado'] = False
 
@@ -311,11 +312,16 @@ if __name__ == "__main__":
     c1,c2 = st.sidebar.columns([1,1])
     c1.image('logo2.png', width=150)
 
-    st.sidebar.subheader('Bobinas')
-    telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
-    tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
+    # st.sidebar.subheader('Bobinas')
+    # telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
+    # tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
     if st.session_state['logado'] == True:
+
+        st.sidebar.subheader('Bobinas')
+        telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
+        tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
+
         botao_sair = st.sidebar.button('Sair')
 
         if botao_sair:
