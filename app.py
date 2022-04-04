@@ -122,58 +122,65 @@ def entrada_bobinas() -> None:
         submit_button = st.form_submit_button(label='Salvar bobina')
 
         if submit_button:
-            
-            if dict_data['status'] == 'Não conforme':
-                dict_data['tipo_de_etiqueta'] = 'BLOQUEADO'
 
-            if dict_data['status'] == 'Liberado':
-                dict_data['tipo_de_etiqueta'] = 'LIBERADO'
-
-            dict_data['sap'] = dict_tipo_bobinas[dict_data['tipo']]
-            
-            # dict_data['texto_qrcode'] = ''.join(('tipo de etiqueta: ', dict_data['tipo_de_etiqueta'],
-            #     '; Código SAP: ', dict_data['sap_bobina'],
-            #     '; Descrição: ', dict_data['descricao_bobina'],
-            #     '; Conferente:', dict_data['conferente_bobina'],
-            #     '; Quantidade: ', str(dict_data['quantidade_bobina']),
-            #     '; Lote: ', dict_data['lote_bobina'],
-            #     '; Tipo:', dict_data['tipo_bobina'],
-            #     '; Data entrada: ',str(dict_data['data_bobina']))                    
-            # )
-
-            doc_ref = db.collection('bobinas').document('bobinas')
-            doc = doc_ref.get()
-
-            if doc.exists:
-                dicionario = doc.to_dict()
-                csv = dicionario['dataframe']
-
-                csv_string = StringIO(csv)
-                df_bobinas = pd.read_csv(csv_string, sep=',')
-
-                df_bobinas = df_bobinas.append(dict_data, ignore_index=True)
-
-                dados = {}
-                dados['dataframe'] = df_bobinas.to_csv(index=False)
-
-                doc_ref.set(dados)
+            if (dict_data['conferente'] == '') or dict_data['lote'] == ''):
+                st.error('Preencha todos os campos')
             else:
-                df_bobinas = pd.DataFrame(dict_data, index=[0])
-                dados = {}
-                dados['dataframe'] = df_bobinas.to_csv(index=False)
+                    
+                if dict_data['status'] == 'Não conforme':
+                    dict_data['tipo_de_etiqueta'] = 'BLOQUEADO'
 
-                doc_ref.set(dados)
+                if dict_data['status'] == 'Liberado':
+                    dict_data['tipo_de_etiqueta'] = 'LIBERADO'
 
-            # st.subheader('Informação do qrcode')
-            # st.write(texto_qrcode)
+                dict_data['sap'] = dict_tipo_bobinas[dict_data['tipo']]
+                
+                # dict_data['texto_qrcode'] = ''.join(('tipo de etiqueta: ', dict_data['tipo_de_etiqueta'],
+                #     '; Código SAP: ', dict_data['sap_bobina'],
+                #     '; Descrição: ', dict_data['descricao_bobina'],
+                #     '; Conferente:', dict_data['conferente_bobina'],
+                #     '; Quantidade: ', str(dict_data['quantidade_bobina']),
+                #     '; Lote: ', dict_data['lote_bobina'],
+                #     '; Tipo:', dict_data['tipo_bobina'],
+                #     '; Data entrada: ',str(dict_data['data_bobina']))                    
+                # )
 
-            # imagem_bobina_qr = qrcode.make(texto_qrcode)
-            # image_bytearray = io.BytesIO()
-            # imagem_bobina_qr.save(image_bytearray, format='PNG')
+                doc_ref = db.collection('bobinas').document('bobinas')
+                doc = doc_ref.get()
 
-            # st.subheader('Inmagem do qrcode')
-            # st.image(image_bytearray.getvalue())
-       
+                if doc.exists:
+                    dicionario = doc.to_dict()
+                    csv = dicionario['dataframe']
+
+                    csv_string = StringIO(csv)
+                    df_bobinas = pd.read_csv(csv_string, sep=',')
+
+                    df_bobinas = df_bobinas.append(dict_data, ignore_index=True)
+                    df_bobinas.drop_duplicates(inplace=True)
+
+                    dados = {}
+                    dados['dataframe'] = df_bobinas.to_csv(index=False)
+
+                    doc_ref.set(dados)
+                else:
+                    df_bobinas = pd.DataFrame(dict_data, index=[0])
+                    df_bobinas.drop_duplicates(inplace=True)
+
+                    dados = {}
+                    dados['dataframe'] = df_bobinas.to_csv(index=False)
+
+                    doc_ref.set(dados)
+
+                # st.subheader('Informação do qrcode')
+                # st.write(texto_qrcode)
+
+                # imagem_bobina_qr = qrcode.make(texto_qrcode)
+                # image_bytearray = io.BytesIO()
+                # imagem_bobina_qr.save(image_bytearray, format='PNG')
+
+                # st.subheader('Inmagem do qrcode')
+                # st.image(image_bytearray.getvalue())
+        
 
 def inventario_bobinas() -> None:
     st.subheader('Inventário de bobinas')
