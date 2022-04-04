@@ -29,6 +29,8 @@ from PIL import Image
 import json
 from openpyxl import load_workbook
 from openpyxl.drawing.image import Image as Image_openpyxl
+from openpyxl.styles import Font, Color
+
 
 from google.cloud import firestore
 from google.oauth2 import service_account
@@ -223,6 +225,9 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws.add_image(img,'D2')
         st.write(dados_bobina.astype(str))
 
+        ft = Font(bold=True, size=48)
+
+
         ws['A2'] = dados_bobina.loc['sap'] 
         ws['A3'] = dados_bobina.loc['descricao'] 
         ws['A5'] = dados_bobina.loc['conferente'] 
@@ -230,7 +235,8 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws['D9'] = dados_bobina.loc['data'] 
         ws['A18'] = int(dados_bobina.loc['quantidade'])
         ws['D18'] = dados_bobina.loc['tipo'] 
-      
+
+        ws['A18'].font = ft
       
         #Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.PNG'))
         #img = Image.open(image_bytearray)
