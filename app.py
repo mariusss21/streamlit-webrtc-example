@@ -272,7 +272,7 @@ def etiquetas_bobinas() -> None:
             lista_etiquetas = list(df_etiqueta_dia.index)
 
             for bobina in lista_etiquetas:
-                texto_expander = ''.join(('Lote: ', str(df_etiqueta_dia.loc[bobina]['lote']), ' Quantidade: ', str(df_etiqueta_dia.loc[bobina]['quantidade'])))
+                texto_expander = ''.join(('Lote: ', str(df_etiqueta_dia.loc[bobina]['lote']), ' Quantidade: ', str(df_etiqueta_dia.loc[bobina]['quantidade']), ' (', str(bobina), ')'))
                 with st.expander(texto_expander):
                     texto_qrcode = ''
                     for colunas in df_etiqueta_dia.columns:
