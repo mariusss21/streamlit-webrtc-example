@@ -220,8 +220,17 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws = wb.active
         # ws = wb['LIBERADO']
         img = Image_openpyxl(image_bytearray)
-        ws.add_image(img,'A23')
+        ws.add_image(img,'D2')
         st.write(dados_bobina.astype(str))
+
+        ws['A2'] = dados_bobina.loc['sap'] 
+        ws['A3'] = dados_bobina.loc['descricao'] 
+        ws['A5'] = dados_bobina.loc['conferente'] 
+        ws['A9'] = dados_bobina.loc['lote'] 
+        ws['D9'] = dados_bobina.loc['data'] 
+        ws['A18'] = dados_bobina.loc['quantidade'] 
+        ws['D18'] = dados_bobina.loc['tipo'] 
+      
       
         #Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.PNG'))
         #img = Image.open(image_bytearray)
