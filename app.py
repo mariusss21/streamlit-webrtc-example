@@ -204,34 +204,32 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     # imagem_bobina_qr = qr.make(fit=True)
     # image_bytearray = io.BytesIO()
 
-    st.write(type(image_bytearray))
-    st.write(type(imagem_bobina_qr))
+    # st.write(type(image_bytearray))
+    # st.write(type(imagem_bobina_qr))
 
-    wb = load_workbook('Etiqueta.xlsx')
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
-        ws = wb['LIBERADO']
-
-        st.write(ws['A9'].value)
+        wb = load_workbook('LIBERADO.xlsx')
+        ws = wb.active
+        # ws = wb['LIBERADO']
+        img = Image_openpyxl(image_bytearray)
+        ws.add_image(img,'A23')
         
         #Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.PNG'))
         #img = Image.open(image_bytearray)
         #img = Image.open(image_bytearray.getvalue())
-
         #img = Image.open(imagem_bobina_qr)
         #img = Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG'))
- 
-
-        #img = Image_openpyxl(imagem_bobina_qr)
-        img = Image_openpyxl(image_bytearray)
         #img = Image_openpyxl(image_bytearray.getvalue())
-
-        ws.add_image(img,'A23')
+        #img = Image_openpyxl(imagem_bobina_qr)
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
-        ws = wb['BLOQUEADO']
-
-        st.write(ws['A9'].value)
+        
+        wb = load_workbook('BLOQUEADO.xlsx')
+        ws = wb.active        
+        #ws = wb['BLOQUEADO']
+        img = Image_openpyxl(image_bytearray)
+        ws.add_image(img,'A23')
 
     wb.save('Etiqueta_download.xlsx')
     stream = BytesIO()
