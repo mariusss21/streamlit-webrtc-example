@@ -221,7 +221,8 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         # ws = wb['LIBERADO']
         img = Image_openpyxl(image_bytearray)
         ws.add_image(img,'A23')
-        
+        st.write(dados_bobina.astype(str))
+      
         #Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.PNG'))
         #img = Image.open(image_bytearray)
         #img = Image.open(image_bytearray.getvalue())
@@ -237,6 +238,8 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         #ws = wb['BLOQUEADO']
         img = Image_openpyxl(image_bytearray)
         ws.add_image(img,'A23')
+
+        st.write(dados_bobina.astype(str))
 
         ws['A2'] = dados_bobina.loc['sap'].item() #codigo do produto
         ws['A5'] = dados_bobina.loc['quantidade'].item() #quantidade do produto
@@ -256,7 +259,6 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     # st.subheader('Imagem do qrcode')
     # st.image(image_bytearray.getvalue())
 
-    st.write(dados_bobina.astype(str))
 
 
 def etiquetas_bobinas() -> None:
