@@ -182,7 +182,7 @@ def entrada_bobinas() -> None:
                 # st.image(image_bytearray.getvalue())
         
 
-def inventario_bobinas() -> None:
+def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
     nome_inventario = st.text_input('Nome do inventário')
     data_inventario = st.date_input('Data do inventário')
@@ -337,7 +337,10 @@ if __name__ == "__main__":
             entrada_bobinas()
 
         if tela_bobina == 'Inventário':
-            inventario_bobinas()
+            tela_inventario = st.sidebar.radio('Opções de inventário', ['Inserir', 'Importar', 'Visualizar'])
+
+            if tela_inventario == 'Inserir':
+                inserir_invetario()
 
         if tela_bobina == 'Etiquetas':
             etiquetas_bobinas()
