@@ -228,7 +228,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws['A5'] = dados_bobina.loc['conferente'] 
         ws['A9'] = dados_bobina.loc['lote'] 
         ws['D9'] = dados_bobina.loc['data'] 
-        ws['A18'] = str(dados_bobina.loc['quantidade']) 
+        ws['A18'] = int(dados_bobina.loc['quantidade'])
         ws['D18'] = dados_bobina.loc['tipo'] 
       
       
