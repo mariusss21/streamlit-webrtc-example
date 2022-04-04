@@ -241,10 +241,10 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
 
         st.write(dados_bobina.astype(str))
 
-        ws['A2'] = dados_bobina.loc['sap'].item() #codigo do produto
-        ws['A5'] = dados_bobina.loc['quantidade'].item() #quantidade do produto
-        ws['A9'] = dados_bobina.loc['lote'].item() #lote do produto
-        ws['A13'] = dados_bobina.loc['data'].item() #data de entrada do produto
+        ws['A2'] = dados_bobina.loc['sap'] #codigo do produto
+        ws['A5'] = dados_bobina.loc['quantidade'] #quantidade do produto
+        ws['A9'] = dados_bobina.loc['lote'] #lote do produto
+        ws['A13'] = dados_bobina.loc['data'] #data de entrada do produto
 
     wb.save('Etiqueta_download.xlsx')
     stream = BytesIO()
