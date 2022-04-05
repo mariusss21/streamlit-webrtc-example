@@ -227,7 +227,6 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
 
         ft = Font(bold=True, size=48)
 
-
         ws['A2'] = dados_bobina.loc['sap'] 
         ws['A3'] = dados_bobina.loc['descricao'] 
         ws['A5'] = dados_bobina.loc['conferente'] 
@@ -330,11 +329,11 @@ def login_session_state() -> None:
 
 if __name__ == "__main__":
 
-    if 'logado' not in st.session_state:
-        st.session_state['logado'] = False
+    # if 'logado' not in st.session_state:
+    #     st.session_state['logado'] = False
 
-    if st.session_state['logado'] == False:
-        login_session_state()
+    # if st.session_state['logado'] == False:
+    #     login_session_state()
 
     c1,c2 = st.sidebar.columns([1,1])
     c1.image('logo2.png', width=150)
@@ -343,26 +342,26 @@ if __name__ == "__main__":
     # telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
     # tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
-    if st.session_state['logado'] == True:
+    # if st.session_state['logado'] == True:
 
-        st.sidebar.subheader('Bobinas')
-        telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
-        tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
+    st.sidebar.subheader('Bobinas')
+    telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
+    tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
-        if tela_bobina == 'Entrada de bobinas':
-            entrada_bobinas()
+    if tela_bobina == 'Entrada de bobinas':
+        entrada_bobinas()
 
-        if tela_bobina == 'Inventário':
-            tela_inventario = st.sidebar.radio('Opções de inventário', ['Inserir', 'Importar', 'Visualizar'])
+    if tela_bobina == 'Inventário':
+        tela_inventario = st.sidebar.radio('Opções de inventário', ['Inserir', 'Importar', 'Visualizar'])
 
-            if tela_inventario == 'Inserir':
-                inserir_invetario()
+        if tela_inventario == 'Inserir':
+            inserir_invetario()
 
-        if tela_bobina == 'Etiquetas':
-            etiquetas_bobinas()
+    if tela_bobina == 'Etiquetas':
+        etiquetas_bobinas()
 
-        botao_sair = st.sidebar.button('Sair')
+        # botao_sair = st.sidebar.button('Sair')
 
-        if botao_sair:
-            st.session_state['logado'] = False
-            st.experimental_rerun()
+        # if botao_sair:
+        #     st.session_state['logado'] = False
+        #     st.experimental_rerun()
