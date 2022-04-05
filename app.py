@@ -192,7 +192,7 @@ def inserir_invetario() -> None:
     data_inventario = st.date_input('Data do inventário')
 
     # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
-    video_frame = cv2.videoCapture(0)
+    video_frame = cv2.VideoCapture(0)
 
     if video_frame is not None:
         file_bytes = io.BytesIO(video_frame.getvalue())
