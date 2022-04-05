@@ -259,7 +259,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                 break
 
             if result is not None:
-                if result not in st.session_state.data_inventario and result.count(',') == 6:
+                if result not in st.session_state.data_inventario and result.count(',') == 8:
                     st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
                     result_placeholder.write(st.session_state.data_inventario)
 
@@ -270,7 +270,7 @@ def inserir_invetario() -> None:
     encerrar_inventario = st.button('Encerrar inventário') 
     nome_inventario = st.text_input('Nome do inventário')
 
-    colunas = 'status,descricao,conferente,quantidade,lote,tipo,data\n'
+    colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
 
     if 'data_inventario' not in st.session_state:
         st.session_state['data_inventario'] = colunas 
@@ -431,6 +431,7 @@ def etiquetas_bobinas() -> None:
                     for colunas in df_etiqueta_dia.columns:
                         if colunas != 'tipo_de_etiqueta':
                             texto_qrcode = ''.join((texto_qrcode, str(df_etiqueta_dia.loc[bobina, colunas]), ','))
+                            texto_qrcode = texto_qrcode[0,-1]
                             st.write(f'**{colunas}:** {df_etiqueta_dia.loc[bobina, colunas]}')
 
                     botao_download_etiqueta = st.button('Download etiqueta', key=str(bobina))
