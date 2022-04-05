@@ -203,7 +203,7 @@ def inserir_invetario() -> None:
     frame_st = st.empty()
     while True:
         ret, video_frame = cap.read()
-        frame_st.image(video_frame, use_column_width=True)
+        # frame_st.image(video_frame, use_column_width=True)
 
         if video_frame is not None:
             file_bytes = io.BytesIO(video_frame.getvalue())
