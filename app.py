@@ -289,10 +289,9 @@ def VideoProcessor():
             else:
                 break
 
-            if result is not None:
-                if adicionar_valor:
-                    data_string = save_qr_code(result)
-                    result_placeholder.write(data_string)
+            if adicionar_valor:
+                data_string = save_qr_code(result)
+                result_placeholder.write(data_string)
 
                 
             
