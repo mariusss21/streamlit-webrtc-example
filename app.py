@@ -197,7 +197,10 @@ def inserir_invetario() -> None:
     if video_frame is not None:
         st.write(type(video_frame))
 
-        file_bytes = io.BytesIO(video_frame.read())
+        # 
+        buf = io.BytesIO()
+        video_frame.save(buf, format='PNG')
+        file_bytes = io.BytesIO(buf.getvalue())
         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray, 5)
