@@ -275,7 +275,8 @@ def VideoProcessor():
         video_processor_factory=video_processor,
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True, "audio": False},)
+        media_stream_constraints={"video": True, "audio": False},
+        async_processing=True)
 
     
     if webrtc_ctx.state.playing:
@@ -305,7 +306,7 @@ def VideoProcessor():
 
             if encerrar_inventario:
                 break
-            
+
         if encerrar_inventario:
             doc_ref = db.collection('inventarios').document(nome_inventario)
             dados = {}
