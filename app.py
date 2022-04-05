@@ -229,7 +229,10 @@ def entrada_bobinas() -> None:
 
 @st.cache(allow_output_mutation=True)
 def save_qr_code(data:str):
-    dataframe_string += data
+    try:
+        dataframe_string += data
+    except:
+        dataframe_string = data
     return dataframe_string
 
 def VideoProcessor():
