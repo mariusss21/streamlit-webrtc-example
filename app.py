@@ -235,14 +235,19 @@ def get_cap():
 
 def VideoProcessor():
     def recv(self, frame):
+
+        qrDecode = cv2.QRCodeDetector()
+
         img = frame.to_ndarray(format='bgr24')
         file_bytes = io.BytesIO(img.getvalue())
         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray, 5)
-        valor = read_barcodes(blur) 
+        #valor = read_barcodes(blur) 
 
-        return av.VideoFrame.from_ndarray(img, format='bgr24'), valor
+        data, bbox, img = qrDecode.detectAndDecode(blur)
+
+        return av.VideoFrame.from_ndarray(img, format='bgr24')
 
 
 
@@ -287,6 +292,8 @@ def inserir_invetario() -> None:
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},)
+
+    
 
     
 
