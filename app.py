@@ -245,9 +245,9 @@ def VideoProcessor():
         # blur = cv2.medianBlur(gray, 5)
         #valor = read_barcodes(blur) 
 
-        data, bbox, img = qrDecode.detectAndDecode(img)
+        data, bbox, img2 = qrDecode.detectAndDecode(img)
 
-        return av.VideoFrame.from_ndarray(img, format='bgr24')
+        return av.VideoFrame.from_ndarray(bbox, format='bgr24')
 
 
 
