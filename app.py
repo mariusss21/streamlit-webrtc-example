@@ -313,18 +313,21 @@ def VideoProcessor():
                 dados = {}
                 dados['dataframe'] = dataframe_string
                 doc_ref.set(dados)
+                time.sleep(1)
                 dataframe_string = ''
+                return 'Visualizar'
                 break
+
 
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
 
-    VideoProcessor()
-    nome_inventario = st.text_input('Nome do inventário')
-    data_inventario = st.date_input('Data do inventário')
+    tela_inventario = VideoProcessor()
+    # nome_inventario = st.text_input('Nome do inventário')
+    # data_inventario = st.date_input('Data do inventário')
 
-    st.button('teste')
+    # st.button('teste')
     # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
     # cap = get_cap()
