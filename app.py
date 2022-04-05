@@ -283,8 +283,9 @@ def VideoProcessor():
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},)
 
+    dataframe_string = ''
     if webrtc_ctx.state.playing:
-        dataframe_string = ''
+        
         labels_placeholder = st.empty()
         result_placeholder = st.empty()
 
@@ -299,8 +300,8 @@ def VideoProcessor():
                 break
 
             if result is not None:
-                data_string = save_qr_code(dataframe_string, result)
-                result_placeholder.write(data_string)
+                dataframe_string = save_qr_code(dataframe_string, result)
+                result_placeholder.write(dataframe_string)
 
                 
             
