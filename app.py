@@ -217,7 +217,7 @@ def VideoProcessor(dataframe_string: str) -> None:
             self.result_queue = queue.Queue()
         
         def recv(self, frame):
-            img = frame.to_ndarray(format='bgr24') #bgr24
+            img = frame.to_ndarray(format='gray') #bgr24
             decoder = cv2.QRCodeDetector()
             datas, points, _ = decoder.detectAndDecode(img)
             
@@ -227,8 +227,8 @@ def VideoProcessor(dataframe_string: str) -> None:
             #file_bytes = io.BytesIO(buf.getvalue())
             file_bytes = io.BytesIO(buf.getvalue())
             image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            blur = cv2.medianBlur(gray, 5)
+            # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            blur = cv2.medianBlur(image, 5)
             data = read_barcodes(blur)
 
             if data != '' and data is not None:
@@ -242,7 +242,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                     cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=1)
                     cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
-            return av.VideoFrame.from_ndarray(img, format='bgr24')
+            return av.VideoFrame.from_ndarray(img, format='gray')
 
     webrtc_ctx = webrtc_streamer(key='exampe',
         video_processor_factory=video_processor,
