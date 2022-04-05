@@ -196,8 +196,12 @@ def inserir_invetario() -> None:
 
     if video_frame is not None:
         st.write(type(video_frame))
-        file_bytes = io.BytesIO(video_frame )#.getvalue())
-        image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+        # file_bytes = io.BytesIO(video_frame )#.getvalue())
+        byte_io = io.BytesIO()
+        # video_frame.save(byte_io, format='PNG')
+
+        image = cv2.imdecode(np.frombuffer(video_frame.save(byte_io, format='PNG'), np.uint8), cv2.IMREAD_COLOR)
+        # image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray, 5)
         valor = read_barcodes(blur)
