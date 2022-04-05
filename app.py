@@ -280,7 +280,7 @@ def VideoProcessor():
                     result = webrtc_ctx.video_processor.result_queue.get(
                         timeout=2.0
                     )
-                    adicionar_valor = st.button('Salvar QR Code 2')
+                    adicionar_valor = st.button('Salvar QR Code 2', key='Salvar QR Code 2')
 
                     if adicionar_valor and result is not None:
                         data_string = save_qr_code(result)
@@ -291,7 +291,7 @@ def VideoProcessor():
             else:
                 break
 
-            adicionar_valor = st.button('Salvar QR Code 1')
+            adicionar_valor = st.button('Salvar QR Code 1', key='Salvar QR Code 1')
 
             if adicionar_valor and result is not None:
                 data_string = save_qr_code(result)
