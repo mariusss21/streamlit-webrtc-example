@@ -278,7 +278,7 @@ def VideoProcessor(dataframe_string: str) -> str:
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True)
     
-    dataframe_string = save_qr_code('reset', dataframe_string, '')
+    
    
     if webrtc_ctx.state.playing:
         st.write('Bobin atual')
@@ -301,13 +301,16 @@ def VideoProcessor(dataframe_string: str) -> str:
                 dataframe_string = save_qr_code('add', dataframe_string, result)
                 result_placeholder.write(dataframe_string)
 
+    else:
+        return dataframe_string
+
                 
 
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
 
-    tela_inventario = VideoProcessor('colunas')
+    dataframe_string = VideoProcessor('colunas')
 
     nome_inventario = st.text_input('Nome do inventário')
     encerrar_inventario = st.button('Encerrar inventário')
@@ -316,10 +319,12 @@ def inserir_invetario() -> None:
     st.write(dataframe_string)
 
     if encerrar_inventario:
+        
         doc_ref = db.collection('inventarios').document(nome_inventario)
         dados = {}
         dados['dataframe'] = save_qr_code('add', dataframe_string, '')
         doc_ref.set(dados)
+        dataframe_string = save_qr_code('reset', '', '')
     # nome_inventario = st.text_input('Nome do inventário')
     # data_inventario = st.date_input('Data do inventário')
 
