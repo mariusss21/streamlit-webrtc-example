@@ -234,12 +234,12 @@ def VideoProcessor(dataframe_string: str) -> None:
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
 
-    webrtc_ctx = webrtc_streamer(key='exampe',
+    webrtc_ctx = webrtc_streamer(key='example',
         video_processor_factory=video_processor,
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True, "audio": False},)
-        #async_processing=True)
+        media_stream_constraints={"video": True, "audio": False},
+        async_processing=True)
    
     if webrtc_ctx.state.playing:
         st.write('Bobin atual')
