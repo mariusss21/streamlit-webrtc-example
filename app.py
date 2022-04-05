@@ -219,7 +219,13 @@ def VideoProcessor(dataframe_string: str) -> None:
         def recv(self, frame):
             img = frame.to_ndarray(format='gray') #bgr24
             decoder = cv2.QRCodeDetector()
-            data, points, _ = decoder.detectAndDecode(img)
+            datas, points, _ = decoder.detectAndDecode(img)
+
+            file_bytes = io.BytesIO(img.getvalue())
+            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            blur = cv2.medianBlur(gray, 5)
+            data = read_barcodes(blur)
 
             if data != '' and data is not None:
                 self.result_queue.put(data)
