@@ -239,13 +239,13 @@ def VideoProcessor():
         qrDecode = cv2.QRCodeDetector()
 
         img = frame.to_ndarray(format='bgr24')
-        file_bytes = io.BytesIO(img.getvalue())
-        image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        blur = cv2.medianBlur(gray, 5)
+        # file_bytes = io.BytesIO(img.getvalue())
+        # image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+        # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # blur = cv2.medianBlur(gray, 5)
         #valor = read_barcodes(blur) 
 
-        data, bbox, img = qrDecode.detectAndDecode(blur)
+        data, bbox, img = qrDecode.detectAndDecode(img)
 
         return av.VideoFrame.from_ndarray(img, format='bgr24')
 
