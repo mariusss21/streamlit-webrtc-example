@@ -313,6 +313,7 @@ def VideoProcessor():
                 dados = {}
                 dados['dataframe'] = save_qr_code(dataframe_string, '')
                 doc_ref.set(dados)
+                break
 
 
 def inserir_invetario() -> None:
