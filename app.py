@@ -248,10 +248,10 @@ def VideoProcessor(dataframe_string: str) -> None:
             else:
                 break
 
-            # if result is not None:
-            #     if result not in st.session_state.data_inventario and result.count(',') == 8:
-            #         st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
-            #         result_placeholder.write(st.session_state.data_inventario)
+            if result is not None:
+                if result not in st.session_state.data_inventario and result.count(',') == 8:
+                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
+                    result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_invetario() -> None:
