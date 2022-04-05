@@ -22,7 +22,7 @@ from PIL import Image
 import io
 import matplotlib.pyplot as plt
 import cv2
-#from pyzbar.pyzbar import decode
+from pyzbar.pyzbar import decode
 import time
 import qrcode
 from PIL import Image
@@ -60,6 +60,16 @@ from streamlit_webrtc import (
     WebRtcMode,
     webrtc_streamer,
 )
+
+# RTC_CONFIGURATION = RTCConfiguration(
+#     {
+#       "RTCIceServer": [{
+#         "urls": ["turn:turn.xxx.dev:5349"],
+#         "username": "user",
+#         "credential": "password",
+#       }]
+#     }
+# )
 
 RTC_CONFIGURATION = RTCConfiguration(
     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
@@ -207,14 +217,22 @@ def VideoProcessor(dataframe_string: str) -> None:
             self.result_queue = queue.Queue()
         
         def recv(self, frame):
-            img = frame.to_ndarray(format='gray') #bgr24
+            img = frame.to_ndarray(format='bgr24') #bgr24
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
 
             if data != '' and data is not None:
                 self.result_queue.put(data)
+            
+            # if points is not None:          
+            #     points = points[0]
+            #     for i in range(len(points)):
+            #         pt1 = [int(val) for val in points[i]]
+            #         pt2 = [int(val) for val in points[(i + 1) % 4]]
+            #         cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=1)
+            #         #cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
-            return av.VideoFrame.from_ndarray(img, format='gray')
+            return av.VideoFrame.from_ndarray(img, format='bgr24')
 
     webrtc_ctx = webrtc_streamer(key='example',
         video_processor_factory=video_processor,
@@ -240,18 +258,20 @@ def VideoProcessor(dataframe_string: str) -> None:
             else:
                 break
 
-            # if result is not None:
-            #     if result not in st.session_state.data_inventario and result.count(',') == 8:
-            #         st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
-            #         result_placeholder.write(st.session_state.data_inventario)
+            if result is not None:
+                if result not in st.session_state.data_inventario and result.count(',') == 8:
+                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
+                    result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
+
     encerrar_inventario = st.button('Encerrar inventário') 
     nome_inventario = st.text_input('Nome do inventário')
 
     colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
+
     if 'data_inventario' not in st.session_state:
         st.session_state['data_inventario'] = colunas 
 
@@ -272,11 +292,55 @@ def inserir_invetario() -> None:
         else:
             st.warning('Não há bobinas para armazenar')
 
+    # nome_inventario = st.text_input('Nome do inventário')
+    # data_inventario = st.date_input('Data do inventário')
+
+    # st.button('teste')
+    # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
+
+    # cap = get_cap()
+    # frame_st = st.empty()
+
+    # while True:
+    #     ret, video_frame = cap.read()
+    #     video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2RGB)
+    #     video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
+    #     frame_st.image(video_frame, use_column_width=True)
+    #     blur = cv2.medianBlur(video_frame, 5)
+    #     valor = read_barcodes(blur)
+    #     st.write(valor)
+
+    # if video_frame is not None:
+    #     file_bytes = io.BytesIO(video_frame.getvalue())
+    #     image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+    #     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #     blur = cv2.medianBlur(gray, 5)
+    #     valor = read_barcodes(blur)
+    #     st.write(valor)
+
+        #     # pil image to bytes
+        #     # buf = io.BytesIO()
+        #     # video_frame.save(buf, format='PNG')
+        #     # file_bytes = io.BytesIO(buf.getvalue())
+
+        #     if valor is not None:
+        #         st.button('Inventariar bobina')
+    # st.checkbox('')
+
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     imagem_bobina_qr = qrcode.make(texto_qrcode , version=None, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
+
+    # qr = qrcode.QRCode(version=1, box_size=5, border=5)
+    # qr = qr.add_data(texto_qrcode)
+    # imagem_bobina_qr = qr.make(fit=True)
+    # image_bytearray = io.BytesIO()
+
+    # st.write(type(image_bytearray))
+    # st.write(type(imagem_bobina_qr))
+
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
         wb = load_workbook('LIBERADO.xlsx')
@@ -294,7 +358,16 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws['D9'] = dados_bobina.loc['data'] 
         ws['A18'] = str(dados_bobina.loc['quantidade'])
         ws['D18'] = dados_bobina.loc['tipo'].replace('BOBINA ALUMINIO ', '')
+
         ws['A18'].font = ft
+      
+        #Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.PNG'))
+        #img = Image.open(image_bytearray)
+        #img = Image.open(image_bytearray.getvalue())
+        #img = Image.open(imagem_bobina_qr)
+        #img = Image.open(imagem_bobina_qr.save(image_bytearray, format='PNG'))
+        #img = Image_openpyxl(image_bytearray.getvalue())
+        #img = Image_openpyxl(imagem_bobina_qr)
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
         
@@ -304,7 +377,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         img = Image_openpyxl(image_bytearray)
         ws.add_image(img,'A23')
 
-        #st.write(dados_bobina.astype(str))
+        st.write(dados_bobina.astype(str))
 
         ws['A2'] = dados_bobina.loc['sap'] #codigo do produto
         ws['A3'] = dados_bobina.loc['quantidade'] #quantidade do produto
@@ -320,6 +393,10 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     # link para download e nome do arquivo
     linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a>'
     st.markdown(linko, unsafe_allow_html=True)
+
+    # st.subheader('Imagem do qrcode')
+    # st.image(image_bytearray.getvalue())
+
 
 
 def etiquetas_bobinas() -> None:
@@ -376,8 +453,21 @@ def login_session_state() -> None:
 
 
 if __name__ == "__main__":
+
+    # if 'logado' not in st.session_state:
+    #     st.session_state['logado'] = False
+
+    # if st.session_state['logado'] == False:
+    #     login_session_state()
+
     c1,c2 = st.sidebar.columns([1,1])
     c1.image('logo2.png', width=150)
+
+    # st.sidebar.subheader('Bobinas')
+    # telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
+    # tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
+
+    # if st.session_state['logado'] == True:
 
     st.sidebar.subheader('Bobinas')
     telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
@@ -394,3 +484,9 @@ if __name__ == "__main__":
 
     if tela_bobina == 'Etiquetas':
         etiquetas_bobinas()
+
+        # botao_sair = st.sidebar.button('Sair')
+
+        # if botao_sair:
+        #     st.session_state['logado'] = False
+        #     st.experimental_rerun()
