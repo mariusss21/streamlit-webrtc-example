@@ -182,16 +182,6 @@ def entrada_bobinas() -> None:
                     dict_data['tipo_de_etiqueta'] = 'LIBERADO'
 
                 dict_data['sap'] = dict_tipo_bobinas[dict_data['tipo']]
-                
-                # dict_data['texto_qrcode'] = ''.join(('tipo de etiqueta: ', dict_data['tipo_de_etiqueta'],
-                #     '; Código SAP: ', dict_data['sap_bobina'],
-                #     '; Descrição: ', dict_data['descricao_bobina'],
-                #     '; Conferente:', dict_data['conferente_bobina'],
-                #     '; Quantidade: ', str(dict_data['quantidade_bobina']),
-                #     '; Lote: ', dict_data['lote_bobina'],
-                #     '; Tipo:', dict_data['tipo_bobina'],
-                #     '; Data entrada: ',str(dict_data['data_bobina']))                    
-                # )
 
                 doc_ref = db.collection('bobinas').document('bobinas')
                 doc = doc_ref.get()
@@ -219,31 +209,8 @@ def entrada_bobinas() -> None:
 
                     doc_ref.set(dados)
 
-                # st.subheader('Informação do qrcode')
-                # st.write(texto_qrcode)
-
-                # imagem_bobina_qr = qrcode.make(texto_qrcode)
-                # image_bytearray = io.BytesIO()
-                # imagem_bobina_qr.save(image_bytearray, format='PNG')
-
-                # st.subheader('Inmagem do qrcode')
-                # st.image(image_bytearray.getvalue())
-        
-
-@st.cache(allow_output_mutation=True)
-def save_qr_code(funcao_string: str, dataframe_string: str, data:str):
-    if funcao_string == 'add':
-        if data not in dataframe_string:
-            dataframe_string = ''.join((dataframe_string, data)) 
-
-    if funcao_string == 'reset':
-        dataframe_string = ''
-
-    return dataframe_string
-
 
 def VideoProcessor(dataframe_string: str) -> None:
-    
     class video_processor(VideoProcessorBase):
 
         def __init__(self):
@@ -292,8 +259,8 @@ def VideoProcessor(dataframe_string: str) -> None:
                 break
 
             if result is not None:
-                if result not in st.session_state.data_inventario:
-                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result))
+                if result not in st.session_state.data_inventario and result.count(',') == 6:
+                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
                     result_placeholder.write(st.session_state.data_inventario)
 
 
@@ -303,8 +270,10 @@ def inserir_invetario() -> None:
     encerrar_inventario = st.button('Encerrar inventário') 
     nome_inventario = st.text_input('Nome do inventário')
 
+    colunas = 'status,descricao,conferente,quantidade,lote,tipo,data\n'
+
     if 'data_inventario' not in st.session_state:
-        st.session_state['data_inventario'] = 'colunas \n' 
+        st.session_state['data_inventario'] = colunas 
 
     VideoProcessor('colunas')
 
@@ -312,12 +281,17 @@ def inserir_invetario() -> None:
 
     if encerrar_inventario:
         
-        doc_ref = db.collection('inventarios').document(nome_inventario)
-        dados = {}
-        dados['dataframe'] = st.session_state.data_inventario
-        doc_ref.set(dados)
-        
-        del st.session_state['data_inventario']
+        if st.session_state.data_inventario != colunas:
+            doc_ref = db.collection('inventarios').document(nome_inventario)
+            dados = {}
+            dados['dataframe'] = st.session_state.data_inventario
+            doc_ref.set(dados)
+            
+            del st.session_state['data_inventario']
+            st.experimental_rerun()
+        else:
+            st.warning('Não há bobinas para armazenar')
+
 
 
 
