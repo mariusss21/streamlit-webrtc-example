@@ -226,9 +226,9 @@ def VideoProcessor(dataframe_string: str) -> None:
             #frame.save(buf, format='PNG')
             #file_bytes = io.BytesIO(buf.getvalue())
             file_bytes = io.BytesIO(buf.getvalue())
-            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-            # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            blur = cv2.medianBlur(image, 5)
+            image = cv2.imdecode(np.frombuffer(file_bytes.read()), cv2.IMREAD_COLOR)
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            blur = cv2.medianBlur(gray, 5)
             data = read_barcodes(blur)
 
             if data != '' and data is not None:
