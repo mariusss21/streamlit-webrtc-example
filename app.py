@@ -277,7 +277,6 @@ def VideoProcessor():
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True)
-
     
     if webrtc_ctx.state.playing:
         dataframe_string = save_qr_code('reset', 'colunas', '')
@@ -304,8 +303,11 @@ def VideoProcessor():
                 dataframe_string = save_qr_code('add', dataframe_string, result)
                 result_placeholder.write(dataframe_string)
 
-            if encerrar_inventario:
-                break
+
+    else:
+        dataframe_string = save_qr_code('add', dataframe_string, '')
+        result_placeholder.write(dataframe_string)
+        encerrar_inventario = st.button('Encerrar inventário')
 
         if encerrar_inventario:
             doc_ref = db.collection('inventarios').document(nome_inventario)
