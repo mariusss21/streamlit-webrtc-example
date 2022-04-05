@@ -241,27 +241,27 @@ def VideoProcessor(dataframe_string: str) -> None:
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True)
    
-    if webrtc_ctx.state.playing:
-        st.write('Bobin atual')
-        labels_placeholder = st.empty()
+    # if webrtc_ctx.state.playing:
+    #     st.write('Bobin atual')
+    #     labels_placeholder = st.empty()
 
-        st.write('Bobinas armazenadas')
-        result_placeholder = st.empty()
+    #     st.write('Bobinas armazenadas')
+    #     result_placeholder = st.empty()
 
-        while True:
-            if webrtc_ctx.video_processor:
-                try:
-                    result = webrtc_ctx.video_processor.result_queue.get(timeout=2.0)
-                except queue.Empty:
-                    result = None
-                labels_placeholder.write(result)
-            else:
-                break
+    #     while True:
+    #         if webrtc_ctx.video_processor:
+    #             try:
+    #                 result = webrtc_ctx.video_processor.result_queue.get(timeout=2.0)
+    #             except queue.Empty:
+    #                 result = None
+    #             labels_placeholder.write(result)
+    #         else:
+    #             break
 
-            if result is not None:
-                if result not in st.session_state.data_inventario and result.count(',') == 6:
-                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
-                    result_placeholder.write(st.session_state.data_inventario)
+    #         if result is not None:
+    #             if result not in st.session_state.data_inventario and result.count(',') == 6:
+    #                 st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
+    #                 result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_invetario() -> None:
