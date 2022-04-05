@@ -274,7 +274,7 @@ def VideoProcessor():
         labels_placeholder = st.empty()
         button_placeholder = st.empty()
         result_placeholder = st.empty()
-        
+        adicionar_valor = button_placeholder.button('Salvar QR Code 1', key='Salvar QR Code 1')
 
         while True:
             if webrtc_ctx.video_processor:
@@ -287,8 +287,6 @@ def VideoProcessor():
                 break
 
             if result is not None:
-                adicionar_valor = button_placeholder.button('Salvar QR Code 1', key='Salvar QR Code 1')
-
                 if adicionar_valor:
                     data_string = save_qr_code(result)
                     result_placeholder.write(data_string)
