@@ -313,9 +313,6 @@ def VideoProcessor():
                 dados = {}
                 dados['dataframe'] = dataframe_string
                 doc_ref.set(dados)
-                return 'Visualizar'
-
-
 
 
 def inserir_invetario() -> None:
