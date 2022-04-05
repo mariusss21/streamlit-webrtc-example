@@ -270,27 +270,28 @@ def VideoProcessor():
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},)
 
-    if st.checkbox("Show the detected labels", value=True):
-        if webrtc_ctx.state.playing:
-            labels_placeholder = st.empty()
-            # NOTE: The video transformation with object detection and
-            # this loop displaying the result labels are running
-            # in different threads asynchronously.
-            # Then the rendered video frames and the labels displayed here
-            # are not strictly synchronized.
-            while True:
-                if webrtc_ctx.video_processor:
-                    try:
-                        result = webrtc_ctx.video_processor.result_queue.get(
-                            timeout=2.0
-                        )
-                    except queue.Empty:
-                        result = None
-                    labels_placeholder.write(result)
-                else:
-                    break
+    if webrtc_ctx.state.playing:
+        labels_placeholder = st.empty()
+        
 
-            adicionar_valor = st.button('Salvar QR Code')
+        while True:
+            if webrtc_ctx.video_processor:
+                try:
+                    result = webrtc_ctx.video_processor.result_queue.get(
+                        timeout=2.0
+                    )
+                    adicionar_valor = st.button('Salvar QR Code 2')
+
+                    if adicionar_valor and result is not None:
+                        data_string = save_qr_code(result)
+                        st.write(data_string)
+                except queue.Empty:
+                    result = None
+                labels_placeholder.write(result)
+            else:
+                break
+
+            adicionar_valor = st.button('Salvar QR Code 1')
 
             if adicionar_valor and result is not None:
                 data_string = save_qr_code(result)
