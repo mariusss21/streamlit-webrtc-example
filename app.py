@@ -291,7 +291,7 @@ def VideoProcessor():
         st.write('Bobinas armazenadas')
         result_placeholder = st.empty()
 
-        nome_inventario = st.input_text('Nome do inventário')
+        nome_inventario = st.text_input('Nome do inventário')
         st.button('Encerrar inventário')
 
         while True:
@@ -315,9 +315,6 @@ def VideoProcessor():
                 doc_ref.set(dados)
                 dataframe_string = ''
                 break
-
-                
-            
 
 
 def inserir_invetario() -> None:
