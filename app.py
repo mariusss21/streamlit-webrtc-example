@@ -274,7 +274,7 @@ def inserir_invetario() -> None:
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
-    imagem_bobina_qr = qrcode.make(texto_qrcode , version=None, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
+    imagem_bobina_qr = qrcode.make(texto_qrcode , version=20, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
