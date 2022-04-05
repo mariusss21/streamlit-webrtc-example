@@ -191,21 +191,21 @@ def inserir_invetario() -> None:
     nome_inventario = st.text_input('Nome do inventário')
     data_inventario = st.date_input('Data do inventário')
 
-    #video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
-    video_frame = webcam()
+    # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
+    video_frame = cv2.videoCapture(0)
 
     if video_frame is not None:
-        st.write(type(video_frame))
-
-        # 
-        buf = io.BytesIO()
-        video_frame.save(buf, format='PNG')
-        file_bytes = io.BytesIO(buf.getvalue())
+        file_bytes = io.BytesIO(video_frame.getvalue())
         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray, 5)
         valor = read_barcodes(blur)
         st.write(valor)
+
+        # pil image to bytes
+        # buf = io.BytesIO()
+        # video_frame.save(buf, format='PNG')
+        # file_bytes = io.BytesIO(buf.getvalue())
 
         if valor is not None:
             st.button('Inventariar bobina')
