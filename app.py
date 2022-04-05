@@ -228,12 +228,22 @@ def entrada_bobinas() -> None:
         
 
 @st.cache(allow_output_mutation=True)
-def save_qr_code(data:str):
-    try:
+def save_qr_code(dataframe_string: str, data:str):
+    # try:
+    if data not in dataframe_string:
         dataframe_string = ''.join((dataframe_string, data)) 
-    except:
-        dataframe_string = data
+    # except:
+    #     dataframe_string = data
     return dataframe_string
+
+
+@st.cache(allow_output_mutation=True)
+def data_string(reset: bool, dataframe_string: str,) -> str:
+    if reset:
+        return ''
+    else:
+        return dataframe_string
+
 
 def VideoProcessor():
     
@@ -274,10 +284,9 @@ def VideoProcessor():
         media_stream_constraints={"video": True, "audio": False},)
 
     if webrtc_ctx.state.playing:
+        dataframe_string = ''
         labels_placeholder = st.empty()
-        button_placeholder = st.empty()
         result_placeholder = st.empty()
-        adicionar_valor = button_placeholder.button('Salvar QR Code 1', key='Salvar QR Code 1')
 
         while True:
             if webrtc_ctx.video_processor:
@@ -289,8 +298,8 @@ def VideoProcessor():
             else:
                 break
 
-            if adicionar_valor:
-                data_string = save_qr_code(result)
+            if result is not None:
+                data_string = save_qr_code(dataframe_string, result)
                 result_placeholder.write(data_string)
 
                 
