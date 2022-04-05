@@ -235,6 +235,9 @@ def get_cap():
 
 def VideoProcessor():
     class video_processor(VideoProcessorBase):
+
+        def __init__(self):
+            self.result_queue = queue.Queue()
         
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24')
@@ -245,6 +248,9 @@ def VideoProcessor():
             #valor = read_barcodes(blur) 
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
+
+            if data is not None:
+                self.result_queue.put(data)
             
             if points is not None:
                 # print('Decoded data: ' + data)
@@ -259,11 +265,31 @@ def VideoProcessor():
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
 
-    webx = webrtc_streamer(key='exampe',
+    webrtc_ctx = webrtc_streamer(key='exampe',
         video_processor_factory=video_processor,
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},)
+
+    if st.checkbox("Show the detected labels", value=True):
+        if webrtc_ctx.state.playing:
+            labels_placeholder = st.empty()
+            # NOTE: The video transformation with object detection and
+            # this loop displaying the result labels are running
+            # in different threads asynchronously.
+            # Then the rendered video frames and the labels displayed here
+            # are not strictly synchronized.
+            while True:
+                if webrtc_ctx.video_processor:
+                    try:
+                        result = webrtc_ctx.video_processor.result_queue.get(
+                            timeout=1.0
+                        )
+                    except queue.Empty:
+                        result = None
+                    labels_placeholder.write(result)
+                else:
+                    break
 
 
 def inserir_invetario() -> None:
