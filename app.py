@@ -217,7 +217,7 @@ def VideoProcessor(dataframe_string: str) -> None:
             self.result_queue = queue.Queue()
         
         def recv(self, frame):
-            img = frame.to_ndarray(format='bgr24')
+            img = frame.to_ndarray(format='gray') #bgr24
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
 
@@ -229,7 +229,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                 for i in range(len(points)):
                     pt1 = [int(val) for val in points[i]]
                     pt2 = [int(val) for val in points[(i + 1) % 4]]
-                    cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=3)
+                    cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=1)
                     cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
