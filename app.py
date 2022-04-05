@@ -313,10 +313,8 @@ def VideoProcessor():
                 dados = {}
                 dados['dataframe'] = dataframe_string
                 doc_ref.set(dados)
-                time.sleep(1)
-                dataframe_string = ''
                 return 'Visualizar'
-                break
+
 
 
 
