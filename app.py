@@ -247,7 +247,7 @@ def VideoProcessor():
 
         data, bbox, img2 = qrDecode.detectAndDecode(img)
 
-        return av.VideoFrame.from_ndarray(bbox, format='bgr24')
+        return av.VideoFrame.from_ndarray(img2, format='bgr24')
 
 
 
