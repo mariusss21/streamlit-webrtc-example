@@ -31,8 +31,9 @@ from openpyxl import load_workbook
 from openpyxl.drawing.image import Image as Image_openpyxl
 from openpyxl.styles import Font, Color
 
-from webcam import webcam
-
+#from webcam import webcam
+import av
+from streamlit_webrtc import webrtc_streamer
 
 from google.cloud import firestore
 from google.oauth2 import service_account
@@ -40,7 +41,6 @@ from google.oauth2 import service_account
 key_dict = json.loads(st.secrets['textkey'])
 creds = service_account.Credentials.from_service_account_info(key_dict)
 db = firestore.Client(credentials=creds, project='logistica-invent')
-
 
 
 ######################################################################################################
@@ -192,25 +192,31 @@ def get_cap():
     return cap
 
 
+def VideoProcessor():
+    def recv(self, frame):
+        img = frame.to_ndarray(format='bgr24')
+        return av.VideoFrame.from_ndarray(img, format='bgr24')
+
+
+
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
     nome_inventario = st.text_input('Nome do inventário')
     data_inventario = st.date_input('Data do inventário')
 
-    video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
+    # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
-    cap = get_cap()
-    frame_st = st.empty()
+    # cap = get_cap()
+    # frame_st = st.empty()
 
-
-    while True:
-        ret, video_frame = cap.read()
-        video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2RGB)
-        video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
-        frame_st.image(video_frame, use_column_width=True)
-        blur = cv2.medianBlur(video_frame, 5)
-        valor = read_barcodes(blur)
-        st.write(valor)
+    # while True:
+    #     ret, video_frame = cap.read()
+    #     video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2RGB)
+    #     video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
+    #     frame_st.image(video_frame, use_column_width=True)
+    #     blur = cv2.medianBlur(video_frame, 5)
+    #     valor = read_barcodes(blur)
+    #     st.write(valor)
 
         # if video_frame is not None:
         #     file_bytes = io.BytesIO(video_frame.getvalue())
@@ -227,6 +233,9 @@ def inserir_invetario() -> None:
 
         #     if valor is not None:
         #         st.button('Inventariar bobina')
+    # st.checkbox('')
+    webrtc_streamer(key='exampe', video_processor_factory=VideoProcessor)
+    
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
