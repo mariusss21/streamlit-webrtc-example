@@ -230,7 +230,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                     pt1 = [int(val) for val in points[i]]
                     pt2 = [int(val) for val in points[(i + 1) % 4]]
                     cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=1)
-                    cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
+                    #cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
 
@@ -329,7 +329,7 @@ def inserir_invetario() -> None:
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
-    imagem_bobina_qr = qrcode.make(texto_qrcode, version=1, box_size=3, border=2)
+    imagem_bobina_qr = qrcode.make(texto_qrcode, version=2, box_size=2, border=2)
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
