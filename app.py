@@ -239,7 +239,7 @@ def save_qr_code(funcao_string: str, dataframe_string: str, data:str):
     return dataframe_string
 
 
-def VideoProcessor(dataframe_string: str) -> str:
+def VideoProcessor(dataframe_string: str) -> None:
     
     class video_processor(VideoProcessorBase):
 
@@ -247,8 +247,7 @@ def VideoProcessor(dataframe_string: str) -> str:
             self.result_queue = queue.Queue()
         
         def recv(self, frame):
-            img = frame.to_ndarray(format='gray')
-            # img = frame.to_ndarray(format='bgr24')
+            img = frame.to_ndarray(format='bgr24')
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
 
@@ -263,7 +262,7 @@ def VideoProcessor(dataframe_string: str) -> str:
                     cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=3)
                     cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
-            return av.VideoFrame.from_ndarray(img, format='gray')
+            return av.VideoFrame.from_ndarray(img, format='bgr24')
 
     webrtc_ctx = webrtc_streamer(key='exampe',
         video_processor_factory=video_processor,
@@ -290,33 +289,43 @@ def VideoProcessor(dataframe_string: str) -> str:
                 break
 
             if result is not None:
-                dataframe_string = save_qr_code('add', dataframe_string, result)
-                result_placeholder.write(dataframe_string)
-
-    else:
-        return dataframe_string
-
-                
+                if result not in st.session_state.data_inventario:
+                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result))
+                    result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
 
-    dataframe_string = VideoProcessor('colunas')
-
+    encerrar_inventario = st.button('Encerrar inventário') 
     nome_inventario = st.text_input('Nome do inventário')
-    encerrar_inventario = st.button('Encerrar inventário')
 
-    dataframe_string = save_qr_code('add', dataframe_string, '')
-    st.write(dataframe_string)
+    if 'data_inventario' not in st.session_state:
+        st.session_state['data_inventario'] = 'colunas \n' 
+
+    VideoProcessor('colunas')
+
+    st.write(st.session_state.data_inventario)
 
     if encerrar_inventario:
         
         doc_ref = db.collection('inventarios').document(nome_inventario)
         dados = {}
-        dados['dataframe'] = save_qr_code('add', dataframe_string, '')
+        dados['dataframe'] = st.session_state.data_inventario
         doc_ref.set(dados)
-        dataframe_string = save_qr_code('reset', '', '')
+        
+        del st.session_state['data_inventario']
+
+
+
+
+
+
+
+
+
+
+
     # nome_inventario = st.text_input('Nome do inventário')
     # data_inventario = st.date_input('Data do inventário')
 
