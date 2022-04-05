@@ -228,12 +228,12 @@ def entrada_bobinas() -> None:
         
 
 @st.cache(allow_output_mutation=True)
-def get_cap():
-    cap = cv2.VideoCapture(0)
-    return cap
-
+def save_qr_code(data:str):
+    dataframe_string = data
+    return dataframe_string
 
 def VideoProcessor():
+    
     class video_processor(VideoProcessorBase):
 
         def __init__(self):
@@ -289,6 +289,13 @@ def VideoProcessor():
                     labels_placeholder.write(result)
                 else:
                     break
+
+            adicionar_valor = st.button('Salvar QR Code')
+
+            if adicionar_valor and result is not None:
+                data_string = save_qr_code(result)
+                st.write(data_string)
+            
 
 
 def inserir_invetario() -> None:
