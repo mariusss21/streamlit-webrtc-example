@@ -257,6 +257,12 @@ def VideoProcessor():
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
 
+    webx = webrtc_streamer(key='exampe',
+        video_processor_factory=video_processor,
+        mode=WebRtcMode.SENDRECV,
+        rtc_configuration=RTC_CONFIGURATION,
+        media_stream_constraints={"video": True, "audio": False},)
+
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
@@ -264,11 +270,7 @@ def inserir_invetario() -> None:
     data_inventario = st.date_input('Data do inventário')
 
     st.button('teste')
-    webx = webrtc_streamer(key='exampe',
-        video_processor_factory=video_processor,
-        mode=WebRtcMode.SENDRECV,
-        rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True, "audio": False},)
+    VideoProcessor()
 
     # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
