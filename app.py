@@ -431,7 +431,7 @@ def etiquetas_bobinas() -> None:
                     for colunas in df_etiqueta_dia.columns:
                         if colunas != 'tipo_de_etiqueta':
                             texto_qrcode = ''.join((texto_qrcode, str(df_etiqueta_dia.loc[bobina, colunas]), ','))
-                            texto_qrcode = texto_qrcode[0,-1]
+                            texto_qrcode = texto_qrcode[0:-1]
                             st.write(f'**{colunas}:** {df_etiqueta_dia.loc[bobina, colunas]}')
 
                     botao_download_etiqueta = st.button('Download etiqueta', key=str(bobina))
