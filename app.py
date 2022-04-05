@@ -227,22 +227,16 @@ def entrada_bobinas() -> None:
                 # st.image(image_bytearray.getvalue())
         
 
-@st.cache(allow_output_mutation=True)
-def save_qr_code(dataframe_string: str, data:str):
-    # try:
-    if data not in dataframe_string:
-        dataframe_string = ''.join((dataframe_string, data)) 
-    # except:
-    #     dataframe_string = data
+@st.cache(allow_output_mutation=False)
+def save_qr_code(funcao_string: str, dataframe_string: str, data:str):
+    if funcao_string == 'add':
+        if data not in dataframe_string:
+            dataframe_string = ''.join((dataframe_string, data)) 
+
+    if funcao_string == 'reset':
+        dataframe_string = ''
+
     return dataframe_string
-
-
-@st.cache(allow_output_mutation=True)
-def data_string(reset: bool, dataframe_string: str,) -> str:
-    if reset:
-        return ''
-    else:
-        return dataframe_string
 
 
 def VideoProcessor():
@@ -283,8 +277,9 @@ def VideoProcessor():
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},)
 
-    dataframe_string = save_qr_code('colunas', '')
+    
     if webrtc_ctx.state.playing:
+        dataframe_string = save_qr_code('reset', 'colunas', '')
         st.write('Bobin atual')
         labels_placeholder = st.empty()
 
@@ -305,13 +300,13 @@ def VideoProcessor():
                 break
 
             if result is not None:
-                dataframe_string = save_qr_code(dataframe_string, result)
+                dataframe_string = save_qr_code('add', dataframe_string, result)
                 result_placeholder.write(dataframe_string)
 
             if encerrar_inventario:
                 doc_ref = db.collection('inventarios').document(nome_inventario)
                 dados = {}
-                dados['dataframe'] = save_qr_code(dataframe_string, '')
+                dados['dataframe'] = save_qr_code('add', dataframe_string, '')
                 doc_ref.set(dados)
                 break
 
