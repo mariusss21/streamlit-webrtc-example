@@ -195,6 +195,7 @@ def inserir_invetario() -> None:
     video_frame = webcam()
 
     if video_frame is not None:
+        st.write(type(video_frame))
         file_bytes = io.BytesIO(video_frame.getvalue())
         image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
