@@ -352,7 +352,7 @@ if __name__ == "__main__":
         entrada_bobinas()
 
     if tela_bobina == 'Inventário':
-        tela_inventario = st.sidebar.radio('Opções de inventário', ['Inserir', 'Importar', 'Visualizar'])
+        tela_inventario = st.sidebar.radio('Opções de inventário', ['Inserir', 'Visualizar']) #'Importar',
 
         if tela_inventario == 'Inserir':
             inserir_invetario()

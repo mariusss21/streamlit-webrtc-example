@@ -15,3 +15,4 @@ qrcode
 openpyxl
 xlsxwriter
 google-cloud-firestore
+streamlit-webcam-example
