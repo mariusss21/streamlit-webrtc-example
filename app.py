@@ -275,7 +275,11 @@ def inserir_invetario() -> None:
         #     if valor is not None:
         #         st.button('Inventariar bobina')
     # st.checkbox('')
-    webrtc_streamer(key='exampe', video_processor_factory=VideoProcessor)
+    webrtc_streamer(key='exampe',
+        video_processor_factory=VideoProcessor,
+        mode=WebRtcMode.SENDRECV,
+        rtc_configuration=RTC_CONFIGURATION,
+        media_stream_constraints={"video": True, "audio": False},)
     
 
 
