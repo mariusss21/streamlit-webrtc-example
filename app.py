@@ -239,7 +239,7 @@ def save_qr_code(funcao_string: str, dataframe_string: str, data:str):
     return dataframe_string
 
 
-def VideoProcessor():
+def VideoProcessor(dataframe_string: str) -> str:
     
     class video_processor(VideoProcessorBase):
 
@@ -278,7 +278,7 @@ def VideoProcessor():
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True)
     
-    dataframe_string = save_qr_code('reset', 'colunas', '')
+    dataframe_string = save_qr_code('reset', dataframe_string, '')
    
     if webrtc_ctx.state.playing:
         st.write('Bobin atual')
@@ -286,9 +286,6 @@ def VideoProcessor():
 
         st.write('Bobinas armazenadas')
         result_placeholder = st.empty()
-
-        nome_inventario = st.text_input('Nome do inventário')
-        encerrar_inventario = st.button('Encerrar inventário')
 
         while True:
             if webrtc_ctx.video_processor:
@@ -304,17 +301,6 @@ def VideoProcessor():
                 dataframe_string = save_qr_code('add', dataframe_string, result)
                 result_placeholder.write(dataframe_string)
 
-
-    else:
-        dataframe_string = save_qr_code('add', dataframe_string, '')
-        st.write(dataframe_string)
-        encerrar_inventario = st.button('Encerrar inventário')
-
-        if encerrar_inventario:
-            doc_ref = db.collection('inventarios').document(nome_inventario)
-            dados = {}
-            dados['dataframe'] = save_qr_code('add', dataframe_string, '')
-            doc_ref.set(dados)
                 
 
 
@@ -322,6 +308,18 @@ def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
 
     tela_inventario = VideoProcessor()
+
+    nome_inventario = st.text_input('Nome do inventário')
+    encerrar_inventario = st.button('Encerrar inventário')
+
+    dataframe_string = save_qr_code('add', dataframe_string, '')
+    st.write(dataframe_string)
+
+    if encerrar_inventario:
+        doc_ref = db.collection('inventarios').document(nome_inventario)
+        dados = {}
+        dados['dataframe'] = save_qr_code('add', dataframe_string, '')
+        doc_ref.set(dados)
     # nome_inventario = st.text_input('Nome do inventário')
     # data_inventario = st.date_input('Data do inventário')
 
