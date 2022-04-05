@@ -61,15 +61,20 @@ from streamlit_webrtc import (
     webrtc_streamer,
 )
 
+# RTC_CONFIGURATION = RTCConfiguration(
+#     {
+#       "RTCIceServer": [{
+#         "urls": ["turn:turn.xxx.dev:5349"],
+#         "username": "user",
+#         "credential": "password",
+#       }]
+#     }
+# )
+
 RTC_CONFIGURATION = RTCConfiguration(
-    {
-      "RTCIceServer": [{
-        "urls": ["turn:turn.xxx.dev:5349"],
-        "username": "user",
-        "credential": "password",
-      }]
-    }
+    {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
 )
+
 
 from google.cloud import firestore
 from google.oauth2 import service_account
