@@ -233,7 +233,7 @@ def VideoProcessor(dataframe_string: str) -> None:
         while True:
             if webrtc_ctx.video_processor:
                 try:
-                    result = webrtc_ctx.video_processor.result_queue.get(timeout=2.0)
+                    result = webrtc_ctx.video_processor.result_queue.get(timeout=0.50)
                 except queue.Empty:
                     result = None
                 labels_placeholder.write(result)
