@@ -244,7 +244,7 @@ def VideoProcessor():
             # file_bytes = io.BytesIO(img.getvalue())
             # image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            img = cv2.medianBlur(img, 5)
+            #img = cv2.medianBlur(img, 5)
             #valor = read_barcodes(blur) 
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
