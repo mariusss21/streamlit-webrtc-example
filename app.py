@@ -291,11 +291,11 @@ def VideoProcessor():
             else:
                 break
 
-            adicionar_valor = st.button('Salvar QR Code 1', key='Salvar QR Code 1')
+            # adicionar_valor = st.button('Salvar QR Code 1', key='Salvar QR Code 1')
 
-            if adicionar_valor and result is not None:
-                data_string = save_qr_code(result)
-                st.write(data_string)
+            # if adicionar_valor and result is not None:
+            #     data_string = save_qr_code(result)
+            #     st.write(data_string)
             
 
 
