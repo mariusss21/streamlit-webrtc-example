@@ -235,26 +235,38 @@ def get_cap():
 
 def VideoProcessor():
     def recv(self, frame):
-
-        qrDecode = cv2.QRCodeDetector()
-
         img = frame.to_ndarray(format='bgr24')
         # file_bytes = io.BytesIO(img.getvalue())
         # image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # blur = cv2.medianBlur(gray, 5)
         #valor = read_barcodes(blur) 
-
-        data, bbox, img2 = qrDecode.detectAndDecode(img)
-
-        return av.VideoFrame.from_ndarray(img2, format='bgr24')
-
+        decoder = cv2.QRCodeDetector()
+        data, points, _ = decoder.detectAndDecode(img)
+        
+        if points is not None:
+            print('Decoded data: ' + data)
+        
+            points = points[0]
+            for i in range(len(points)):
+                pt1 = [int(val) for val in points[i]]
+                pt2 = [int(val) for val in points[(i + 1) % 4]]
+                cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=3)
+                
+        return av.VideoFrame.from_ndarray(img, format='bgr24')
 
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
     nome_inventario = st.text_input('Nome do inventário')
     data_inventario = st.date_input('Data do inventário')
+
+    st.button('teste')
+    webx = webrtc_streamer(key='exampe',
+        video_processor_factory=VideoProcessor,
+        mode=WebRtcMode.SENDRECV,
+        rtc_configuration=RTC_CONFIGURATION,
+        media_stream_constraints={"video": True, "audio": False},)
 
     # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
@@ -286,12 +298,7 @@ def inserir_invetario() -> None:
         #     if valor is not None:
         #         st.button('Inventariar bobina')
     # st.checkbox('')
-    st.button('teste')
-    webx = webrtc_streamer(key='exampe',
-        video_processor_factory=VideoProcessor,
-        mode=WebRtcMode.SENDRECV,
-        rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True, "audio": False},)
+
 
     
 
