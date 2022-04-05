@@ -232,7 +232,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                     cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=1)
                     cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
-            return av.VideoFrame.from_ndarray(img, format='bgr24')
+            return av.VideoFrame.from_ndarray(img, format='gray')
 
     webrtc_ctx = webrtc_streamer(key='exampe',
         video_processor_factory=video_processor,
