@@ -282,7 +282,7 @@ def VideoProcessor():
                 if webrtc_ctx.video_processor:
                     try:
                         result = webrtc_ctx.video_processor.result_queue.get(
-                            timeout=1.0
+                            timeout=2.0
                         )
                     except queue.Empty:
                         result = None
