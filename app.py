@@ -32,9 +32,34 @@ from openpyxl.drawing.image import Image as Image_openpyxl
 from openpyxl.styles import Font, Color
 
 #from webcam import webcam
-import av
+import asyncio
+import logging
+import queue
 import threading
-from streamlit_webrtc import webrtc_streamer
+import urllib.request
+from pathlib import Path
+from typing import List, NamedTuple
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # type: ignore
+
+import av
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+import pydub
+import streamlit as st
+from aiortc.contrib.media import MediaPlayer
+
+from streamlit_webrtc import (
+    AudioProcessorBase,
+    RTCConfiguration,
+    VideoProcessorBase,
+    WebRtcMode,
+    webrtc_streamer,
+)
 
 from google.cloud import firestore
 from google.oauth2 import service_account
