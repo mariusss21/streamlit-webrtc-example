@@ -171,7 +171,10 @@ def entrada_bobinas() -> None:
             if (dict_data['conferente'] == '') or (dict_data['lote'] == ''):
                 st.error('Preencha todos os campos')
             else:
-                    
+                dict_data['descricao'] = dict_data['descricao'].replace(',',' ') 
+                dict_data['conferente'] = dict_data['conferente'].replace(',',' ')  
+                dict_data['lote'] = dict_data['lote'].replace(',',' ')  
+    
                 if dict_data['status'] == 'Não conforme':
                     dict_data['tipo_de_etiqueta'] = 'BLOQUEADO'
 
