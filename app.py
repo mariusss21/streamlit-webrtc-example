@@ -278,8 +278,9 @@ def VideoProcessor():
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True)
     
+    dataframe_string = save_qr_code('reset', 'colunas', '')
+   
     if webrtc_ctx.state.playing:
-        dataframe_string = save_qr_code('reset', 'colunas', '')
         st.write('Bobin atual')
         labels_placeholder = st.empty()
 
