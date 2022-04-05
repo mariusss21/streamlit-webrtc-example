@@ -249,7 +249,7 @@ def VideoProcessor():
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
 
-            if data != '':
+            if data != '' and data is not None:
                 self.result_queue.put(data)
             
             if points is not None:
@@ -261,7 +261,6 @@ def VideoProcessor():
                     pt2 = [int(val) for val in points[(i + 1) % 4]]
                     cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=3)
                     cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
-
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
 
