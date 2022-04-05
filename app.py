@@ -254,7 +254,7 @@ def VideoProcessor():
                     pt1 = [int(val) for val in points[i]]
                     pt2 = [int(val) for val in points[(i + 1) % 4]]
                     cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=3)
-                    cv2.putText(img=img, text=data, org=(150, 250), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=3, color=(255, 0, 0),thickness=3)
+                    cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
