@@ -292,7 +292,7 @@ def VideoProcessor():
         result_placeholder = st.empty()
 
         nome_inventario = st.text_input('Nome do inventário')
-        st.button('Encerrar inventário')
+        encerrar_inventario = st.button('Encerrar inventário')
 
         while True:
             if webrtc_ctx.video_processor:
@@ -308,8 +308,8 @@ def VideoProcessor():
                 dataframe_string = save_qr_code(dataframe_string, result)
                 result_placeholder.write(dataframe_string)
 
-            if st.button('Encerrar inventário'):
-                doc_ref = db.collection('inventarios').document('nome_inventario')
+            if encerrar_inventario:
+                doc_ref = db.collection('inventarios').document(nome_inventario)
                 dados = {}
                 dados['dataframe'] = dataframe_string
                 doc_ref.set(dados)
