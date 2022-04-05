@@ -220,16 +220,6 @@ def VideoProcessor(dataframe_string: str) -> None:
             img = frame.to_ndarray(format='gray') #bgr24
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
-            
-            # buf = io.BytesIO()
-            # np.save(buf, img)
-            # #frame.save(buf, format='PNG')
-            # #file_bytes = io.BytesIO(buf.getvalue())
-            # file_bytes = io.BytesIO(buf.getvalue())
-            # image = cv2.imdecode(np.frombuffer(buf.read()), cv2.IMREAD_COLOR)
-            # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            # blur = cv2.medianBlur(gray, 5)
-            # data = read_barcodes(blur)
 
             if data != '' and data is not None:
                 self.result_queue.put(data)
@@ -350,7 +340,7 @@ def inserir_invetario() -> None:
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
-    imagem_bobina_qr = qrcode.make(texto_qrcode, version=1, box_size=3, border=1)
+    imagem_bobina_qr = qrcode.make(texto_qrcode, version=2, box_size=3, border=1)
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
