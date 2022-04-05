@@ -285,9 +285,14 @@ def VideoProcessor():
 
     dataframe_string = ''
     if webrtc_ctx.state.playing:
-        
+        st.write('Bobin atual')
         labels_placeholder = st.empty()
+
+        st.write('Bobinas armazenadas')
         result_placeholder = st.empty()
+
+        nome_inventario = st.input_text('Nome do inventário')
+        st.button('Encerrar inventário')
 
         while True:
             if webrtc_ctx.video_processor:
@@ -302,6 +307,14 @@ def VideoProcessor():
             if result is not None:
                 dataframe_string = save_qr_code(dataframe_string, result)
                 result_placeholder.write(dataframe_string)
+
+            if st.button('Encerrar inventário'):
+                doc_ref = db.collection('inventarios').document('nome_inventario')
+                dados = {}
+                dados['dataframe'] = dataframe_string
+                doc_ref.set(dados)
+                dataframe_string = ''
+                break
 
                 
             
