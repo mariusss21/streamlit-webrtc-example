@@ -247,21 +247,15 @@ def VideoProcessor(dataframe_string: str) -> str:
             self.result_queue = queue.Queue()
         
         def recv(self, frame):
-            img = frame.to_ndarray(format='bgr24')
-            # file_bytes = io.BytesIO(img.getvalue())
-            # image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-            # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            #img = cv2.medianBlur(img, 5)
-            #valor = read_barcodes(blur) 
+            img = frame.to_ndarray(format='gray24')
+            # img = frame.to_ndarray(format='bgr24')
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
 
             if data != '' and data is not None:
                 self.result_queue.put(data)
             
-            if points is not None:
-                # print('Decoded data: ' + data)
-            
+            if points is not None:          
                 points = points[0]
                 for i in range(len(points)):
                     pt1 = [int(val) for val in points[i]]
@@ -269,7 +263,7 @@ def VideoProcessor(dataframe_string: str) -> str:
                     cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=3)
                     cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
-            return av.VideoFrame.from_ndarray(img, format='bgr24')
+            return av.VideoFrame.from_ndarray(img, format='gray24')
 
     webrtc_ctx = webrtc_streamer(key='exampe',
         video_processor_factory=video_processor,
@@ -277,8 +271,6 @@ def VideoProcessor(dataframe_string: str) -> str:
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True)
-    
-    
    
     if webrtc_ctx.state.playing:
         st.write('Bobin atual')
