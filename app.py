@@ -205,6 +205,7 @@ def inserir_invetario() -> None:
 
     while True:
         ret, video_frame = cap.read()
+        video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2RGB)
         video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
         frame_st.image(video_frame, use_column_width=True)
         blur = cv2.medianBlur(video_frame, 5)
