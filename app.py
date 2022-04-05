@@ -242,7 +242,6 @@ def VideoProcessor():
         blur = cv2.medianBlur(gray, 5)
         valor = read_barcodes(blur) 
 
-        st.button('teste')
         return av.VideoFrame.from_ndarray(img, format='bgr24'), valor
 
 
@@ -282,6 +281,7 @@ def inserir_invetario() -> None:
         #     if valor is not None:
         #         st.button('Inventariar bobina')
     # st.checkbox('')
+    st.button('teste')
     webx = webrtc_streamer(key='exampe',
         video_processor_factory=VideoProcessor,
         mode=WebRtcMode.SENDRECV,
