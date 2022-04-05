@@ -230,7 +230,7 @@ def entrada_bobinas() -> None:
 @st.cache(allow_output_mutation=True)
 def save_qr_code(data:str):
     try:
-        dataframe_string += data
+        dataframe_string = ''.join((dataframe_string, data)) 
     except:
         dataframe_string = data
     return dataframe_string
