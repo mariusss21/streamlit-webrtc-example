@@ -241,13 +241,13 @@ def VideoProcessor():
         
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24')
-            # file_bytes = io.BytesIO(img.getvalue())
-            # image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-            # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            # blur = cv2.medianBlur(gray, 5)
+            file_bytes = io.BytesIO(img.getvalue())
+            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            blur = cv2.medianBlur(gray, 5)
             #valor = read_barcodes(blur) 
             decoder = cv2.QRCodeDetector()
-            data, points, _ = decoder.detectAndDecode(img)
+            data, points, _ = decoder.detectAndDecode(blur)
 
             if data is not None:
                 self.result_queue.put(data)
