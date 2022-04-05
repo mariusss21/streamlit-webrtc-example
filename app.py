@@ -296,7 +296,7 @@ def inserir_invetario() -> None:
     # data_inventario = st.date_input('Data do inventário')
 
     # st.button('teste')
-    # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
+    video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
     # cap = get_cap()
     # frame_st = st.empty()
@@ -310,13 +310,13 @@ def inserir_invetario() -> None:
     #     valor = read_barcodes(blur)
     #     st.write(valor)
 
-        # if video_frame is not None:
-        #     file_bytes = io.BytesIO(video_frame.getvalue())
-        #     image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-        #     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        #     blur = cv2.medianBlur(gray, 5)
-        #     valor = read_barcodes(blur)
-        #     st.write(valor)
+    if video_frame is not None:
+        file_bytes = io.BytesIO(video_frame.getvalue())
+        image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        blur = cv2.medianBlur(gray, 5)
+        valor = read_barcodes(blur)
+        st.write(valor)
 
         #     # pil image to bytes
         #     # buf = io.BytesIO()
