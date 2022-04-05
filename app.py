@@ -61,19 +61,19 @@ from streamlit_webrtc import (
     webrtc_streamer,
 )
 
-RTC_CONFIGURATION = RTCConfiguration(
-    {
-      "RTCIceServer": [{
-        "urls": ["turn:turn.xxx.dev:5349"],
-        "username": "user",
-        "credential": "password",
-      }]
-    }
-)
-
 # RTC_CONFIGURATION = RTCConfiguration(
-#     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+#     {
+#       "RTCIceServer": [{
+#         "urls": ["turn:turn.xxx.dev:5349"],
+#         "username": "user",
+#         "credential": "password",
+#       }]
+#     }
 # )
+
+RTC_CONFIGURATION = RTCConfiguration(
+    {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+)
 
 
 from google.cloud import firestore
@@ -238,8 +238,8 @@ def VideoProcessor(dataframe_string: str) -> None:
         video_processor_factory=video_processor,
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": True, "audio": False},
-        async_processing=True)
+        media_stream_constraints={"video": True, "audio": False},)
+        #async_processing=True)
    
     if webrtc_ctx.state.playing:
         st.write('Bobin atual')
