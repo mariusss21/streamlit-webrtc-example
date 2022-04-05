@@ -307,7 +307,7 @@ def VideoProcessor(dataframe_string: str) -> str:
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
 
-    tela_inventario = VideoProcessor()
+    tela_inventario = VideoProcessor('colunas')
 
     nome_inventario = st.text_input('Nome do inventário')
     encerrar_inventario = st.button('Encerrar inventário')
