@@ -307,7 +307,7 @@ def VideoProcessor():
 
     else:
         dataframe_string = save_qr_code('add', dataframe_string, '')
-        result_placeholder.write(dataframe_string)
+        st.write(dataframe_string)
         encerrar_inventario = st.button('Encerrar inventário')
 
         if encerrar_inventario:
