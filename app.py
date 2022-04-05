@@ -186,6 +186,12 @@ def entrada_bobinas() -> None:
                 # st.image(image_bytearray.getvalue())
         
 
+@st.cache(allow_output_mutation=True)
+def get_cap():
+    cap = cv2.VideoCapture(0)
+    return cap
+
+
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
     nome_inventario = st.text_input('Nome do inventário')
@@ -193,21 +199,27 @@ def inserir_invetario() -> None:
 
     video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
-    if video_frame is not None:
-        file_bytes = io.BytesIO(video_frame.getvalue())
-        image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        blur = cv2.medianBlur(gray, 5)
-        valor = read_barcodes(blur)
-        st.write(valor)
+    cap = get_cap()
+    frame_st = st.empty()
+    while True:
+        ret, video_frame = cap.read()
+        frame_st.image(video_frame, use_column_width=True)
 
-        # pil image to bytes
-        # buf = io.BytesIO()
-        # video_frame.save(buf, format='PNG')
-        # file_bytes = io.BytesIO(buf.getvalue())
+        if video_frame is not None:
+            file_bytes = io.BytesIO(video_frame.getvalue())
+            image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            blur = cv2.medianBlur(gray, 5)
+            valor = read_barcodes(blur)
+            st.write(valor)
 
-        if valor is not None:
-            st.button('Inventariar bobina')
+            # pil image to bytes
+            # buf = io.BytesIO()
+            # video_frame.save(buf, format='PNG')
+            # file_bytes = io.BytesIO(buf.getvalue())
+
+            if valor is not None:
+                st.button('Inventariar bobina')
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
