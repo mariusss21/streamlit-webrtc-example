@@ -61,19 +61,19 @@ from streamlit_webrtc import (
     webrtc_streamer,
 )
 
-# RTC_CONFIGURATION = RTCConfiguration(
-#     {
-#       "RTCIceServer": [{
-#         "urls": ["turn:turn.xxx.dev:5349"],
-#         "username": "user",
-#         "credential": "password",
-#       }]
-#     }
-# )
-
 RTC_CONFIGURATION = RTCConfiguration(
-    {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+    {
+      "RTCIceServer": [{
+        "urls": ["turn:turn.xxx.dev:5349"],
+        "username": "user",
+        "credential": "password",
+      }]
+    }
 )
+
+# RTC_CONFIGURATION = RTCConfiguration(
+#     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+# )
 
 
 from google.cloud import firestore
@@ -329,8 +329,7 @@ def inserir_invetario() -> None:
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
-    # imagem_bobina_qr = qrcode.make(texto_qrcode, version=1, box_size=3, border=2)
-    imagem_bobina_qr = qrcode.make(texto_qrcode)
+    imagem_bobina_qr = qrcode.make(texto_qrcode, version=1, box_size=3, border=2)
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
