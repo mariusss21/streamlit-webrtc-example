@@ -234,7 +234,7 @@ def get_cap():
 
 
 def VideoProcessor():
-    class video_processor:
+    class video_processor(VideoProcessorBase):
         
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24')
