@@ -249,7 +249,7 @@ def VideoProcessor():
             decoder = cv2.QRCodeDetector()
             data, points, _ = decoder.detectAndDecode(img)
 
-            if data is not None:
+            if data != '':
                 self.result_queue.put(data)
             
             if points is not None:
@@ -294,12 +294,12 @@ def VideoProcessor():
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
+
+    VideoProcessor()
     nome_inventario = st.text_input('Nome do inventário')
     data_inventario = st.date_input('Data do inventário')
 
     st.button('teste')
-    VideoProcessor()
-
     # video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
 
     # cap = get_cap()
