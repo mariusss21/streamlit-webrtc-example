@@ -200,7 +200,7 @@ def inserir_invetario() -> None:
         byte_io = io.BytesIO()
         # video_frame.save(byte_io, format='PNG')
 
-        image = cv2.imdecode(np.frombuffer(video_frame.save(byte_io, format='PNG'), np.uint8), cv2.IMREAD_COLOR)
+        image = cv2.imdecode(np.frombuffer(video_frame.save(byte_io, format='PNG').read(), np.uint8), cv2.IMREAD_COLOR)
         # image = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blur = cv2.medianBlur(gray, 5)
