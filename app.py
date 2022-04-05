@@ -227,7 +227,7 @@ def entrada_bobinas() -> None:
                 # st.image(image_bytearray.getvalue())
         
 
-@st.cache(allow_output_mutation=False)
+@st.cache(allow_output_mutation=True)
 def save_qr_code(funcao_string: str, dataframe_string: str, data:str):
     if funcao_string == 'add':
         if data not in dataframe_string:
@@ -304,11 +304,14 @@ def VideoProcessor():
                 result_placeholder.write(dataframe_string)
 
             if encerrar_inventario:
-                doc_ref = db.collection('inventarios').document(nome_inventario)
-                dados = {}
-                dados['dataframe'] = save_qr_code('add', dataframe_string, '')
-                doc_ref.set(dados)
                 break
+            
+        if encerrar_inventario:
+            doc_ref = db.collection('inventarios').document(nome_inventario)
+            dados = {}
+            dados['dataframe'] = save_qr_code('add', dataframe_string, '')
+            doc_ref.set(dados)
+                
 
 
 def inserir_invetario() -> None:
@@ -349,13 +352,6 @@ def inserir_invetario() -> None:
         #     if valor is not None:
         #         st.button('Inventariar bobina')
     # st.checkbox('')
-
-
-    
-
-    
-
-    
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
