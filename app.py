@@ -292,17 +292,6 @@ def inserir_invetario() -> None:
         else:
             st.warning('Não há bobinas para armazenar')
 
-
-
-
-
-
-
-
-
-
-
-
     # nome_inventario = st.text_input('Nome do inventário')
     # data_inventario = st.date_input('Data do inventário')
 
@@ -340,7 +329,8 @@ def inserir_invetario() -> None:
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
-    imagem_bobina_qr = qrcode.make(texto_qrcode, version=1, box_size=3, border=2)
+    # imagem_bobina_qr = qrcode.make(texto_qrcode, version=1, box_size=3, border=2)
+    imagem_bobina_qr = qrcode.make(texto_qrcode)
     image_bytearray = io.BytesIO()
     imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
