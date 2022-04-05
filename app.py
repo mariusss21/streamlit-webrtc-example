@@ -31,6 +31,8 @@ from openpyxl import load_workbook
 from openpyxl.drawing.image import Image as Image_openpyxl
 from openpyxl.styles import Font, Color
 
+from webcam import webcam
+
 
 from google.cloud import firestore
 from google.oauth2 import service_account
@@ -189,7 +191,8 @@ def inserir_invetario() -> None:
     nome_inventario = st.text_input('Nome do inventário')
     data_inventario = st.date_input('Data do inventário')
 
-    video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
+    #video_frame = st.file_uploader('Tire uma foto do qrcode da bobina')
+    video_frame = webcam()
 
     if video_frame is not None:
         file_bytes = io.BytesIO(video_frame.getvalue())
