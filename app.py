@@ -200,6 +200,21 @@ def entrada_bobinas() -> None:
                     doc_ref.set(dados)
 
 
+@st.cache(output_mutations=True)
+def read_cv2(parametro: int) -> np.ndarray:
+    """
+    Reads a frame from the webcam and returns it as a numpy array.
+    """
+    cap = cv2.VideoCapture(parametro)
+    ret, frame = cap.read()
+    return frame
+
+
+def visualizar_inventario() -> None:
+    parametro_camera = st.radio('selecione a camera', [1,2,3,4,5])
+    read_cv2(parametro_camera)
+
+
 def VideoProcessor(dataframe_string: str) -> None:
     class video_processor(VideoProcessorBase):
 
@@ -399,6 +414,9 @@ if __name__ == "__main__":
 
         if tela_inventario == 'Inserir':
             inserir_invetario()
+
+        if telas_bobinas == 'Visualizar':
+            visualizar_inventario()
 
     if tela_bobina == 'Etiquetas':
         etiquetas_bobinas()
