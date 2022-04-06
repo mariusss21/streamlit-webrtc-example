@@ -212,9 +212,17 @@ def read_cv2(parametro: int) -> np.ndarray:
 
 def visualizar_inventario() -> None:
     parametro_camera = st.radio('selecione a camera', [0,1,2,3,4,5])
-    image = read_cv2(parametro_camera)
+    cap = read_cv2(parametro_camera)
+    frame_st = st.empty()
 
-    st.image(image, use_column_width=True)
+    while True:
+        ret, video_frame = cap.read()
+        video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2RGB)
+        video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
+        frame_st.image(video_frame, use_column_width=True)
+        blur = cv2.medianBlur(video_frame, 5)
+        valor = read_barcodes(blur)
+        st.write(valor)
 
 
 def VideoProcessor(dataframe_string: str) -> None:
