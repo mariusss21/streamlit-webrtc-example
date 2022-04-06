@@ -201,13 +201,13 @@ def entrada_bobinas() -> None:
 
 
 @st.cache(allow_output_mutation=True)
-def read_cv2(parametro: int):
+def read_cv2():
     return cv2.VideoCapture(0)
 
 
 def visualizar_inventario() -> None:
     parametro_camera = st.radio('selecione a camera', [0,1,2,3,4,5])
-    cap = read_cv2(parametro_camera)
+    cap = read_cv2()
     frame_st = st.empty()
 
     while True:
