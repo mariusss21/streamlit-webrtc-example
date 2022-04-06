@@ -417,7 +417,7 @@ if __name__ == "__main__":
         if tela_inventario == 'Inserir':
             inserir_invetario()
 
-        if telas_bobinas == 'Visualizar':
+        if tela_inventario == 'Visualizar':
             visualizar_inventario()
 
     if tela_bobina == 'Etiquetas':
