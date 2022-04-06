@@ -202,7 +202,7 @@ def entrada_bobinas() -> None:
 
 @st.cache(allow_output_mutation=True)
 def read_cv2():
-    return cv2.VideoCapture()
+    return cv2.VideoCapture(0)
 
 
 def visualizar_inventario() -> None:
