@@ -206,7 +206,7 @@ def read_cv2():
 
 
 def visualizar_inventario() -> None:
-    parametro_camera = st.radio('selecione a camera', [0,1,2,3,4,5, -1])
+    parametro_camera = st.radio('selecione a camera', [0,1,2,3,4,5, -1, -2, -3])
     time.sleep(1)
     cap = cv2.VideoCapture(parametro_camera)
     frame_st = st.empty()
