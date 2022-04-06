@@ -202,12 +202,7 @@ def entrada_bobinas() -> None:
 
 @st.cache(allow_output_mutation=True)
 def read_cv2(parametro: int):
-    """
-    Reads a frame from the webcam and returns it as a numpy array.
-    """
-    cap = cv2.VideoCapture(parametro)
-    #ret, frame = cap.read()
-    return cap
+    return cv2.VideoCapture(parametro)
 
 
 def visualizar_inventario() -> None:
