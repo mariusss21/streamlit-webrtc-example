@@ -206,8 +206,8 @@ def read_cv2(parametro: int) -> np.ndarray:
     Reads a frame from the webcam and returns it as a numpy array.
     """
     cap = cv2.VideoCapture(parametro)
-    ret, frame = cap.read()
-    return frame
+    #ret, frame = cap.read()
+    return cap
 
 
 def visualizar_inventario() -> None:
