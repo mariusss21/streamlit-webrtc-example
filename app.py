@@ -211,7 +211,7 @@ def read_cv2(parametro: int) -> np.ndarray:
 
 
 def visualizar_inventario() -> None:
-    parametro_camera = st.radio('selecione a camera', [1,2,3,4,5])
+    parametro_camera = st.radio('selecione a camera', [0,1,2,3,4,5])
     image = read_cv2(parametro_camera)
 
     st.image(image, use_column_width=True)
