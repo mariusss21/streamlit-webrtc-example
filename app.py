@@ -215,9 +215,10 @@ def visualizar_inventario() -> None:
     cap = read_cv2(parametro_camera)
     frame_st = st.empty()
 
-
     while True:
         success, frame = cap.read()
+        st.write(success)
+        st.write(frame)
         if not success:
             break
         frame_st.image(frame, use_column_width=True)
