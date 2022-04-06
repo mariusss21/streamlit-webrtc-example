@@ -217,7 +217,7 @@ def visualizar_inventario() -> None:
         st.write(frame)
         if not success:
             cap.release()
-            cv2.destroyAllWindows()
+            #cv2.destroyAllWindows()
             break
         frame_st.image(frame, use_column_width=True)
     #     ret, video_frame = cap.read()
