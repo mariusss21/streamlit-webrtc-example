@@ -220,6 +220,7 @@ def visualizar_inventario() -> None:
         st.write(success)
         st.write(frame)
         if not success:
+            cap.release()
             break
         frame_st.image(frame, use_column_width=True)
     #     ret, video_frame = cap.read()
