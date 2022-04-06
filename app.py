@@ -216,16 +216,18 @@ def visualizar_inventario() -> None:
     frame_st = st.empty()
 
     while True:
-        ret, video_frame = cap.read()
-        buf = io.BytesIO()
-        video_frame.save(buf, format='PNG')
-        file_bytes = io.BytesIO(buf.getvalue())
-        imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
 
-        frame_st.image(imagem, use_column_width=True)
-        blur = cv2.medianBlur(video_frame, 5)
-        valor = read_barcodes(blur)
-        st.write(valor)
+        ret, video_frame = cap.read()
+        if video_frame is not None:
+            buf = io.BytesIO()
+            video_frame.save(buf, format='PNG')
+            file_bytes = io.BytesIO(buf.getvalue())
+            imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+
+            frame_st.image(imagem, use_column_width=True)
+            # blur = cv2.medianBlur(video_frame, 5)
+            # valor = read_barcodes(blur)
+            # st.write(valor)
 
 
 def VideoProcessor(dataframe_string: str) -> None:
