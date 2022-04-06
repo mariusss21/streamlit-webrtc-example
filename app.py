@@ -32,38 +32,38 @@ from openpyxl.drawing.image import Image as Image_openpyxl
 from openpyxl.styles import Font, Color
 
 #from webcam import webcam
-# import asyncio
-# import logging
+import asyncio
+import logging
 import queue
-# import threading
-# import urllib.request
-# from pathlib import Path
-# from typing import List, NamedTuple
+import threading
+import urllib.request
+from pathlib import Path
+from typing import List, NamedTuple
 
-# try:
-#     from typing import Literal
-# except ImportError:
-#     from typing_extensions import Literal  # type: ignore
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # type: ignore
 
-# import av
-# import cv2
-# import matplotlib.pyplot as plt
-# import numpy as np
-# #import pydub
-# import streamlit as st
-# from aiortc.contrib.media import MediaPlayer
+import av
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+#import pydub
+import streamlit as st
+from aiortc.contrib.media import MediaPlayer
 
-# from streamlit_webrtc import (
-#     AudioProcessorBase,
-#     RTCConfiguration,
-#     VideoProcessorBase,
-#     WebRtcMode,
-#     webrtc_streamer,
-# )
+from streamlit_webrtc import (
+    AudioProcessorBase,
+    RTCConfiguration,
+    VideoProcessorBase,
+    WebRtcMode,
+    webrtc_streamer,
+)
 
-# RTC_CONFIGURATION = RTCConfiguration(
-#     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
-# )
+RTC_CONFIGURATION = RTCConfiguration(
+    {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+)
 
 
 from google.cloud import firestore
@@ -233,86 +233,84 @@ def visualizar_inventario() -> None:
 
 
 def VideoProcessor(dataframe_string: str) -> None:
-    # class video_processor(VideoProcessorBase):
+    class video_processor(VideoProcessorBase):
 
-    #     def __init__(self):
-    #         self.result_queue = queue.Queue()
+        def __init__(self):
+            self.result_queue = queue.Queue()
         
-    #     def recv(self, frame):
-    #         img = frame.to_ndarray(format='bgr24') #bgr24
-    #         decoder = cv2.QRCodeDetector()
-    #         data, points, _ = decoder.detectAndDecode(img)
+        def recv(self, frame):
+            img = frame.to_ndarray(format='bgr24') #bgr24
+            decoder = cv2.QRCodeDetector()
+            data, points, _ = decoder.detectAndDecode(img)
 
-    #         if data != '' and data is not None:
-    #             self.result_queue.put(data)
+            if data != '' and data is not None:
+                self.result_queue.put(data)
 
-    #         if points is not None:          
-    #             points = points[0]
-    #             for i in range(len(points)):
-    #                 pt1 = [int(val) for val in points[i]]
-    #                 pt2 = [int(val) for val in points[(i + 1) % 4]]
-    #                 cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=1)
-    #                 #cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
+            if points is not None:          
+                points = points[0]
+                for i in range(len(points)):
+                    pt1 = [int(val) for val in points[i]]
+                    pt2 = [int(val) for val in points[(i + 1) % 4]]
+                    cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=1)
+                    #cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
-    #         return av.VideoFrame.from_ndarray(img, format='bgr24')
+            return av.VideoFrame.from_ndarray(img, format='bgr24')
 
-    # webrtc_ctx = webrtc_streamer(key='example',
-    #     video_processor_factory=video_processor,
-    #     mode=WebRtcMode.SENDRECV,
-    #     rtc_configuration=RTC_CONFIGURATION,
-    #     media_stream_constraints={"video": True, "audio": False},
-    #     async_processing=True)
+    webrtc_ctx = webrtc_streamer(key='opencv-filter',
+        video_processor_factory=video_processor,
+        mode=WebRtcMode.SENDRECV,
+        rtc_configuration=RTC_CONFIGURATION,
+        media_stream_constraints={"video": True, "audio": False},
+        async_processing=True)
    
-    # if webrtc_ctx.state.playing:
-    #     st.write('Bobin atual')
-    #     labels_placeholder = st.empty()
+    if webrtc_ctx.state.playing:
+        st.write('Bobin atual')
+        labels_placeholder = st.empty()
 
-    #     st.write('Bobinas armazenadas')
-    #     result_placeholder = st.empty()
+        st.write('Bobinas armazenadas')
+        result_placeholder = st.empty()
 
-    #     while True:
-    #         if webrtc_ctx.video_processor:
-    #             try:
-    #                 result = webrtc_ctx.video_processor.result_queue.get(timeout=1.0)
-    #             except queue.Empty:
-    #                 result = None
-    #             labels_placeholder.write(result)
-    #         else:
-    #             break
+        while True:
+            if webrtc_ctx.video_processor:
+                try:
+                    result = webrtc_ctx.video_processor.result_queue.get(timeout=1.0)
+                except queue.Empty:
+                    result = None
+                labels_placeholder.write(result)
+            else:
+                break
 
-    #         if result is not None:
-    #             if result not in st.session_state.data_inventario and result.count(',') == 8:
-    #                 st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
-    #                 result_placeholder.write(st.session_state.data_inventario)
-    pass
+            if result is not None:
+                if result not in st.session_state.data_inventario and result.count(',') == 8:
+                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
+                    result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_invetario() -> None:
-    # st.subheader('Inventário de bobinas')
-    # encerrar_inventario = st.button('Encerrar inventário') 
-    # nome_inventario = st.text_input('Nome do inventário')
+    st.subheader('Inventário de bobinas')
+    encerrar_inventario = st.button('Encerrar inventário') 
+    nome_inventario = st.text_input('Nome do inventário')
 
-    # colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
-    # if 'data_inventario' not in st.session_state:
-    #     st.session_state['data_inventario'] = colunas 
+    colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
+    if 'data_inventario' not in st.session_state:
+        st.session_state['data_inventario'] = colunas 
 
-    # VideoProcessor('colunas')
+    VideoProcessor('colunas')
 
-    # st.write(st.session_state.data_inventario)
+    st.write(st.session_state.data_inventario)
 
-    # if encerrar_inventario:
+    if encerrar_inventario:
         
-    #     if st.session_state.data_inventario != colunas:
-    #         doc_ref = db.collection('inventarios').document(nome_inventario)
-    #         dados = {}
-    #         dados['dataframe'] = st.session_state.data_inventario
-    #         doc_ref.set(dados)
+        if st.session_state.data_inventario != colunas:
+            doc_ref = db.collection('inventarios').document(nome_inventario)
+            dados = {}
+            dados['dataframe'] = st.session_state.data_inventario
+            doc_ref.set(dados)
             
-    #         del st.session_state['data_inventario']
-    #         st.experimental_rerun()
-    #     else:
-    #         st.warning('Não há bobinas para armazenar')
-    pass
+            del st.session_state['data_inventario']
+            st.experimental_rerun()
+        else:
+            st.warning('Não há bobinas para armazenar')
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
