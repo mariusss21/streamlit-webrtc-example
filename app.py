@@ -215,17 +215,21 @@ def visualizar_inventario() -> None:
     cap = read_cv2(parametro_camera)
     frame_st = st.empty()
 
+
     while True:
+        success, frame = cap.read()
+        if not success:
+            break
+        frame_st.image(frame, use_column_width=True)
+    #     ret, video_frame = cap.read()
+    #     if video_frame is not None:
+    #         buf = io.BytesIO()
+    #         video_frame.save(buf, format='PNG')
+    #         file_bytes = io.BytesIO(buf.getvalue())
+    #         imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
 
-        ret, video_frame = cap.read()
-        if video_frame is not None:
-            buf = io.BytesIO()
-            video_frame.save(buf, format='PNG')
-            file_bytes = io.BytesIO(buf.getvalue())
-            imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-
-            frame_st.image(imagem, use_column_width=True)
-            # blur = cv2.medianBlur(video_frame, 5)
+    #         frame_st.image(imagem, use_column_width=True)
+    #         # blur = cv2.medianBlur(video_frame, 5)
             # valor = read_barcodes(blur)
             # st.write(valor)
 
