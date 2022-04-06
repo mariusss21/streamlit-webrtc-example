@@ -217,9 +217,10 @@ def visualizar_inventario() -> None:
 
     while True:
         ret, video_frame = cap.read()
-        # video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2RGB)
-        # video_frame = cv2.cvtColor(video_frame, cv2.COLOR_BGR2GRAY)
-        frame_st.image(video_frame, use_column_width=True)
+        buf = io.BytesIO()
+        video_frame.save(buf, format='PNG')
+        file_bytes = io.BytesIO(buf.getvalue())
+        frame_st.image(file_bytes, use_column_width=True)
         blur = cv2.medianBlur(video_frame, 5)
         valor = read_barcodes(blur)
         st.write(valor)
