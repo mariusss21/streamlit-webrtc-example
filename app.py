@@ -200,7 +200,7 @@ def entrada_bobinas() -> None:
                     doc_ref.set(dados)
 
 
-@st.cache(output_mutations=True)
+@st.cache(allow_output_mutation=True)
 def read_cv2(parametro: int) -> np.ndarray:
     """
     Reads a frame from the webcam and returns it as a numpy array.
