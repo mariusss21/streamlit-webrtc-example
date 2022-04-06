@@ -220,7 +220,9 @@ def visualizar_inventario() -> None:
         buf = io.BytesIO()
         video_frame.save(buf, format='PNG')
         file_bytes = io.BytesIO(buf.getvalue())
-        frame_st.image(file_bytes, use_column_width=True)
+        imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+
+        frame_st.image(imagem, use_column_width=True)
         blur = cv2.medianBlur(video_frame, 5)
         valor = read_barcodes(blur)
         st.write(valor)
