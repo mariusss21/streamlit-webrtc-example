@@ -243,13 +243,13 @@ def VideoProcessor(dataframe_string: str) -> None:
             img = frame.to_ndarray(format='bgr24') #bgr24
             #decoder = cv2.QRCodeDetector()
             #data, points, _ = decoder.detectAndDecode(img)
-            
+
             buf = io.BytesIO()
             img.save(buf, format='PNG')
             file_bytes = io.BytesIO(buf.getvalue())
             imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
             blur = cv2.medianBlur(imagem, 5)
-            data = read_barcodes(blur)
+            data = read_barcodes(imagem)
 
 
             if data != '' and data is not None:
