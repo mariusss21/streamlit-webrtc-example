@@ -22,7 +22,7 @@ from PIL import Image
 import io
 import matplotlib.pyplot as plt
 import cv2
-#from pyzbar.pyzbar import decode
+from pyzbar.pyzbar import decode
 import time
 import qrcode
 from PIL import Image
