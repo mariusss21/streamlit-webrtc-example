@@ -250,7 +250,7 @@ def VideoProcessor(dataframe_string: str) -> None:
             # file_bytes = io.BytesIO(buf.getvalue())
             # imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
             # blur = cv2.medianBlur(imagem, 5)
-            data = read_barcodes(frame)
+            data = read_barcodes(img)
 
 
             if data != '' and data is not None:
