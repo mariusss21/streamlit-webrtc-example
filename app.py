@@ -241,11 +241,19 @@ def VideoProcessor(dataframe_string: str) -> None:
         
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24') #bgr24
-            decoder = cv2.QRCodeDetector()
-            data, points, _ = decoder.detectAndDecode(img)
+            #decoder = cv2.QRCodeDetector()
+            #data, points, _ = decoder.detectAndDecode(img)
+            
+            buf = io.BytesIO()
+            img.save(buf, format='PNG')
+            file_bytes = io.BytesIO(buf.getvalue())
+            imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            blur = cv2.medianBlur(imagem, 5)
+            data = read_barcodes(blur)
 
-            # if data != '' and data is not None:
-            #     self.result_queue.put(data)
+
+            if data != '' and data is not None:
+                self.result_queue.put(data)
 
             # if points is not None:          
             #     points = points[0]
@@ -281,10 +289,10 @@ def VideoProcessor(dataframe_string: str) -> None:
             else:
                 break
 
-            # if result is not None:
-            #     if result not in st.session_state.data_inventario and result.count(',') == 8:
-            #         st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
-            #         result_placeholder.write(st.session_state.data_inventario)
+            if result is not None:
+                if result not in st.session_state.data_inventario and result.count(',') == 8:
+                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
+                    result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_invetario() -> None:
