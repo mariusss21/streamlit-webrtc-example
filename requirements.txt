@@ -3,7 +3,11 @@ matplotlib==3.5.1
 numpy==1.21.4
 opencv-python-headless==4.5.5.62
 pydub==0.25.1
+<<<<<<< HEAD
 streamlit==1.6.0
+=======
+streamlit==1.7.0
+>>>>>>> 7cb4dea671148e64b5a20714ebaa54f3220eb05d
 streamlit_webrtc==0.36.1
 typing_extensions==4.1.1
 pyzbar
@@ -13,4 +17,4 @@ qrcode
 openpyxl
 xlsxwriter
 google-cloud-firestore
-click==7.1.2
+click==8
