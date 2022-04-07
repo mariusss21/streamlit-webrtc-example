@@ -244,8 +244,8 @@ def VideoProcessor(dataframe_string: str) -> None:
             #decoder = cv2.QRCodeDetector()
             #data, points, _ = decoder.detectAndDecode(img)
 
-            buf = io.BytesIO()
-            img.save(buf, format='PNG')
+            # buf = io.BytesIO()
+            # img.save(buf, format='PNG')
             file_bytes = io.BytesIO(frame.getvalue())
             imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
             blur = cv2.medianBlur(imagem, 5)
