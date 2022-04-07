@@ -242,7 +242,7 @@ def VideoProcessor(dataframe_string: str) -> None:
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24') #bgr24
             decoder = cv2.QRCodeDetector()
-            points = decoder.detect(img)
+            _, points = decoder.detect(img)
             # color_mat = cv2.cvtColor(np.array(frame.to_image()), cv2.COLOR_RGB2BGR)
 
             # buf = io.BytesIO()
