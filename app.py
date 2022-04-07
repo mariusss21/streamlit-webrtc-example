@@ -246,7 +246,7 @@ def VideoProcessor(dataframe_string: str) -> None:
 
             buf = io.BytesIO()
             img.save(buf, format='PNG')
-            file_bytes = io.BytesIO(buf.getvalue())
+            file_bytes = io.BytesIO(frame.getvalue())
             imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
             blur = cv2.medianBlur(imagem, 5)
             data = read_barcodes(imagem)
