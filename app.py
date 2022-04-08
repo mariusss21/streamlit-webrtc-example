@@ -368,7 +368,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     b64 = base64.b64encode(towrite).decode()  # some strings
 
     # link para download e nome do arquivo
-    linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a>'
+    linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="etiqueta.xlsx">Download etiqueta</a>'
     st.markdown(linko, unsafe_allow_html=True)
 
 
@@ -403,11 +403,11 @@ def etiquetas_bobinas() -> None:
                     for colunas in df_etiqueta_dia.columns:
                         if colunas != 'tipo_de_etiqueta':
                             texto_qrcode = ''.join((texto_qrcode, str(df_etiqueta_dia.loc[bobina, colunas]), ','))
-                            texto_qrcode = texto_qrcode[0:-1]
                             st.write(f'**{colunas}:** {df_etiqueta_dia.loc[bobina, colunas]}')
 
                     botao_download_etiqueta = st.button('Download etiqueta', key=str(bobina))
                     if botao_download_etiqueta:
+                        texto_qrcode = texto_qrcode[0:-1]
                         download_etiqueta(texto_qrcode, df_bobinas.iloc[bobina])
 
     
