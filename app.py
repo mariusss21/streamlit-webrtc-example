@@ -291,7 +291,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                 break
 
             if result is not None:
-                if result not in st.session_state.data_inventario and result.count(',') == 8:
+                if result not in st.session_state.data_inventario and result.count(',') == 7:
                     st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
                     result_placeholder.write(st.session_state.data_inventario)
 
