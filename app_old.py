@@ -490,3 +490,30 @@ if __name__ == "__main__":
         # if botao_sair:
         #     st.session_state['logado'] = False
         #     st.experimental_rerun()
+
+                def recv(self, frame):
+            img = frame.to_ndarray(format='bgr24') #bgr24
+            # decoder = cv2.QRCodeDetector()
+            # _, points = decoder.detect(img)
+            # color_mat = cv2.cvtColor(np.array(frame.to_image()), cv2.COLOR_RGB2BGR)
+
+            # buf = io.BytesIO()
+            # color_mat.save(buf, format='PNG')
+            # file_bytes = io.BytesIO(buf.getvalue())
+            # imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+            # blur = cv2.medianBlur(imagem, 5)
+            data = read_barcodes(img)
+
+
+            if data != '' and data is not None:
+                self.result_queue.put(data)
+
+            # if points is not None:          
+            #     points = points[0]
+            #     for i in range(len(points)):
+            #         pt1 = [int(val) for val in points[i]]
+            #         pt2 = [int(val) for val in points[(i + 1) % 4]]
+            #         cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=2)
+                    #cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
+
+            return av.VideoFrame.from_ndarray(img, format='bgr24')

@@ -206,31 +206,26 @@ def read_cv2():
 
 
 def visualizar_inventario() -> None:
-    parametro_camera = st.radio('selecione a camera', [0,1,2,3,4,5, -1, -2, -3])
-    time.sleep(1)
-    cap = cv2.VideoCapture(parametro_camera)
-    frame_st = st.empty()
+    doc_ref = db.collection('inventario').document('inventario')
+    doc = doc_ref.get()
 
-    while True:
-        success, frame = cap.read()
-        st.write(success)
-        st.write(frame)
-        if not success:
-            cap.release()
-            #cv2.destroyAllWindows()
-            break
-        frame_st.image(frame, use_column_width=True)
-    #     ret, video_frame = cap.read()
-    #     if video_frame is not None:
-    #         buf = io.BytesIO()
-    #         video_frame.save(buf, format='PNG')
-    #         file_bytes = io.BytesIO(buf.getvalue())
-    #         imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+    if doc.exists:
+        dicionario = doc.to_dict()
+        csv = dicionario['dataframe']
 
-    #         frame_st.image(imagem, use_column_width=True)
-    #         # blur = cv2.medianBlur(video_frame, 5)
-            # valor = read_barcodes(blur)
-            # st.write(valor)
+        csv_string = StringIO(csv)
+        df_bobinas = pd.read_csv(csv_string, sep=',') 
+
+        df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str) + '_' + df_bobinas['tipo'].astype(str)
+
+        lista_inventarios = df_bobinas['id'].unique()
+
+        for inventario in lista_inventarios:
+            df_inventario = df_bobinas[df_bobinas['id'] == inventario]
+            with st.expander(f'id ({str(df_inventario.shape[0])})'):
+                st.dataframe(df_inventario)
+    else:
+        st.warning('Não existem inventários')
 
 
 def VideoProcessor(dataframe_string: str) -> None:
@@ -241,28 +236,10 @@ def VideoProcessor(dataframe_string: str) -> None:
         
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24') #bgr24
-            # decoder = cv2.QRCodeDetector()
-            # _, points = decoder.detect(img)
-            # color_mat = cv2.cvtColor(np.array(frame.to_image()), cv2.COLOR_RGB2BGR)
-
-            # buf = io.BytesIO()
-            # color_mat.save(buf, format='PNG')
-            # file_bytes = io.BytesIO(buf.getvalue())
-            # imagem = cv2.imdecode(np.frombuffer(file_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
-            # blur = cv2.medianBlur(imagem, 5)
             data = read_barcodes(img)
-
 
             if data != '' and data is not None:
                 self.result_queue.put(data)
-
-            # if points is not None:          
-            #     points = points[0]
-            #     for i in range(len(points)):
-            #         pt1 = [int(val) for val in points[i]]
-            #         pt2 = [int(val) for val in points[(i + 1) % 4]]
-            #         cv2.line(img, pt1, pt2, color=(255, 0, 0), thickness=2)
-                    #cv2.putText(img=img, text=data, org=(10, 10), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=1, color=(255, 0, 0),thickness=1)
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
 
@@ -298,9 +275,9 @@ def VideoProcessor(dataframe_string: str) -> None:
 
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
+    
+    nome_inventario = st.text_input('ID do colaborador:')
     encerrar_inventario = st.button('Encerrar inventário') 
-    nome_inventario = st.text_input('Nome do inventário')
-
     colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
     if 'data_inventario' not in st.session_state:
         st.session_state['data_inventario'] = colunas 
@@ -308,18 +285,38 @@ def inserir_invetario() -> None:
     VideoProcessor('colunas')
     csv_string = StringIO(st.session_state.data_inventario)
     df_inventario_atual = pd.read_csv(csv_string, sep=',')
+    df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
+    df_inventario_atual['nome_inventario'] = nome_inventario
     st.write(df_inventario_atual)
 
     if encerrar_inventario:
         
         if st.session_state.data_inventario != colunas:
-            doc_ref = db.collection('inventarios').document(nome_inventario)
-            dados = {}
-            dados['dataframe'] = st.session_state.data_inventario
-            doc_ref.set(dados)
-            
-            del st.session_state['data_inventario']
-            st.experimental_rerun()
+                doc_ref = db.collection('inventario').document('inventario')
+                doc = doc_ref.get()
+
+                if doc.exists:
+                    dicionario = doc.to_dict()
+                    csv = dicionario['dataframe']
+
+                    csv_string = StringIO(csv)
+                    df_bobinas = pd.read_csv(csv_string, sep=',')
+
+                    df_bobinas = df_bobinas.append(df_inventario_atual, ignore_index=True)
+                    df_bobinas.drop_duplicates(inplace=True)
+
+                    dados = {}
+                    dados['dataframe'] = df_bobinas.to_csv(index=False)
+
+                    doc_ref.set(dados)
+                else:
+                    df_bobinas = pd.DataFrame(df_inventario_atual, index=[0])
+                    df_bobinas.drop_duplicates(inplace=True)
+
+                    dados = {}
+                    dados['dataframe'] = df_bobinas.to_csv(index=False)
+
+                    doc_ref.set(dados)
         else:
             st.warning('Não há bobinas para armazenar')
 
