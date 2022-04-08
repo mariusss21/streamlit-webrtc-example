@@ -216,16 +216,16 @@ def visualizar_inventario() -> None:
         csv_string = StringIO(csv)
         df_bobinas = pd.read_csv(csv_string, sep=',') 
 
-        df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str) + '_' + df_bobinas['tipo'].astype(str)
+        df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
 
         lista_inventarios = df_bobinas['id'].unique()
 
         for inventario in lista_inventarios:
             df_inventario = df_bobinas[df_bobinas['id'] == inventario]
-            with st.expander(f'id ({str(df_inventario.shape[0])})'):
+            with st.expander(f'{inventario} ({str(df_inventario.shape[0])})'):
                 st.dataframe(df_inventario)
     else:
-        st.warning('Não existem inventários')
+        st.warning('Não foram realizados inventários')
 
 
 def VideoProcessor(dataframe_string: str) -> None:
@@ -309,6 +309,7 @@ def inserir_invetario() -> None:
                     dados['dataframe'] = df_bobinas.to_csv(index=False)
 
                     doc_ref.set(dados)
+                    st.session_state['data_inventario'] = colunas 
                 else:
                     df_bobinas = pd.DataFrame(df_inventario_atual, index=[0])
                     df_bobinas.drop_duplicates(inplace=True)
@@ -317,6 +318,7 @@ def inserir_invetario() -> None:
                     dados['dataframe'] = df_bobinas.to_csv(index=False)
 
                     doc_ref.set(dados)
+                    st.session_state['data_inventario'] = colunas 
         else:
             st.warning('Não há bobinas para armazenar')
 
