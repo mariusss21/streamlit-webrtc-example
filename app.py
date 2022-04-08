@@ -334,7 +334,6 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws = wb.active
         img = Image_openpyxl(image_bytearray)
         ws.add_image(img,'F2')
-        st.write(dados_bobina.astype(str))
 
         ft = Font(bold=True, size=48)
 
