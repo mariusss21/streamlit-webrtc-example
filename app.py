@@ -306,8 +306,9 @@ def inserir_invetario() -> None:
         st.session_state['data_inventario'] = colunas 
 
     VideoProcessor('colunas')
-
-    st.write(st.session_state.data_inventario)
+    csv_string = StringIO(st.session_state.data_inventario)
+    df_inventario_atual = pd.read_csv(csv_string, sep=',')
+    st.write(df_inventario_atual)
 
     if encerrar_inventario:
         
