@@ -406,10 +406,9 @@ def etiquetas_bobinas() -> None:
                             texto_qrcode = ''.join((texto_qrcode, str(df_etiqueta_dia.loc[bobina, colunas]), ','))
                             st.write(f'**{colunas}:** {df_etiqueta_dia.loc[bobina, colunas]}')
 
-                    botao_download_etiqueta = st.button('Download etiqueta', key=str(bobina))
-                    if botao_download_etiqueta:
-                        texto_qrcode = texto_qrcode[0:-1]
-                        download_etiqueta(texto_qrcode, df_bobinas.iloc[bobina])
+                    # botao_download_etiqueta = st.button('Download etiqueta', key=str(bobina))
+                    texto_qrcode = texto_qrcode[0:-1]
+                    download_etiqueta(texto_qrcode, df_bobinas.iloc[bobina])
 
     
 def login_session_state() -> None:
