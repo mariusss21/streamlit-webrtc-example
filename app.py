@@ -206,6 +206,8 @@ def read_cv2():
 
 
 def visualizar_inventario() -> None:
+    st.subheader('Inventários realizados')
+
     doc_ref = db.collection('inventario').document('inventario')
     doc = doc_ref.get()
 
