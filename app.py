@@ -297,7 +297,7 @@ def inserir_invetario() -> None:
     df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
     df_inventario_atual['nome_inventario'] = nome_inventario
 
-    if df_inventario_atual.shape[0] > 1:
+    if df_inventario_atual.shape[0] > 0:
         st.write(df_inventario_atual)
     else:
         st.warning('Nenhuma bobina adicionada ao inventário')
