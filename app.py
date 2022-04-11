@@ -274,10 +274,10 @@ def VideoProcessor(dataframe_string: str) -> None:
                     st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
                     labels_placeholder.success('Bobina adicionada ao inventário')
 
-                if result not in st.session_state.data_inventario and result.count(',') == 7:
+                if result in st.session_state.data_inventario and result.count(',') == 7:
                     labels_placeholder.info('Bobina já adicionada ao inventário')
 
-                if result.count(',') == 7:
+                if result.count(',') != 7:
                     labels_placeholder.error('QR code inválido')
                     # result_placeholder.write(st.session_state.data_inventario)
 
