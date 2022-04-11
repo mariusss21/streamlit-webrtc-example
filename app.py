@@ -253,26 +253,33 @@ def VideoProcessor(dataframe_string: str) -> None:
         async_processing=True)
    
     if webrtc_ctx.state.playing:
-        st.write('Bobin atual')
+        st.write('Bobina atual')
         labels_placeholder = st.empty()
 
-        st.write('Bobinas armazenadas')
-        result_placeholder = st.empty()
+        # st.write('Bobinas armazenadas')
+        # result_placeholder = st.empty()
 
         while True:
             if webrtc_ctx.video_processor:
                 try:
-                    result = webrtc_ctx.video_processor.result_queue.get(timeout=1.0)
+                    result = webrtc_ctx.video_processor.result_queue.get(timeout=2.0)
                 except queue.Empty:
                     result = None
-                labels_placeholder.write(result)
+                    labels_placeholder.warning('Nenhum QR code detectado')
             else:
                 break
 
             if result is not None:
                 if result not in st.session_state.data_inventario and result.count(',') == 7:
                     st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
-                    result_placeholder.write(st.session_state.data_inventario)
+                    labels_placeholder.success('Bobina adicionada ao inventário')
+
+                if result not in st.session_state.data_inventario and result.count(',') == 7:
+                    labels_placeholder.info('Bobina já adicionada ao inventário')
+
+                if result.count(',') == 7:
+                    labels_placeholder.error('QR code inválido')
+                    # result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_invetario() -> None:
@@ -289,7 +296,11 @@ def inserir_invetario() -> None:
     df_inventario_atual = pd.read_csv(csv_string, sep=',')
     df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
     df_inventario_atual['nome_inventario'] = nome_inventario
-    st.write(df_inventario_atual)
+
+    if df_inventario_atual.shape[0] > 1:
+        st.write(df_inventario_atual)
+    else:
+        st.warning('Nenhuma bobina adicionada ao inventário')
 
     if encerrar_inventario:
         
