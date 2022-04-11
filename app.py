@@ -253,7 +253,7 @@ def VideoProcessor(dataframe_string: str) -> None:
         async_processing=True)
    
     if webrtc_ctx.state.playing:
-        st.write('Bobina atual')
+        #st.write('Bobina atual')
         labels_placeholder = st.empty()
 
         # st.write('Bobinas armazenadas')
