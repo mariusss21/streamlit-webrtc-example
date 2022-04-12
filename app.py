@@ -252,10 +252,17 @@ def VideoProcessor(dataframe_string: str) -> None:
         
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24') #bgr24
-            data = read_barcodes(img)
+            # data = read_barcodes(img)
+            data = ''
+
+            barcodes = decode(img)
+            for barcode in barcodes:
+                x, y , w, h = barcode.rect        #1
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 5)
+                data = barcode.data.decode('utf-8')
 
             if data != '' and data is not None:
-                self.result_queue.put(data)
+                self.result_queue.put(data)               
 
             return av.VideoFrame.from_ndarray(img, format='bgr24')
 
@@ -351,11 +358,14 @@ def inserir_invetario() -> None:
 
 
 def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
-    imagem_bobina_qr = qrcode.make(texto_qrcode , version=12, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
-    image_bytearray = io.BytesIO()
-    imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
+    # imagem_bobina_qr = qrcode.make(texto_qrcode , version=12, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
+    # image_bytearray = io.BytesIO()
+    # imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
+        imagem_bobina_qr = qrcode.make(texto_qrcode , version=12, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
+        image_bytearray = io.BytesIO()
+        imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
         wb = load_workbook('LIBERADO.xlsx')
         ws = wb.active
         img = Image_openpyxl(image_bytearray)
@@ -373,7 +383,9 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws['A18'].font = ft
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
-        
+        imagem_bobina_qr = qrcode.make(texto_qrcode , version=10, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
+        image_bytearray = io.BytesIO()
+        imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')        
         wb = load_workbook('BLOQUEADO.xlsx')
         ws = wb.active        
         #ws = wb['BLOQUEADO']
