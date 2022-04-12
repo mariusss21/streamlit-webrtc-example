@@ -131,7 +131,7 @@ def entrada_bobinas() -> None:
     with st.form(key='myform', clear_on_submit=True):
         texto_qrcode = ''
 
-        dict_tipo_bobinas = {
+        dict_descricao_bobinas = {
         'BOBINA ALUMINIO LATA 16 OZ COIL 00098': 50761710,
         'BOBINA ALUMINIO LATA 12 OZ COIL 00098': 50679811,
         'BOBINA ALUMINIO LATA 12 OZ COIL 98 SCRAP': 40011008,
@@ -146,12 +146,14 @@ def entrada_bobinas() -> None:
         'BOBINA ALUMINIO TAMPA BRANCA': 50527252,
         'BOBINA ALUMINIO LACRE DOURADO': 50771048}
 
+        tipo_bobinas = ['l1', 'm1', 'h1']
+
         dict_data['status'] = st.selectbox('Status da bobina', ['Liberado', 'Não conforme']) # data
-        dict_data['descricao'] = st.text_input('Descrição:')
+        dict_data['descricao'] = st.selectbox('Descrição:', list(dict_descricao_bobinas.keys()))
         dict_data['conferente'] = st.text_input('Conferente:')
         dict_data['quantidade'] = st.number_input('Quantidade:', format='%i', step=1, value=9000)
         dict_data['lote'] = st.text_input('Lote SAP:')
-        dict_data['tipo'] = st.selectbox('Tipo', list(dict_tipo_bobinas.keys()))
+        dict_data['tipo'] = st.selectbox('Tipo', tipo_bobinas)
         dict_data['data'] = st.date_input('Data entrada:')
 
         submit_button = st.form_submit_button(label='Salvar bobina')
@@ -171,7 +173,7 @@ def entrada_bobinas() -> None:
                 if dict_data['status'] == 'Liberado':
                     dict_data['tipo_de_etiqueta'] = 'LIBERADO'
 
-                dict_data['sap'] = dict_tipo_bobinas[dict_data['tipo']]
+                dict_data['sap'] = dict_descricao_bobinas[dict_data['descricao']]
 
                 doc_ref = db.collection('bobinas').document('bobinas')
                 doc = doc_ref.get()
@@ -189,7 +191,12 @@ def entrada_bobinas() -> None:
                     dados = {}
                     dados['dataframe'] = df_bobinas.to_csv(index=False)
 
-                    doc_ref.set(dados)
+                    try:
+                        doc_ref.set(dados)
+                        st.success('Bobina inserida com sucesso')
+                    except:
+                        st.error('Erro ao inserir bobina')
+ 
                 else:
                     df_bobinas = pd.DataFrame(dict_data, index=[0])
                     df_bobinas.drop_duplicates(inplace=True)
@@ -197,7 +204,14 @@ def entrada_bobinas() -> None:
                     dados = {}
                     dados['dataframe'] = df_bobinas.to_csv(index=False)
 
-                    doc_ref.set(dados)
+                    try:
+                        doc_ref.set(dados)
+                        st.success('Bobina inserida com sucesso')
+                    except:
+                        st.error('Erro ao inserir bobina')
+
+                time.sleep(2)
+                st.experimental_rerun()
 
 
 @st.cache(allow_output_mutation=True)
