@@ -233,7 +233,7 @@ def visualizar_inventario() -> None:
         df_bobinas = pd.read_csv(csv_string, sep=',') 
 
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
-        df_bobinas.sort_values(by=['data_inventario'], inplace=True)
+        df_bobinas.sort_values(by=['data_inventario'], ascending=False, inplace=True)
 
         lista_inventarios = df_bobinas['id'].unique()
 
