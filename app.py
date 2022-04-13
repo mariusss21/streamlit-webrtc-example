@@ -342,11 +342,14 @@ def inserir_invetario() -> None:
                     dados = {}
                     dados['dataframe'] = df_bobinas.to_csv(index=False)
 
-                    doc_ref.set(dados)
-                    st.session_state['data_inventario'] = colunas 
-                    st.success('Inventário realizado com sucesso')
-                    time.sleep(1)
-                    st.experimental_rerun() 
+                    try:
+                        doc_ref.set(dados)
+                        st.session_state['data_inventario'] = colunas
+                        st.success('Inventário realizado com sucesso')
+                        time.sleep(1)
+                        st.experimental_rerun() 
+                    except:
+                        st.error('Erro ao salvar inventário')
                 else:
                     df_bobinas = pd.DataFrame(df_inventario_atual, index=[0])
                     df_bobinas.drop_duplicates(inplace=True)
@@ -354,11 +357,15 @@ def inserir_invetario() -> None:
                     dados = {}
                     dados['dataframe'] = df_bobinas.to_csv(index=False)
 
-                    doc_ref.set(dados)
-                    st.session_state['data_inventario'] = colunas
-                    st.success('Inventário realizado com sucesso')
-                    time.sleep(1)
-                    st.experimental_rerun() 
+                    try:
+                        doc_ref.set(dados)
+                        st.session_state['data_inventario'] = colunas
+                        st.success('Inventário realizado com sucesso')
+                        time.sleep(1)
+                        st.experimental_rerun() 
+                    except:
+                        st.error('Erro ao salvar inventário')
+
         else:
             st.warning('Não há bobinas para armazenar')
 
