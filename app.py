@@ -346,8 +346,6 @@ def inserir_invetario() -> None:
                         doc_ref.set(dados)
                         st.session_state['data_inventario'] = colunas
                         st.success('Inventário realizado com sucesso')
-                        time.sleep(1)
-                        st.experimental_rerun() 
                     except:
                         st.error('Erro ao salvar inventário')
                 else:
@@ -361,11 +359,11 @@ def inserir_invetario() -> None:
                         doc_ref.set(dados)
                         st.session_state['data_inventario'] = colunas
                         st.success('Inventário realizado com sucesso')
-                        time.sleep(1)
-                        st.experimental_rerun() 
                     except:
                         st.error('Erro ao salvar inventário')
 
+                time.sleep(1)
+                st.experimental_rerun() 
         else:
             st.warning('Não há bobinas para armazenar')
 
