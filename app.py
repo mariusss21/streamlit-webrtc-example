@@ -146,7 +146,7 @@ def entrada_bobinas() -> None:
         'BOBINA ALUMINIO TAMPA BRANCA': 50527252,
         'BOBINA ALUMINIO LACRE DOURADO': 50771048}
 
-        tipo_bobinas = ['l1', 'm1', 'h1']
+        tipo_bobinas = ['L3', 'L2', 'L1', 'M', 'H1', 'H2', 'H3']
 
         dict_data['status'] = st.selectbox('Status da bobina', ['Liberado', 'Não conforme']) # data
         dict_data['descricao'] = st.selectbox('Descrição:', list(dict_descricao_bobinas.keys()))
