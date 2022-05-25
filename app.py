@@ -505,6 +505,8 @@ if __name__ == "__main__":
 
         while run:
             ret, frame = cam.read()
+            st.write(frame)
+            st.write(ret)
             frame = frame.to_ndarray(format='bgr24')
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             FRAME_WINDOW.image(frame)
