@@ -479,7 +479,7 @@ if __name__ == "__main__":
     c1.image('logo2.png', width=150)
 
     st.sidebar.subheader('Bobinas')
-    telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
+    telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário', 'Teste']
     tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
     if tela_bobina == 'Entrada de bobinas':
@@ -496,3 +496,16 @@ if __name__ == "__main__":
 
     if tela_bobina == 'Etiquetas':
         etiquetas_bobinas()
+        
+    if tela_bobina == 'Teste':
+        st.title("Webcam Application")
+        run = st.checkbox('Run')
+        FRAME_WINDOW = st.image([])
+        cam = cv2.VideoCapture(1)
+
+        while run:
+            ret, frame = cam.read()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            FRAME_WINDOW.image(frame)
+        else:
+            st.write('Stopped')
