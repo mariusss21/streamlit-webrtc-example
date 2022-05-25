@@ -501,7 +501,7 @@ if __name__ == "__main__":
         st.title("Webcam Application")
         run = st.checkbox('Run')
         FRAME_WINDOW = st.image([])
-        cam = cv2.VideoCapture(0)
+        cam = cv2.VideoCapture(1)
 
         while run:
             ret, frame = cam.read()
