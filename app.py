@@ -270,9 +270,9 @@ def VideoProcessor(dataframe_string: str) -> None:
     webrtc_ctx = webrtc_streamer(key='opencv-filter',
         video_processor_factory=video_processor,
         mode=WebRtcMode.SENDRECV,
-        #rtc_configuration=RTC_CONFIGURATION,
+        rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},
-        async_processing=True)
+        async_processing=False)
    
     if webrtc_ctx.state.playing:
         #st.write('Bobina atual')
