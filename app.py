@@ -498,17 +498,18 @@ if __name__ == "__main__":
         etiquetas_bobinas()
         
     if tela_bobina == 'Teste':
-        st.title("Webcam Application")
-        run = st.checkbox('Run')
-        FRAME_WINDOW = st.image([])
-        cam = cv2.VideoCapture(0)
+        pass
+#         st.title("Webcam Application")
+#         run = st.checkbox('Run')
+#         FRAME_WINDOW = st.image([])
+#         cam = cv2.VideoCapture(0)
 
-        while run:
-            ret, frame = cam.read()
-            st.write(frame)
-            st.write(ret)
-            #frame = frame.to_ndarray(format='bgr24')
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            FRAME_WINDOW.image(frame)
-        else:
-            st.write('Stopped')
+#         while run:
+#             ret, frame = cam.read()
+#             st.write(frame)
+#             st.write(ret)
+#             #frame = frame.to_ndarray(format='bgr24')
+#             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#             FRAME_WINDOW.image(frame)
+#         else:
+#             st.write('Stopped')
