@@ -10,7 +10,7 @@ pyzbar
 pandas
 plotly
 qrcode
-openpyxl==3.0.10
+openpyxl==3.0.9
 xlsxwriter
 google-cloud-firestore
 #click==7.1.2
