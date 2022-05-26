@@ -376,7 +376,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         wb = load_workbook('LIBERADO.xlsx')
         ws = wb.active
         img = Image_openpyxl(image_bytearray)
-        ws.add_image(img,'F2')
+        ws.add_image(img,'F2') 
 
         ft = Font(bold=True, size=48)
 
