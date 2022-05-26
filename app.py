@@ -88,23 +88,18 @@ div.stButton > button:first-child{
     width: 100%;
     font-size: 18px;
 }
-
 label.css-qrbaxs{
     font-size: 18px;
 }
-
 p{
     font-size: 18px;
 }
-
 h1{
     text-align: center;
 }
-
 div.block-container{
     padding-top: 1rem;
 }
-
 div.streamlit-expanderHeader{
     width: 100%;
     font-size: 18px;
@@ -272,7 +267,7 @@ def VideoProcessor(dataframe_string: str) -> None:
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},
-        async_processing=False)
+        async_processing=True)
    
     if webrtc_ctx.state.playing:
         #st.write('Bobina atual')
@@ -479,7 +474,7 @@ if __name__ == "__main__":
     c1.image('logo2.png', width=150)
 
     st.sidebar.subheader('Bobinas')
-    telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário', 'Teste']
+    telas_bobinas = ['Entrada de bobinas', 'Etiquetas', 'Inventário']
     tela_bobina = st.sidebar.radio('Menu bobinas', telas_bobinas)
 
     if tela_bobina == 'Entrada de bobinas':
@@ -496,20 +491,3 @@ if __name__ == "__main__":
 
     if tela_bobina == 'Etiquetas':
         etiquetas_bobinas()
-        
-    if tela_bobina == 'Teste':
-        pass
-#         st.title("Webcam Application")
-#         run = st.checkbox('Run')
-#         FRAME_WINDOW = st.image([])
-#         cam = cv2.VideoCapture(0)
-
-#         while run:
-#             ret, frame = cam.read()
-#             st.write(frame)
-#             st.write(ret)
-#             #frame = frame.to_ndarray(format='bgr24')
-#             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-#             FRAME_WINDOW.image(frame)
-#         else:
-#             st.write('Stopped')
