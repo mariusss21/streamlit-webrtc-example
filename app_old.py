@@ -26,7 +26,7 @@ from pyzbar.pyzbar import decode
 import time
 import qrcode
 from PIL import Image
-import json
+#import json
 from openpyxl import load_workbook
 from openpyxl.drawing.image import Image as Image_openpyxl
 from openpyxl.styles import Font, Color
@@ -267,6 +267,8 @@ def VideoProcessor(dataframe_string: str) -> None:
 def inserir_invetario() -> None:
     st.subheader('Inventário de bobinas')
 
+    json.dumps()
+
     encerrar_inventario = st.button('Encerrar inventário') 
     nome_inventario = st.text_input('Nome do inventário')
 
@@ -437,7 +439,7 @@ def etiquetas_bobinas() -> None:
                     if botao_download_etiqueta:
                         download_etiqueta(texto_qrcode, df_bobinas.iloc[bobina])
 
-    
+
 def login_session_state() -> None:
     senha = st.secrets['pass']
     senha_input = st.text_input('Senha:', type='password')
@@ -491,10 +493,10 @@ if __name__ == "__main__":
         #     st.session_state['logado'] = False
         #     st.experimental_rerun()
 
-                def recv(self, frame):
+        def recv(self, frame):
             img = frame.to_ndarray(format='bgr24') #bgr24
             # decoder = cv2.QRCodeDetector()
-            # _, points = decoder.detect(img)
+            # _, points = decoder.detectand(img)
             # color_mat = cv2.cvtColor(np.array(frame.to_image()), cv2.COLOR_RGB2BGR)
 
             # buf = io.BytesIO()

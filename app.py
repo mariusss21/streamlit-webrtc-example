@@ -376,7 +376,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         wb = load_workbook('LIBERADO.xlsx')
         ws = wb.active
         img = Image_openpyxl(image_bytearray)
-        ws.add_image(img,'F2') 
+        ws.add_image(img,'F39') 
 
         ft = Font(bold=True, size=48)
 
@@ -386,8 +386,8 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws['A9'] = dados_bobina.loc['lote'] 
         ws['D9'] = dados_bobina.loc['data'] 
         ws['A18'] = str(dados_bobina.loc['quantidade'])
-        ws['D18'] = dados_bobina.loc['tipo'].replace('BOBINA ALUMINIO ', '')
-        ws['A18'].font = ft
+        ws['A39'] = dados_bobina.loc['tipo'] #.replace('BOBINA ALUMINIO ', '')
+        # ws['A18'].font = ft
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
         imagem_bobina_qr = qrcode.make(texto_qrcode , version=10, box_size=2, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
@@ -397,7 +397,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws = wb.active        
         #ws = wb['BLOQUEADO']
         img = Image_openpyxl(image_bytearray)
-        ws.add_image(img,'A23')
+        ws.add_image(img,'F15')
 
         #st.write(dados_bobina.astype(str))
 
