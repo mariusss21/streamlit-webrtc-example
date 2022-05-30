@@ -147,7 +147,7 @@ def entrada_bobinas() -> None:
         dict_data['descricao'] = st.selectbox('Descrição:', list(dict_descricao_bobinas.keys()))
         dict_data['conferente'] = st.text_input('Conferente:')
         dict_data['quantidade'] = st.number_input('Quantidade:', format='%i', step=1, value=9000)
-        dict_data['lote'] = st.text_input('Lote SAP:')
+        dict_data['lote'] = st.text_input('Lote:')
         dict_data['tipo'] = st.selectbox('Tipo', tipo_bobinas)
         dict_data['data'] = st.date_input('Data entrada:')
 
