@@ -370,7 +370,7 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     # imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'LIBERADO':
-        imagem_bobina_qr = qrcode.make(texto_qrcode , version=10, box_size=3, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
+        imagem_bobina_qr = qrcode.make(texto_qrcode , version=8, box_size=3, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
         image_bytearray = io.BytesIO()
         imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')
         wb = load_workbook('LIBERADO.xlsx')
