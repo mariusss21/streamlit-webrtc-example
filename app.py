@@ -302,7 +302,7 @@ def VideoProcessor(dataframe_string: str) -> None:
         colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
 
         nome_inventario = '_'
-
+        index = 1
         while True:
             if webrtc_ctx.video_processor:
                 try:
@@ -314,8 +314,8 @@ def VideoProcessor(dataframe_string: str) -> None:
                 break
 
             if result is not None:
-                st.write(result)
-                st.write(st.session_state.data_inventario)
+                # st.write(result)
+                # st.write(st.session_state.data_inventario)
                 if result != st.session_state.data_inventario and result.count(',') == 7:
                     st.session_state.data_inventario = result
                     # ''.join((st.session_state.data_inventario, result, '\n'))
@@ -326,6 +326,8 @@ def VideoProcessor(dataframe_string: str) -> None:
                     df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
                     df_inventario_atual['nome_inventario'] = nome_inventario
 
+                    st.write('to dentro' + str(index))
+                    index = index + 1
                     # st.write(result)
                     # st.write(st.session_state.data_inventario)
                     update_inventario(colunas, df_inventario_atual)
