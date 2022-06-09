@@ -233,7 +233,8 @@ def visualizar_inventario() -> None:
         df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario']).dt.date
         df_bobinas.sort_values(by=['data_inventario'], ascending=False, inplace=True)
 
-        df_bobinas = df_bobinas.loc[df_bobinas['data_inventario'] >= datetime.now().date() - timedelta(days=numero_dias)]
+        df_bobinas = df_bobinas.loc[(df_bobinas['data_inventario'] >= datetime.now().date() - timedelta(days=numero_dias))
+                                    & (df_bobinas['data_inventario'] <= datetime.now().date())]
 
         lista_inventarios = df_bobinas['id'].unique()
 
