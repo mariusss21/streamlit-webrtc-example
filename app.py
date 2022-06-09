@@ -252,7 +252,8 @@ def visualizar_inventario() -> None:
         st.warning('Não foram realizados inventários')
 
 
-def download_inventario(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
+def download_inventario(df_inventario: pd.DataFrame) -> None:
+    pass
 
 
 
