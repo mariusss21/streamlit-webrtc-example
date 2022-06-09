@@ -293,12 +293,14 @@ def VideoProcessor(dataframe_string: str) -> None:
         rtc_configuration=RTC_CONFIGURATION,
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True)
+
+    if 'data_inventario' not in st.session_state:
+        st.session_state['data_inventario'] = '' 
    
     if webrtc_ctx.state.playing:
         labels_placeholder = st.empty()
         colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
-        if 'data_inventario' not in st.session_state:
-            st.session_state['data_inventario'] = '' 
+
         nome_inventario = '_'
 
         while True:
@@ -389,7 +391,7 @@ def update_inventario(colunas, df_inventario_atual):
                     except:
                         st.error('Erro ao salvar inventário')
 
-                time.sleep(0.5)
+                time.sleep(1)
                 #st.experimental_rerun() 
         else:
             st.warning('Não há bobinas para armazenar')
