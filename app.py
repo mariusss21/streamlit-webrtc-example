@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 #import json
 #import smtplib
-from datetime import  datetime, time
+from datetime import  datetime, time, timedelta
 import pytz
 import base64
 from io import StringIO, BytesIO
@@ -220,7 +220,7 @@ def visualizar_inventario() -> None:
     doc_ref = db.collection('inventario').document('inventario')
     doc = doc_ref.get()
 
-    data_inicial = st.number_input('Quantidade de dias', value=7, step=1, format='%i')
+    numero_dias = st.number_input('Quantidade de dias para busca:', value=7, step=1, format='%i')
 
     if doc.exists:
         dicionario = doc.to_dict()
@@ -231,6 +231,8 @@ def visualizar_inventario() -> None:
 
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
         df_bobinas.sort_values(by=['data_inventario'], ascending=False, inplace=True)
+
+        df_bobinas = df_bobinas.loc[df_bobinas['data_inventario'] >= datetime.now().date() - timedelta(days=numero_dias)]
 
         lista_inventarios = df_bobinas['id'].unique()
 
