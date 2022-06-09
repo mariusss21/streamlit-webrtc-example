@@ -275,7 +275,6 @@ def VideoProcessor(dataframe_string: str) -> None:
         
         def recv(self, frame):
             img = frame.to_ndarray(format='bgr24') #bgr24
-            # data = read_barcodes(img)
             data = ''
 
             barcodes = decode(img)
@@ -314,22 +313,15 @@ def VideoProcessor(dataframe_string: str) -> None:
                 break
 
             if result is not None:
-                # st.write(result)
-                # st.write(st.session_state.data_inventario)
                 if (result != st.session_state.data_inventario) and (result.count(',') == 7):
-                    
-                    # ''.join((st.session_state.data_inventario, result, '\n'))
-                    # labels_placeholder.success('Bobina adicionada ao inventário')
                     nova_bobina_inventario = ''.join((colunas, result))
                     csv_string = StringIO(nova_bobina_inventario)
                     df_inventario_atual = pd.read_csv(csv_string, sep=',')
                     df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
                     df_inventario_atual['nome_inventario'] = 'Inventario_'
 
-                    #st.write('to dentro' + str(index))
                     index = index + 1
                     st.write(result)
-                    #st.write(st.session_state.data_inventario)
                     update_inventario(colunas, df_inventario_atual)
                     st.session_state.data_inventario = result
 
@@ -342,23 +334,8 @@ def VideoProcessor(dataframe_string: str) -> None:
 
 def inserir_inventario() -> None:
     st.subheader('Inventário de bobinas')
-    
-    #nome_inventario = '_'
-    # encerrar_inventario = st.button('Encerrar inventário') 
-    # colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
-    # if 'data_inventario' not in st.session_state:
-    #     st.session_state['data_inventario'] = colunas 
-
     VideoProcessor('colunas')
-    # csv_string = StringIO(st.session_state.data_inventario)
-    # df_inventario_atual = pd.read_csv(csv_string, sep=',')
-    # df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
-    # df_inventario_atual['nome_inventario'] = nome_inventario
 
-    # if df_inventario_atual.shape[0] > 0:
-    #     st.write(df_inventario_atual)
-    # else:
-    #     st.warning('Nenhuma bobina adicionada ao inventário')
 
 def update_inventario(colunas, df_inventario_atual):
         
@@ -400,7 +377,6 @@ def update_inventario(colunas, df_inventario_atual):
                         st.error('Erro ao salvar inventário')
 
                 time.sleep(1)
-                #st.experimental_rerun() 
         else:
             st.warning('Não há bobinas para armazenar')
 
@@ -419,8 +395,6 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         img = Image_openpyxl(image_bytearray)
         ws.add_image(img,'F39') 
 
-        ft = Font(bold=True, size=48)
-
         ws['A2'] = dados_bobina.loc['sap'] 
         ws['A3'] = dados_bobina.loc['descricao'] 
         ws['A5'] = dados_bobina.loc['conferente'] 
@@ -428,7 +402,6 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         ws['D9'] = dados_bobina.loc['data'] 
         ws['A18'] = str(dados_bobina.loc['quantidade'])
         ws['A39'] = dados_bobina.loc['tipo'] #.replace('BOBINA ALUMINIO ', '')
-        # ws['A18'].font = ft
 
     if dados_bobina.loc['tipo_de_etiqueta'] == 'BLOQUEADO':
         imagem_bobina_qr = qrcode.make(texto_qrcode , version=10, box_size=3, border=2, error_correction=qrcode.constants.ERROR_CORRECT_H) #, fit=True)
@@ -436,11 +409,8 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
         imagem_bobina_qr.save(image_bytearray, format='PNG', name='qrcode.png')        
         wb = load_workbook('BLOQUEADO.xlsx')
         ws = wb.active        
-        #ws = wb['BLOQUEADO']
         img = Image_openpyxl(image_bytearray)
         ws.add_image(img,'F15')
-
-        #st.write(dados_bobina.astype(str))
 
         ws['C2'] = str(dados_bobina.loc['sap']) + ' - ' +  dados_bobina.loc['descricao'] #codigo do produto
         ws['A3'] = dados_bobina.loc['quantidade'] #quantidade do produto
@@ -456,8 +426,6 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     # link para download e nome do arquivo
     linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="etiqueta.xlsx">Download etiqueta</a>'
     st.markdown(linko, unsafe_allow_html=True)
-
-
 
 
 def etiquetas_bobinas() -> None:
@@ -493,7 +461,6 @@ def etiquetas_bobinas() -> None:
                             texto_qrcode = ''.join((texto_qrcode, str(df_etiqueta_dia.loc[bobina, colunas]), ','))
                             st.write(f'**{colunas}:** {df_etiqueta_dia.loc[bobina, colunas]}')
 
-                    # botao_download_etiqueta = st.button('Download etiqueta', key=str(bobina))
                     texto_qrcode = texto_qrcode[0:-1]
                     download_etiqueta(texto_qrcode, df_bobinas.iloc[bobina])
 
