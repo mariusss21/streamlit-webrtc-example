@@ -244,7 +244,7 @@ def visualizar_inventario() -> None:
 
         for inventario in lista_inventarios:
             df_inventario = df_bobinas[df_bobinas['id'] == inventario]
-            df_inventario.sort_values(by=['data'], ascending=False, inplace=True)
+            df_inventario_att = df_inventario.sort_values(by=['data'], ascending=True)
             df_inventario_att = df_inventario.reset_index(drop=True)
 
             with st.expander(f'{inventario} ({str(df_inventario_att.shape[0])})'):
