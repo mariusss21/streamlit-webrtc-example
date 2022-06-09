@@ -248,13 +248,23 @@ def visualizar_inventario() -> None:
 
             with st.expander(f'{inventario} ({str(df_inventario_att.shape[0])})'):
                 st.dataframe(df_inventario_att)
+                df_xlsx = download_inventario(df_inventario_att)
+                st.download_button(label = 'teste_download',
+                                    data = df_xlsx,
+                                    file_name = 'Contagem_bobinas.xlxs')
     else:
         st.warning('Não foram realizados inventários')
 
 
 def download_inventario(df_inventario: pd.DataFrame) -> None:
-    pass
-
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df_inventario.to_excel(writer, index=False, sheet_name='Inventário Bobinas')
+    workbook = writer.book
+    worksheet = writer.sheets['Inventário Bobinas']
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
 
 
 def VideoProcessor(dataframe_string: str) -> None:
@@ -313,7 +323,6 @@ def VideoProcessor(dataframe_string: str) -> None:
 
                 if result.count(',') != 7:
                     labels_placeholder.error('QR code inválido')
-                    # result_placeholder.write(st.session_state.data_inventario)
 
 
 def inserir_inventario() -> None:
