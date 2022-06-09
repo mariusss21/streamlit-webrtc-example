@@ -229,6 +229,8 @@ def visualizar_inventario() -> None:
         csv_string = StringIO(csv)
         df_bobinas = pd.read_csv(csv_string, sep=',') 
 
+        st.write(df_bobinas)
+
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
         df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario']).dt.date
         df_bobinas.sort_values(by=['data_inventario'], ascending=False, inplace=True)
