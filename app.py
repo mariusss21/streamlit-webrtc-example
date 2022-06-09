@@ -220,6 +220,8 @@ def visualizar_inventario() -> None:
     doc_ref = db.collection('inventario').document('inventario')
     doc = doc_ref.get()
 
+    data_inicial = st.numeric_input('Quantidade de dias', value=7, step=1, format='%i')
+
     if doc.exists:
         dicionario = doc.to_dict()
         csv = dicionario['dataframe']
