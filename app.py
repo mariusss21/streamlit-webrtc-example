@@ -251,7 +251,7 @@ def visualizar_inventario() -> None:
                 df_xlsx = download_inventario(df_inventario_att)
                 st.download_button(label = 'teste_download',
                                     data = df_xlsx,
-                                    file_name = 'Contagem_bobinas.xlxs')
+                                    file_name = 'Contagem_bobinas.xlsx')
     else:
         st.warning('Não foram realizados inventários')
 
