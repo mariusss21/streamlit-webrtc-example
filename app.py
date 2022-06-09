@@ -233,15 +233,19 @@ def visualizar_inventario() -> None:
 
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
         df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario'], format='%d/%m/%Y').dt.date
+        df_bobinas['data'] = pd.to_datetime(df_bobinas['data']).dt.date
         df_bobinas.sort_values(by=['data_inventario'], ascending=False, inplace=True)
 
         df_bobinas = df_bobinas.loc[(df_bobinas['data_inventario'] >= datetime.now().date() - timedelta(days=numero_dias))
                                     & (df_bobinas['data_inventario'] <= datetime.now().date())]
 
-        lista_inventarios = df_bobinas['id'].unique()
+        lista_inventarios = df_bobinas['id'].unique(drop=True)
 
         for inventario in lista_inventarios:
             df_inventario = df_bobinas[df_bobinas['id'] == inventario]
+            df_inventario.sort_values(by=['data'], ascending=False, inplace=True)
+            df_inventario.reset_index(drop=True)
+
             with st.expander(f'{inventario} ({str(df_inventario.shape[0])})'):
                 st.dataframe(df_inventario)
     else:
