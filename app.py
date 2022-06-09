@@ -316,8 +316,8 @@ def VideoProcessor(dataframe_string: str) -> None:
             if result is not None:
                 # st.write(result)
                 # st.write(st.session_state.data_inventario)
-                if result != st.session_state.data_inventario and result.count(',') == 7:
-                    st.session_state.data_inventario = result
+                if (result != st.session_state.data_inventario) and (result.count(',') == 7):
+                    
                     # ''.join((st.session_state.data_inventario, result, '\n'))
                     # labels_placeholder.success('Bobina adicionada ao inventário')
                     nova_bobina_inventario = ''.join((colunas, result))
@@ -328,9 +328,10 @@ def VideoProcessor(dataframe_string: str) -> None:
 
                     st.write('to dentro' + str(index))
                     index = index + 1
-                    # st.write(result)
-                    # st.write(st.session_state.data_inventario)
+                    st.write(result)
+                    st.write(st.session_state.data_inventario)
                     update_inventario(colunas, df_inventario_atual)
+                    st.session_state.data_inventario = result
 
                 if result == st.session_state.data_inventario and result.count(',') == 7:
                     labels_placeholder.info('Bobina já adicionada ao inventário')
