@@ -231,6 +231,7 @@ def visualizar_inventario() -> None:
 
         st.write(df_bobinas)
 
+        df_bobinas['status'] = df_bobinas['status'].replace('瓊', 'ã')
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
         df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario'], format='%d/%m/%Y').dt.date
         df_bobinas['data'] = pd.to_datetime(df_bobinas['data']).dt.date
