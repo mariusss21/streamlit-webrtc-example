@@ -232,7 +232,7 @@ def visualizar_inventario() -> None:
         st.write(df_bobinas)
 
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
-        df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario']).dt.date
+        df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario'], format='%d/%m/%Y').dt.date
         df_bobinas.sort_values(by=['data_inventario'], ascending=False, inplace=True)
 
         df_bobinas = df_bobinas.loc[(df_bobinas['data_inventario'] >= datetime.now().date() - timedelta(days=numero_dias))
