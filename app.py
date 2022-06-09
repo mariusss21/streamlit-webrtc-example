@@ -239,7 +239,7 @@ def visualizar_inventario() -> None:
         df_bobinas = df_bobinas.loc[(df_bobinas['data_inventario'] >= datetime.now().date() - timedelta(days=numero_dias))
                                     & (df_bobinas['data_inventario'] <= datetime.now().date())]
 
-        lista_inventarios = df_bobinas['id'].unique(drop=True)
+        lista_inventarios = df_bobinas['id'].unique()
 
         for inventario in lista_inventarios:
             df_inventario = df_bobinas[df_bobinas['id'] == inventario]
