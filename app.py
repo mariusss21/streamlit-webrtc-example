@@ -323,6 +323,9 @@ def VideoProcessor(dataframe_string: str) -> None:
                     df_inventario_atual = pd.read_csv(csv_string, sep=',')
                     df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
                     df_inventario_atual['nome_inventario'] = nome_inventario
+
+                    st.write(result)
+                    st.write(st.session_state.data_inventario)
                     update_inventario(colunas, df_inventario_atual)
 
                 if result == st.session_state.data_inventario and result.count(',') == 7:
