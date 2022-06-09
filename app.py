@@ -258,6 +258,7 @@ def visualizar_inventario() -> None:
 
 
 def download_inventario(df_inventario: pd.DataFrame) -> None:
+    df_inventario.drop(level=1, columns=['nome_inventario', 'id'])
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     df_inventario.to_excel(writer, index=False, sheet_name='Inventário Bobinas')
