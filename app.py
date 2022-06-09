@@ -244,12 +244,16 @@ def visualizar_inventario() -> None:
         for inventario in lista_inventarios:
             df_inventario = df_bobinas[df_bobinas['id'] == inventario]
             df_inventario.sort_values(by=['data'], ascending=False, inplace=True)
-            df_inventario.reset_index(drop=True)
+            df_inventario_att = df_inventario.reset_index(drop=True)
 
-            with st.expander(f'{inventario} ({str(df_inventario.shape[0])})'):
-                st.dataframe(df_inventario)
+            with st.expander(f'{inventario} ({str(df_inventario_att.shape[0])})'):
+                st.dataframe(df_inventario_att)
     else:
         st.warning('Não foram realizados inventários')
+
+
+def download_inventario(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
+
 
 
 def VideoProcessor(dataframe_string: str) -> None:
@@ -311,7 +315,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                     # result_placeholder.write(st.session_state.data_inventario)
 
 
-def inserir_invetario() -> None:
+def inserir_inventario() -> None:
     st.subheader('Inventário de bobinas')
     
     nome_inventario = st.text_input('ID do colaborador:')
@@ -429,6 +433,8 @@ def download_etiqueta(texto_qrcode: str, dados_bobina: pd.DataFrame) -> None:
     st.markdown(linko, unsafe_allow_html=True)
 
 
+
+
 def etiquetas_bobinas() -> None:
     st.subheader('Etiquetas de bobinas')
 
@@ -496,7 +502,7 @@ if __name__ == "__main__":
         tela_inventario = st.sidebar.radio('Opções de inventário', ['Inserir', 'Visualizar']) #'Importar',
 
         if tela_inventario == 'Inserir':
-            inserir_invetario()
+            inserir_inventario()
 
         if tela_inventario == 'Visualizar':
             visualizar_inventario()
