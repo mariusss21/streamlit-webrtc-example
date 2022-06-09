@@ -250,7 +250,7 @@ def visualizar_inventario() -> None:
             with st.expander(f'{inventario} ({str(df_inventario_att.shape[0])})'):
                 st.dataframe(df_inventario_att)
                 df_xlsx = download_inventario(df_inventario_att)
-                st.download_button(label = 'teste_download',
+                st.download_button(label = f'Download inventário {inventario}',
                                     data = df_xlsx,
                                     file_name = 'Contagem_bobinas.xlsx')
     else:
@@ -258,7 +258,7 @@ def visualizar_inventario() -> None:
 
 
 def download_inventario(df_inventario: pd.DataFrame) -> None:
-    df_inventario.drop(columns=['nome_inventario', 'id'], inplace=True)
+    # df_inventario.drop(columns=['nome_inventario', 'id'], inplace=True)
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     df_inventario.to_excel(writer, index=False, sheet_name='Inventário Bobinas')
