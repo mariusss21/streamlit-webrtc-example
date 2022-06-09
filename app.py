@@ -216,7 +216,6 @@ def read_cv2():
 
 def visualizar_inventario() -> None:
     st.subheader('Inventários realizados')
-
     doc_ref = db.collection('inventario').document('inventario')
     doc = doc_ref.get()
 
@@ -228,8 +227,6 @@ def visualizar_inventario() -> None:
 
         csv_string = StringIO(csv)
         df_bobinas = pd.read_csv(csv_string, sep=',') 
-
-        st.write(df_bobinas)
 
         df_bobinas['status'] = df_bobinas['status'].apply(lambda x: 'Não conforme' if x != 'Liberado' else 'Liberado')
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
@@ -258,7 +255,6 @@ def visualizar_inventario() -> None:
 
 
 def download_inventario(df_inventario: pd.DataFrame) -> None:
-    # df_inventario.drop(columns=['nome_inventario', 'id'], inplace=True)
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     df_inventario.to_excel(writer, index=False, sheet_name='Inventário Bobinas')
@@ -299,11 +295,11 @@ def VideoProcessor(dataframe_string: str) -> None:
         async_processing=True)
    
     if webrtc_ctx.state.playing:
-        #st.write('Bobina atual')
         labels_placeholder = st.empty()
-
-        # st.write('Bobinas armazenadas')
-        # result_placeholder = st.empty()
+        colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
+        if 'data_inventario' not in st.session_state:
+            st.session_state['data_inventario'] = '' 
+        nome_inventario = '_'
 
         while True:
             if webrtc_ctx.video_processor:
@@ -316,11 +312,18 @@ def VideoProcessor(dataframe_string: str) -> None:
                 break
 
             if result is not None:
-                if result not in st.session_state.data_inventario and result.count(',') == 7:
-                    st.session_state.data_inventario = ''.join((st.session_state.data_inventario, result, '\n'))
-                    labels_placeholder.success('Bobina adicionada ao inventário')
+                if result != st.session_state.data_inventario and result.count(',') == 7:
+                    st.session_state.data_inventario = result
+                    # ''.join((st.session_state.data_inventario, result, '\n'))
+                    # labels_placeholder.success('Bobina adicionada ao inventário')
+                    nova_bobina_inventario = ''.join((colunas, result))
+                    csv_string = StringIO(nova_bobina_inventario)
+                    df_inventario_atual = pd.read_csv(csv_string, sep=',')
+                    df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
+                    df_inventario_atual['nome_inventario'] = nome_inventario
+                    update_inventario(colunas, df_inventario_atual)
 
-                if result in st.session_state.data_inventario and result.count(',') == 7:
+                if result == st.session_state.data_inventario and result.count(',') == 7:
                     labels_placeholder.info('Bobina já adicionada ao inventário')
 
                 if result.count(',') != 7:
@@ -330,24 +333,24 @@ def VideoProcessor(dataframe_string: str) -> None:
 def inserir_inventario() -> None:
     st.subheader('Inventário de bobinas')
     
-    nome_inventario = st.text_input('ID do colaborador:')
-    encerrar_inventario = st.button('Encerrar inventário') 
-    colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
-    if 'data_inventario' not in st.session_state:
-        st.session_state['data_inventario'] = colunas 
+    #nome_inventario = '_'
+    # encerrar_inventario = st.button('Encerrar inventário') 
+    # colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
+    # if 'data_inventario' not in st.session_state:
+    #     st.session_state['data_inventario'] = colunas 
 
     VideoProcessor('colunas')
-    csv_string = StringIO(st.session_state.data_inventario)
-    df_inventario_atual = pd.read_csv(csv_string, sep=',')
-    df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
-    df_inventario_atual['nome_inventario'] = nome_inventario
+    # csv_string = StringIO(st.session_state.data_inventario)
+    # df_inventario_atual = pd.read_csv(csv_string, sep=',')
+    # df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
+    # df_inventario_atual['nome_inventario'] = nome_inventario
 
-    if df_inventario_atual.shape[0] > 0:
-        st.write(df_inventario_atual)
-    else:
-        st.warning('Nenhuma bobina adicionada ao inventário')
+    # if df_inventario_atual.shape[0] > 0:
+    #     st.write(df_inventario_atual)
+    # else:
+    #     st.warning('Nenhuma bobina adicionada ao inventário')
 
-    if encerrar_inventario:
+def update_inventario(colunas, df_inventario_atual):
         
         if st.session_state.data_inventario != colunas:
                 doc_ref = db.collection('inventario').document('inventario')
@@ -386,8 +389,8 @@ def inserir_inventario() -> None:
                     except:
                         st.error('Erro ao salvar inventário')
 
-                time.sleep(1)
-                st.experimental_rerun() 
+                time.sleep(0.5)
+                #st.experimental_rerun() 
         else:
             st.warning('Não há bobinas para armazenar')
 
