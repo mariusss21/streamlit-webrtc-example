@@ -241,7 +241,7 @@ def visualizar_inventario() -> None:
 
         for inventario in lista_inventarios:
             df_inventario = df_bobinas[df_bobinas['id'] == inventario]
-            
+
             df_inventario_att = df_inventario.drop_duplicates()
             df_inventario_att = df_inventario_att.sort_values(by=['data'], ascending=True)
             df_inventario_att = df_inventario_att.reset_index(drop=True)
@@ -303,8 +303,6 @@ def VideoProcessor(dataframe_string: str) -> None:
         labels_placeholder = st.empty()
         colunas = 'status,descricao,conferente,quantidade,lote,tipo,data,sap\n'
 
-        nome_inventario = '_'
-        index = 1
         while True:
             if webrtc_ctx.video_processor:
                 try:
@@ -326,7 +324,7 @@ def VideoProcessor(dataframe_string: str) -> None:
                     csv_string = StringIO(nova_bobina_inventario)
                     df_inventario_atual = pd.read_csv(csv_string, sep=',')
                     df_inventario_atual['data_inventario'] = datetime.now().strftime('%d/%m/%Y')
-                    df_inventario_atual['nome_inventario'] = nome_inventario
+                    df_inventario_atual['nome_inventario'] = 'Inventario_'
 
                     #st.write('to dentro' + str(index))
                     index = index + 1
