@@ -231,7 +231,7 @@ def visualizar_inventario() -> None:
 
         df_bobinas['status'] = df_bobinas['status'].apply(lambda x: 'Não conforme' if x != 'Liberado' else 'Liberado')
         df_bobinas['id'] = df_bobinas['nome_inventario'].astype(str) + '_' + df_bobinas['data_inventario'].astype(str)
-        df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario']).dt.date
+        df_bobinas['data_inventario'] = pd.to_datetime(df_bobinas['data_inventario'], format='%d/%m/%Y').dt.date
         df_bobinas['data'] = pd.to_datetime(df_bobinas['data']).dt.date
         df_bobinas.sort_values(by=['data_inventario'], ascending=False, inplace=True)
 
