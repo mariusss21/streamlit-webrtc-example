@@ -248,8 +248,8 @@ def visualizar_inventario() -> None:
             df_inventario_att = df_inventario_att.reset_index(drop=True)
 
             # st.write(df_inventario_att['data'].dtypes)
-            df_inventario_att['data'] = df_inventario_att['data'].astype(str) #strftime('%d/%m/%Y')
-            df_inventario_att['data'] = str(df_inventario_att['data'].split('-')[2]) + '/' + str(df_inventario_att['data'].split('-')[1]) + '/' + str(df_inventario_att['data'].split('-')[0]) #strftime('%d/%m/%Y')
+            df_inventario_att['data'] = pd.to_datetime(df_inventario_att['data']).strftime('%d/%m/%Y')   #.astype(str) #strftime('%d/%m/%Y')
+            #df_inventario_att['data'] = str(df_inventario_att['data'].split('-')[2]) + '/' + str(df_inventario_att['data'].split('-')[1]) + '/' + str(df_inventario_att['data'].split('-')[0]) #strftime('%d/%m/%Y')
             #df_inventario_att['data_inventario'] = df_inventario_att['data_inventario'].dt.strftime('%d/%m/%Y')
             
 
