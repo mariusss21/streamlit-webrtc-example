@@ -246,8 +246,8 @@ def visualizar_inventario() -> None:
             df_inventario_att = df_inventario.drop_duplicates()
             df_inventario_att = df_inventario_att.sort_values(by=['data'], ascending=True)
             df_inventario_att = df_inventario_att.reset_index(drop=True)
-            df_inventario_att['data'] = df_inventario_att['data'].strftime('%d/%m/%Y')
-            df_inventario_att['data_inventario'] = df_inventario_att['data_inventario'].strftime('%d/%m/%Y')
+            df_inventario_att['data'] = df_inventario_att['data'].dt.strftime('%d/%m/%Y')
+            df_inventario_att['data_inventario'] = df_inventario_att['data_inventario'].dt.strftime('%d/%m/%Y')
             
 
             with st.expander(f'{inventario} ({str(df_inventario_att.shape[0])})'):
